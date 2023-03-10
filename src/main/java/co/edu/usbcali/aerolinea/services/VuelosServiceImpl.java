@@ -12,6 +12,8 @@ public class VuelosServiceImpl implements VuelosService{
 
     @Override
     public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
+        private final List<VueloDTO> vuelos = new ArrayList<>();
+        
         if(vueloDTO == null) {
             throw new Exception("El Vuelo viene con datos nulos");
         }
@@ -29,7 +31,7 @@ public class VuelosServiceImpl implements VuelosService{
         }
 
         //Aquí se llama al Repository
-
+         vuelos.add(vueloDTO);
         return vueloDTO;
     }
 
@@ -45,27 +47,6 @@ public class VuelosServiceImpl implements VuelosService{
 
     @Override
     public List<VueloDTO> obtenerVuelos() {
-        return Arrays.asList(
-                VueloDTO.builder()
-                        .origen("Cali")
-                        .destino("Buenaventura")
-                        .fechaHoraSalida(new Date())
-                        .fechaHoraLlegada(new Date())
-                        .id("12345").idAvion("54321").build(),
-                new VueloDTO("Buenaventura",
-                        "Cali",
-                        new Date(),
-                        new Date(),
-                        "101234",
-                        "101234"
-                ),
-                new VueloDTO("Medellin",
-                        "Cali",
-                        new Date(),
-                        new Date(),
-                        "201234",
-                        "201234"
-                )
-        );
+        return vuelos;
     }
 }
