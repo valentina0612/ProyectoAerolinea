@@ -20,8 +20,11 @@ public class RolUsuarioImpl implements RolUsuarioService {
         if (rolUsuarioDTO == null){
             throw new Exception("El rol de usuario viene con datos nulos");
         }
-        if (rolUsuarioDTO.getRousId() == null || rolUsuarioDTO.getRousId()==null){
+        if (rolUsuarioDTO.getRousId() == null){
             throw new Exception("El ID no puede ser nulo");
+        }
+        if (rolUsuarioDTO.getRousId()<0){
+            throw new Exception("El id no puede ser negativo");
         }
         if (rolUsuarioDTO.getDescripcion()== null || rolUsuarioDTO.getDescripcion().trim().equals("")){
             throw new Exception("La descripción no puede estar vacia");

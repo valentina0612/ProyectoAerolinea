@@ -2,7 +2,6 @@ package co.edu.usbcali.aerolinea.controllers;
 
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
-import co.edu.usbcali.aerolinea.dtos.VueloDTO;
 import co.edu.usbcali.aerolinea.services.RolUsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +17,7 @@ public class RolUsuarioController {
     private final RolUsuarioService rolUsuarioService;
 
     public RolUsuarioController(RolUsuarioService rolUsuarioService) {
+
         this.rolUsuarioService = rolUsuarioService;
     }
 
