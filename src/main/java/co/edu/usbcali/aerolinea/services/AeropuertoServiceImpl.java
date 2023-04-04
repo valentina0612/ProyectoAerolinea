@@ -2,8 +2,6 @@ package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
-import co.edu.usbcali.aerolinea.mapper.RolUsuarioMapper;
-import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import org.springframework.stereotype.Service;
@@ -11,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AeropuertoImpl implements AeropuertoService{
+public class AeropuertoServiceImpl implements AeropuertoService{
     private final AeropuertoRepository aeropuertoRepository;
 
-    public AeropuertoImpl(AeropuertoRepository aeropuertoRepository) {
+    public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository) {
         this.aeropuertoRepository = aeropuertoRepository;
     }
 

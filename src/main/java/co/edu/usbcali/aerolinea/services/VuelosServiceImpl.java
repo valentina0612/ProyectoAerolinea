@@ -1,52 +1,61 @@
+
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.VueloDTO;
+import co.edu.usbcali.aerolinea.mapper.VueloMapper;
+import co.edu.usbcali.aerolinea.model.Aeropuerto;
+import co.edu.usbcali.aerolinea.model.Vuelo;
+import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
+import co.edu.usbcali.aerolinea.repository.VueloRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class VuelosServiceImpl implements VuelosService{
-    private final List<VueloDTO> vuelos = new ArrayList<>();
-    @Override
-    public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
+    private final VueloRepository vueloRepository;
+    private final AeropuertoRepository aeropuertoRepository;
 
-        
-        if(vueloDTO == null) {
-            throw new Exception("El Vuelo viene con datos nulos");
-        }
-        if(vueloDTO.getId()== null || vueloDTO.getId().trim().equals("")) {
-            throw new Exception("Id nulo");
-        }
-        if(vueloDTO.getOrigen()== null || vueloDTO.getOrigen().trim().equals("")) {
-            throw new Exception("Origen nulo");
-        }
-        if(vueloDTO.getDestino()== null || vueloDTO.getDestino().trim().equals("")) {
-            throw new Exception("Destino nulo");
-        }
-        if(vueloDTO.getIdAvion()== null || vueloDTO.getIdAvion().trim().equals("")) {
-            throw new Exception("idAvion nulo");
-        }
-
-        //Aquí se llama al Repository
-         vuelos.add(vueloDTO);
-        return vueloDTO;
+    //Inyección de dependencias
+    public VuelosServiceImpl(VueloRepository vueloRepository, AeropuertoRepository aeropuertoRepository) {
+        this.vueloRepository = vueloRepository;
+        this.aeropuertoRepository = aeropuertoRepository;
     }
 
     @Override
-    public VueloDTO obtenerVuelo() {
-        return VueloDTO.builder()
-                .origen("Cali")
-                .destino("Buenaventura")
-                .fechaHoraSalida(new Date())
-                .fechaHoraLlegada(new Date())
-                .id("12345").idAvion("54321").build();
+    public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
+        if (vueloDTO == null){
+            throw new Exception("El usuario viene con datos nulos");
+        }
+        if (vueloDTO.getVueloId() == null){
+            throw new Exception("El ID no puede ser nulo");
+        }
+        if (vueloDTO.getAeropuerto_aeroIdOrigen()<=0){
+            throw new Exception("id no válido");
+        }
+        if(vueloDTO.getAeropuerto_aeroIdDestino() <= 0){
+            throw new Exception("id no válido");
+        }
+        if (vueloDTO.getPrecio() <= 0 || vueloDTO.getPrecioAsientoVip() <= 0 || vueloDTO.getPrecioAsientoNormal() <= 0 || vueloDTO.getPrecioAsientoBasico() <= 0){
+            throw new Exception("precio no válido");
+        }
+
+        if(vueloRepository.findById(vueloDTO.getVueloId()).isPresent()){
+            throw new Exception("El ID no puede repetirse");
+        }
+        Aeropuerto aeropuertoOrigen = aeropuertoRepository.getReferenceById(vueloDTO.getAeropuerto_aeroIdOrigen());
+        Aeropuerto aeropuertoDestino = aeropuertoRepository.getReferenceById(vueloDTO.getAeropuerto_aeroIdDestino());
+        Vuelo vuelo = VueloMapper.dtoToModel(vueloDTO);
+        vuelo.setAeropuertoOrigen(aeropuertoOrigen);
+        vuelo.setAeropuertoDestino(aeropuertoDestino);
+        return VueloMapper.modelToDto(vueloRepository.save(vuelo));
+
     }
 
     @Override
     public List<VueloDTO> obtenerVuelos() {
-        return vuelos;
+        List<Vuelo> vuelos= vueloRepository.findAll();
+        return VueloMapper.modelToDtoList(vuelos);
     }
 }
+

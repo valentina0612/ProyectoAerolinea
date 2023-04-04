@@ -15,6 +15,8 @@ public class UsuarioMapper {
                 .usuaId(usuario.getUsuaId())
                 .rolUsuario_rousid( usuario.getRolUsuario()!= null?
                         usuario.getRolUsuario().getRousId():null)
+                .descripcion( usuario.getRolUsuario()!= null?
+                        usuario.getRolUsuario().getDescripcion():null)
                 .cedula(usuario.getCedula())
                 .nombre(usuario.getNombre())
                 .apellido(usuario.getApellido())

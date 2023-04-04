@@ -1,10 +1,10 @@
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
-import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
-import co.edu.usbcali.aerolinea.model.Aeropuerto;
+import co.edu.usbcali.aerolinea.model.RolUsuario;
 import co.edu.usbcali.aerolinea.model.Usuario;
+import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import co.edu.usbcali.aerolinea.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,12 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final RolUsuarioRepository rolUsuarioRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolUsuarioRepository rolUsuarioRepository) {
+
         this.usuarioRepository = usuarioRepository;
+        this.rolUsuarioRepository = rolUsuarioRepository;
     }
     @Override
     public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception {
@@ -26,7 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioDTO.getUsuaId() == null){
             throw new Exception("El ID no puede ser nulo");
         }
-        if (usuarioDTO.getRolUsuario_rousid()<0){
+        if (usuarioDTO.getRolUsuario_rousid()<= 0){
             throw new Exception("id no válido");
         }
         if (usuarioDTO.getApellido()== null || usuarioDTO.getApellido().trim().equals("")){
@@ -44,7 +47,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(usuarioRepository.findById(usuarioDTO.getUsuaId()).isPresent()){
             throw new Exception("El ID no puede repetirse");
         }
+        RolUsuario rolUsuario = rolUsuarioRepository.getReferenceById(usuarioDTO.getRolUsuario_rousid());
         Usuario usuario = UsuarioMapper.dtoToModel(usuarioDTO);
+        usuario.setRolUsuario(rolUsuario);
         return UsuarioMapper.modelToDto(usuarioRepository.save(usuario));
     }
 

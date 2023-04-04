@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface VuelosService {
     VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception;
-    VueloDTO obtenerVuelo();
     List<VueloDTO> obtenerVuelos();
 }

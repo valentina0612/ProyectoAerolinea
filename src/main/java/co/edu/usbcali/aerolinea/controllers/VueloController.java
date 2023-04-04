@@ -1,3 +1,4 @@
+
 package co.edu.usbcali.aerolinea.controllers;
 
 import co.edu.usbcali.aerolinea.dtos.VueloDTO;
@@ -17,11 +18,6 @@ public class VueloController {
 
     public VueloController(VuelosService vueloService) {
         this.vueloService = vueloService;
-    }
-
-    @GetMapping("/obtenerVuelo")
-    public ResponseEntity<VueloDTO> obtenerVuelo(){
-        return new ResponseEntity(vueloService.obtenerVuelo(), HttpStatus.OK);
     }
 
     @GetMapping("/obtenerVuelos")

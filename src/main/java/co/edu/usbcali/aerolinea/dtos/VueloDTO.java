@@ -18,6 +18,8 @@ public class VueloDTO {
     private Integer vueloId;
     private Integer aeropuerto_aeroIdOrigen;
     private Integer aeropuerto_aeroIdDestino;
+    private String nombreAeroOrigen;
+    private String nombreAeroDestino;
     private float precio;
     private String hora_salida;
     private String hora_llegada;

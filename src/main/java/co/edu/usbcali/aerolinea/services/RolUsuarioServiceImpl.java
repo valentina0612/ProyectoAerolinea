@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class RolUsuarioImpl implements RolUsuarioService {
+public class RolUsuarioServiceImpl implements RolUsuarioService {
     private final RolUsuarioRepository rolUsuarioRepository;
 
-    public RolUsuarioImpl(RolUsuarioRepository rolUsuarioRepository) {
+    public RolUsuarioServiceImpl(RolUsuarioRepository rolUsuarioRepository) {
         this.rolUsuarioRepository = rolUsuarioRepository;
     }
 

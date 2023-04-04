@@ -14,6 +14,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class UsuarioDTO {
     private Integer usuaId;
     private Integer rolUsuario_rousid;
+    private String descripcion;
     private String cedula;
     private String nombre;
     private String apellido;
