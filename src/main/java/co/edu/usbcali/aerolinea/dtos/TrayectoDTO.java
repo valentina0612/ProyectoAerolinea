@@ -5,17 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.sql.Time;
+
 @Data
 @Builder
 @AllArgsConstructor
 @ToString
 public class TrayectoDTO {
     private Integer trayId;
-    private Integer avion_avioId;
-    private Integer aeropuerto_aeroIdOrigen;
-    private Integer aeropuerto_aeroIdDestino;
-    private String hora_salida;
-    private String hora_llegada;
-    private Integer vuelo_vuelId;
-    private  String estado;
+    private Integer avioId;
+    private Integer aereoIdOrigen;
+    private Integer aereoIdDestin;
+    private Time horaSalida;
+    private Time horaLlegada;
+    private Integer vuelId;
+    private String estado;
 }

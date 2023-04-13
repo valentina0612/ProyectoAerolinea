@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,29 +15,24 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name= "trayecto")
 public class Trayecto {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tray_id", nullable = false)
     private Integer trayId;
+    @Column(name = "avio_id", nullable = false)
+    private Integer avioId;
+    @Column(name = "aereo_id_origen", nullable = false)
+    private Integer aereoIdOrigen;
+    @Column(name = "aereo_id_destin", nullable = false)
+    private Integer aereoIdDestin;
+    @Column(name = "hora_salida", nullable = false)
+    private Time horaSalida;
+    @Column(name = "hora_llegada", nullable = false)
+    private Time horaLlegada;
+    @Column(name = "vuel_id", nullable = false)
+    private Integer vuelId;
+    @Column(name = "estado", nullable = false)
+    private String estado;
 
-    @ManyToOne
-    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
-    private Avion avion;
-
-    @ManyToOne
-    @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id")
-    private Aeropuerto aeropuertoOrigen;
-    @ManyToOne
-    @JoinColumn(name = "aero_id_destino", referencedColumnName = "aero_id")
-    private Aeropuerto aeropuerto_aeroIdDestino;
-    @Column(length = 30)
-    private String hora_salida;
-
-    @Column(length = 30)
-    private String hora_llegada;
-    @ManyToOne
-    @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id")
-    private Vuelo vuelo_vuelId;
-    @Column(length = 15, nullable = false)
-    private  String estado;
 }

@@ -5,17 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
 @ToString
 public class ReservaDTO {
     private Integer reseId;
-    private Integer vuelo_vuelId;
-    private Integer asiento_asieId;
-    private Integer usuario_usuaId;
-    private float precioTotal;
+    private Integer vuelId;
+    private Integer asieId;
+    private Integer usuaId;
+    private Integer precioTotal;
     private String estadoPago;
-    private String fecha;
-    private  String estado;
+    private Date fecha;
+    private String estado;
+
 }

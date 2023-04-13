@@ -5,14 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
 @ToString
 public class FacturaDTO {
     private Integer factId;
-    private Integer reserva_reseId;
-    private String fecha;
+    private Integer reseId;
+    private Date fecha;
     private String estado;
+
 
 }

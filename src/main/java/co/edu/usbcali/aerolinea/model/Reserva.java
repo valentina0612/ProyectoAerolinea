@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,25 +15,32 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name= "reserva")
 public class Reserva {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rese_id", nullable = false)
     private Integer reseId;
-    @ManyToOne
-    @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id")
-    private Vuelo vuelo;
-    @ManyToOne
-    @JoinColumn(name = "asie_id", referencedColumnName = "asie_id")
-    private Asiento asiento;
-    @ManyToOne
-    @JoinColumn(name = "usua_id", referencedColumnName = "usua_id")
-    private Usuario usuario;
-    @Column(length = 15, nullable = false)
-    private float precioTotal;
-    @Column(length = 15, nullable = false)
+
+    @Column(name = "vuel_id", nullable = false)
+    private Integer vuelId;
+
+    @Column(name = "asie_id", nullable = false)
+    private Integer asieId;
+
+    @Column(name = "usua_id", nullable = false)
+    private Integer usuaId;
+
+    @Column(name = "precioTotal", nullable = false)
+    private Integer  precioTotal;
+
+    @Column(name = "estadoPago", nullable = false)
     private String estadoPago;
-    @Column(length = 30, nullable = false)
-    private String fecha;
-    @Column(length = 15, nullable = false)
-    private  String estado;
+
+    @Column(name = "fecha", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
+
+    @Column(name = "estado", nullable = false)
+    private String estado;
+
 }

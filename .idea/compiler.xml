@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="aerolinea (2)" />
         <module name="aerolinea (1)" />
+        <module name="ProyectoAerolinea" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +18,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ProyectoAerolinea" options="-parameters" />
       <module name="aerolinea" options="-parameters" />
       <module name="aerolinea (1)" options="-parameters" />
       <module name="aerolinea (2)" options="-parameters" />
