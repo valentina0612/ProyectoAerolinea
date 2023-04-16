@@ -6,9 +6,12 @@ import co.edu.usbcali.aerolinea.model.RolUsuario;
 import co.edu.usbcali.aerolinea.model.Usuario;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import co.edu.usbcali.aerolinea.repository.UsuarioRepository;
+import co.edu.usbcali.aerolinea.utility.ConstantesUtility;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -17,7 +20,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final RolUsuarioRepository rolUsuarioRepository;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolUsuarioRepository rolUsuarioRepository) {
-
         this.usuarioRepository = usuarioRepository;
         this.rolUsuarioRepository = rolUsuarioRepository;
     }
@@ -57,5 +59,66 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<UsuarioDTO> obtenerUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         return UsuarioMapper.modelToDtoList(usuarios);
+    }
+
+    @Override
+    public UsuarioDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !usuarioRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return UsuarioMapper.modelToDto(usuarioRepository.getReferenceById(id));
+    }
+
+    private void validarClienteDTO(UsuarioDTO usuarioDTO, boolean esCreacion) throws Exception {
+        if (usuarioDTO == null) throw new Exception("No han llegado los datos del cliente.");
+
+        if (usuarioDTO.getUsuaId() == null) throw new Exception("El id del cliente es obligatorio.");
+
+        if (StringUtils.isBlank(usuarioDTO.getCorreo()) ||
+                !Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, usuarioDTO.getCorreo())) {
+            throw new Exception("El correo electrónico no es válido.");
+        }
+
+        if (esCreacion) {
+            if(usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
+                throw new Exception("El cliente con Id " +
+                        usuarioDTO.getUsuaId() + " ya se encuentra registrado.");
+            }
+
+        }
+        if (esCreacion) {
+            if(usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
+                throw new Exception("El cliente con Id " +
+                        usuarioDTO.getUsuaId() + " ya se encuentra registrado.");
+            }
+            if (usuarioRepository.existsClienteByMail(usuarioDTO.getCorreo())) {
+                throw new Exception("El correo electrónico " + usuarioDTO.getCorreo() + " ya está registrado para otro cliente.");
+            }
+        }
+        if (!esCreacion) {
+            if (!usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        usuarioDTO.getUsuaId() + ".");
+            }
+            if (usuarioRepository.existsClienteByMailAndIdIsNot(usuarioDTO.getCorreo(), usuarioDTO.getUsuaId())) {
+                throw new Exception("El correo electrónico " + usuarioDTO.getCorreo() + " ya está registrado para otro cliente.");
+            }
+        }
+
+        if (usuarioDTO.getRolUsuario_rousid() == null || usuarioDTO.getRolUsuario_rousid() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        // Validar si el tipo de documento consultado no existe
+        if (!usuarioRepository.existsById(usuarioDTO.getRolUsuario_rousid())) {
+            throw new Exception("El tipo de documento " + usuarioDTO.getRolUsuario_rousid()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (StringUtils.isBlank(usuarioDTO.getNombre())) throw new Exception("El nombre del cliente es obligatorio.");
+
+        if (StringUtils.isBlank(usuarioDTO.getApellido())) throw new Exception("El apellido del cliente es obligatorio.");
+
+
     }
 }

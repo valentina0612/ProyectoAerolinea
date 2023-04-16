@@ -23,7 +23,8 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "rous_id", referencedColumnName = "rous_id")
     private RolUsuario rolUsuario;
-
+    @Column(length = 30, nullable = false)
+    private String descripcion;
     @Column(length = 12, nullable = false)
     private String cedula;
     @Column(length = 30, nullable = false)

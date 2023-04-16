@@ -1,15 +1,20 @@
 
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
 import co.edu.usbcali.aerolinea.dtos.VueloDTO;
+import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
 import co.edu.usbcali.aerolinea.mapper.VueloMapper;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.Vuelo;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import co.edu.usbcali.aerolinea.repository.VueloRepository;
+import co.edu.usbcali.aerolinea.utility.ConstantesUtility;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class VuelosServiceImpl implements VuelosService{
@@ -56,6 +61,61 @@ public class VuelosServiceImpl implements VuelosService{
     public List<VueloDTO> obtenerVuelos() {
         List<Vuelo> vuelos= vueloRepository.findAll();
         return VueloMapper.modelToDtoList(vuelos);
+    }
+
+    @Override
+    public VueloDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !vueloRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return VueloMapper.modelToDto(vueloRepository.getReferenceById(id));
+    }
+
+    private void validarClienteDTO(VueloDTO vueloDTO, boolean esCreacion) throws Exception {
+        if (vueloDTO == null) throw new Exception("No han llegado los datos del cliente.");
+
+        if (vueloDTO.getVueloId() == null) throw new Exception("El id del cliente es obligatorio.");
+
+        if (esCreacion) {
+            if(vueloRepository.existsById(vueloDTO.getVueloId())) {
+                throw new Exception("El cliente con Id " +
+                        vueloDTO.getVueloId() + " ya se encuentra registrado.");
+            }
+
+        }
+        if (esCreacion) {
+            if(vueloRepository.existsById(vueloDTO.getVueloId())) {
+                throw new Exception("El cliente con Id " +
+                        vueloDTO.getVueloId() + " ya se encuentra registrado.");
+            }
+        }
+        if (!esCreacion) {
+            if (!vueloRepository.existsById(vueloDTO.getVueloId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        vueloDTO.getVueloId() + ".");
+            }
+        }
+
+        if (vueloDTO.getAeropuerto_aeroIdDestino() == null || vueloDTO.getAeropuerto_aeroIdDestino() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (vueloDTO.getAeropuerto_aeroIdOrigen() == null || vueloDTO.getAeropuerto_aeroIdOrigen() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        // Validar si el tipo de documento consultado no existe
+        if (!vueloRepository.existsById(vueloDTO.getAeropuerto_aeroIdDestino())) {
+            throw new Exception("El tipo de documento " + vueloDTO.getAeropuerto_aeroIdDestino()
+                    + " no se encuentra en base de datos");
+        }
+
+        // Validar si el tipo de documento consultado no existe
+        if (!vueloRepository.existsById(vueloDTO.getAeropuerto_aeroIdOrigen())) {
+            throw new Exception("El tipo de documento " + vueloDTO.getAeropuerto_aeroIdOrigen()
+                    + " no se encuentra en base de datos");
+        }
+
     }
 }
 

@@ -1,7 +1,9 @@
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
+import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.mapper.RolUsuarioMapper;
+import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
 import co.edu.usbcali.aerolinea.model.RolUsuario;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -44,5 +46,12 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         return RolUsuarioMapper.modelToDtoList(rolesUsuario);
     }
 
+    @Override
+    public RolUsuarioDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !rolUsuarioRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return RolUsuarioMapper.modelToDto(rolUsuarioRepository.getReferenceById(id));
+    }
 }
 

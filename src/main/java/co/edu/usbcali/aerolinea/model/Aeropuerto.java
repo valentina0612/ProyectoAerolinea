@@ -28,5 +28,5 @@ public class Aeropuerto {
     private String ubicacion;
 
     @Column(length = 1, nullable = false)
-    private char estado;
+    private String estado;
 }

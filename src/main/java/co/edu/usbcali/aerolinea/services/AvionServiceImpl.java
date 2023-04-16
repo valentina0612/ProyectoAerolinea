@@ -1,7 +1,9 @@
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.AvionDTO;
+import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.mapper.AvionMapper;
+import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.repository.AvionRepository;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,14 @@ public class AvionServiceImpl implements AvionService{
     public List<AvionDTO> obtenerAviones(){
         List<Avion> aviones = avionRepository.findAll();
         return AvionMapper.modelToDtoList(aviones);
+    }
+
+    @Override
+    public AvionDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !avionRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return AvionMapper.modelToDto(avionRepository.getReferenceById(id));
     }
 }
 

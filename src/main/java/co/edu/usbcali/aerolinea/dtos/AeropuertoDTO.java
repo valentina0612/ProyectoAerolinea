@@ -13,5 +13,5 @@ public class AeropuertoDTO {
     private String nombre;
     private String iata;
     private String ubicacion;
-    private char estado;
+    private String estado;
 }

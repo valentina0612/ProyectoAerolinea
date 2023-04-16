@@ -1,20 +1,25 @@
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
+import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.AsientoMapper;
 import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.TipoAsiento;
 import co.edu.usbcali.aerolinea.repository.*;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class AsientoServiceImpl implements AsientoService{
     private final AsientoRepository asientoRepository;
     private final TipoAsientoRepository tipoAsientoRepository;
     private final AvionRepository avionRepository;
+
 
     public AsientoServiceImpl(AsientoRepository asientoRepository, TipoAsientoRepository tipoAsientoRepository, AvionRepository avionRepository) {
         this.asientoRepository = asientoRepository;
@@ -61,5 +66,52 @@ public class AsientoServiceImpl implements AsientoService{
     public List<AsientoDTO> obtenerAsientos() {
         List<Asiento> asientos = asientoRepository.findAll();
         return AsientoMapper.modelToDtoList(asientos);
+    }
+    @Override
+    public AsientoDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !asientoRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return AsientoMapper.modelToDto(asientoRepository.getReferenceById(id));
+    }
+
+    private void validarClienteDTO(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
+        if (asientoDTO == null) throw new Exception("No han llegado los datos del cliente.");
+
+        if (asientoDTO.getAsieId() == null) throw new Exception("El id del cliente es obligatorio.");
+
+        if (esCreacion) {
+            if(asientoRepository.existsById(asientoDTO.getAsieId())) {
+                throw new Exception("El cliente con Id " +
+                        asientoDTO.getAsieId() + " ya se encuentra registrado.");
+            }
+
+        }
+        if (!esCreacion) {
+            if (!asientoRepository.existsById(asientoDTO.getAsieId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        asientoDTO.getAsieId() + ".");
+            }
+        }
+
+        if (asientoDTO.getTipoAsiento_tiasId() == null || asientoDTO.getTipoAsiento_tiasId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (asientoDTO.getAvion_avioId() == null || asientoDTO.getAvion_avioId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+
+        // Validar si el tipo de documento consultado no existe
+        if (!asientoRepository.existsById(asientoDTO.getTipoAsiento_tiasId())) {
+            throw new Exception("El tipo de documento " + asientoDTO.getTipoAsiento_tiasId()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!asientoRepository.existsById(asientoDTO.getAvion_avioId())) {
+            throw new Exception("El tipo de documento " + asientoDTO.getAvion_avioId()
+                    + " no se encuentra en base de datos");
+        }
     }
 }

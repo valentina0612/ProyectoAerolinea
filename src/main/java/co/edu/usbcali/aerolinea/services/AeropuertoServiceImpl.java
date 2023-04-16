@@ -1,7 +1,9 @@
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
+import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
+import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import org.springframework.stereotype.Service;
@@ -42,4 +44,13 @@ public class AeropuertoServiceImpl implements AeropuertoService{
         List<Aeropuerto> aeropuertos = aeropuertoRepository.findAll();
         return AeropuertoMapper.modelToDtoList(aeropuertos);
     }
+
+    @Override
+    public AeropuertoDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !aeropuertoRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+        }
+        return AeropuertoMapper.modelToDto(aeropuertoRepository.getReferenceById(id));
+    }
+
 }

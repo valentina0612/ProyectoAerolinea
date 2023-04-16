@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
+    boolean existsClienteByMail(String mail);
+
+    boolean existsClienteByMailAndIdIsNot(String mail, Integer id);
 }
