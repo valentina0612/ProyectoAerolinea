@@ -19,7 +19,7 @@ public class FacturaController {
 
     @GetMapping("/obtenerFactura")
     public ResponseEntity<List<FacturaDTO>> obtenerFactura(){
-        return new ResponseEntity(facturaService.obtenerFactura(), HttpStatus.OK);
+        return new ResponseEntity(facturaService.obtenerFacturas(), HttpStatus.OK);
     }
     @PostMapping(path = "/guardarFactura",
             consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ReservaService {
     ReservaDTO guardarReserva(ReservaDTO reservaDTO) throws Exception;
-    List<ReservaDTO> obtenerReserva();
+    List<ReservaDTO> obtenerReservas();
 }

@@ -20,18 +20,23 @@ public class Trayecto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tray_id", nullable = false)
     private Integer trayId;
-    @Column(name = "avio_id", nullable = false)
-    private Integer avioId;
-    @Column(name = "aereo_id_origen", nullable = false)
-    private Integer aereoIdOrigen;
-    @Column(name = "aereo_id_destin", nullable = false)
-    private Integer aereoIdDestin;
+
+    @ManyToOne
+    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
+    private Avion avion;
+    @ManyToOne
+    @JoinColumn(name = "aereo_id_origen", referencedColumnName = "aero_id")
+    private Aeropuerto aeropuerto;
+    @ManyToOne
+    @JoinColumn(name = "aereo_id_destino",referencedColumnName = "aero_id" )
+    private Aeropuerto aeropuerto2;
     @Column(name = "hora_salida", nullable = false)
     private Time horaSalida;
     @Column(name = "hora_llegada", nullable = false)
     private Time horaLlegada;
-    @Column(name = "vuel_id", nullable = false)
-    private Integer vuelId;
+    @ManyToOne
+    @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id" )
+    private Vuelo vuelo;
     @Column(name = "estado", nullable = false)
     private String estado;
 

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TrayectoService {
     TrayectoDTO guardarTrayecto(TrayectoDTO trayectoDTO) throws Exception;
-    List<TrayectoDTO> obtenerTrayecto();
+    List<TrayectoDTO> obtenerTrayectos();
 }

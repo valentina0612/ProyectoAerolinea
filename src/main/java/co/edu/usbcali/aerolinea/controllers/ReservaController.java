@@ -21,7 +21,7 @@ public class ReservaController {
 
     @GetMapping("/obtenerReserva")
     public ResponseEntity<List<ReservaDTO>> obtenerReserva(){
-        return new ResponseEntity(reservaService.obtenerReserva(), HttpStatus.OK);
+        return new ResponseEntity(reservaService.obtenerReservas(), HttpStatus.OK);
     }
     @PostMapping(path = "/guardarReserva",
             consumes = MediaType.APPLICATION_JSON_VALUE,

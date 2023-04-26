@@ -21,8 +21,9 @@ public class Factura {
     @Column(name = "fact_id", nullable = false)
     private Integer factId;
 
-    @Column(name = "rese_id", nullable = false)
-    private Integer reseId;
+    @ManyToOne
+    @JoinColumn(name = "rese_id", referencedColumnName = "rese_id")
+    private Reserva reserva;
 
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)

@@ -21,14 +21,17 @@ public class Reserva {
     @Column(name = "rese_id", nullable = false)
     private Integer reseId;
 
-    @Column(name = "vuel_id", nullable = false)
-    private Integer vuelId;
+    @ManyToOne
+    @JoinColumn(name = "vuel_id",referencedColumnName = "vuel_id" )
+    private Vuelo vuelo;
 
-    @Column(name = "asie_id", nullable = false)
-    private Integer asieId;
+    @ManyToOne
+    @JoinColumn(name = "asie_id", referencedColumnName = "asi_id")
+    private Asiento asiento;
 
-    @Column(name = "usua_id", nullable = false)
-    private Integer usuaId;
+    @ManyToOne
+    @JoinColumn(name = "usua_id", referencedColumnName = "usua_id")
+    private Usuario usuario;
 
     @Column(name = "precioTotal", nullable = false)
     private Integer  precioTotal;

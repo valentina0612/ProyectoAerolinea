@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FacturaService {
     FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception;
-    List<FacturaDTO> obtenerFactura();
+    List<FacturaDTO> obtenerFacturas();
 }

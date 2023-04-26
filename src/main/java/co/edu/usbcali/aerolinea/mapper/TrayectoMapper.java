@@ -10,12 +10,16 @@ public class TrayectoMapper {
     public static TrayectoDTO modelToDto(Trayecto trayecto){
         return TrayectoDTO.builder()
                 .trayId(trayecto.getTrayId())
-                .avioId(trayecto.getAvioId())
-                .aereoIdOrigen(trayecto.getAereoIdOrigen())
-                .aereoIdDestin(trayecto.getAereoIdDestin())
+                .avioId(trayecto.getAvion()!= null?
+                        trayecto.getAvion().getAvioID():null)
+                .aereoIdOrigen(trayecto.getAeropuerto() != null?
+                               trayecto.getAeropuerto().getAeroId():null)
+                .aereoIdDestino((trayecto.getAeropuerto2()!=null?
+                                 trayecto.getAeropuerto2().getAeroId():null))
                 .horaSalida(trayecto.getHoraSalida())
                 .horaLlegada(trayecto.getHoraLlegada())
-                .vuelId(trayecto.getVuelId())
+                .vuelId(trayecto.getVuelo()!=null?
+                        trayecto.getVuelo().getVueloId():null)
                 .estado(trayecto.getEstado())
                 .build();
 
@@ -23,12 +27,8 @@ public class TrayectoMapper {
     public static Trayecto dtoToModel (TrayectoDTO trayectoDTO){
         return Trayecto.builder()
                 .trayId(trayectoDTO.getTrayId())
-                .avioId(trayectoDTO.getAvioId())
-                .aereoIdOrigen(trayectoDTO.getAereoIdOrigen())
-                .aereoIdDestin(trayectoDTO.getAereoIdDestin())
                 .horaSalida(trayectoDTO.getHoraSalida())
                 .horaLlegada(trayectoDTO.getHoraLlegada())
-                .vuelId(trayectoDTO.getVuelId())
                 .estado(trayectoDTO.getEstado())
                 .build();
     }

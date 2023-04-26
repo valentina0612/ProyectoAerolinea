@@ -64,7 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !usuarioRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
         }
         return UsuarioMapper.modelToDto(usuarioRepository.getReferenceById(id));
     }

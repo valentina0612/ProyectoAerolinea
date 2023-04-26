@@ -12,7 +12,8 @@ public class FacturaMapper {
     public static FacturaDTO modelToDto(Factura factura){
         return FacturaDTO.builder()
                 .factId(factura.getFactId())
-                .reseId(factura.getReseId())
+                .reseId(factura.getReserva()!= null?
+                        factura.getReserva().getReseId():null)
                 .fecha(factura.getFecha())
                 .estado(factura.getEstado())
                 .build();
@@ -21,13 +22,12 @@ public class FacturaMapper {
     public static Factura dtoToModel (FacturaDTO facturaDTO){
         return Factura.builder()
                 .factId(facturaDTO.getFactId())
-                .reseId(facturaDTO.getReseId())
                 .fecha(facturaDTO.getFecha())
                 .build();
     }
 
-    public static List<FacturaDTO> modelToDtoList(List<Factura> factura){
-        return factura.stream().map(td -> modelToDto(td)).collect(Collectors.toList());
+    public static List<FacturaDTO> modelToDtoList(List<Factura> facturas){
+        return facturas.stream().map(td -> modelToDto(td)).collect(Collectors.toList());
     }
 
     public static List<Factura> dtoToModelList(List<FacturaDTO> facturaDTOS){

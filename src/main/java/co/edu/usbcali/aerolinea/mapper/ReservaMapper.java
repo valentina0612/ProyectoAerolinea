@@ -9,9 +9,12 @@ public class ReservaMapper {
     public static ReservaDTO modelToDto(Reserva reserva){
         return ReservaDTO.builder()
                 .reseId(reserva.getReseId())
-                .vuelId(reserva.getVuelId())
-                .asieId(reserva.getAsieId())
-                .usuaId(reserva.getUsuaId())
+                .vuelId(reserva.getVuelo()!= null?
+                        reserva.getVuelo().getVueloId():null)
+                .asieId(reserva.getAsiento()!= null?
+                        reserva.getAsiento().getAsieId():null)
+                .usuaId(reserva.getUsuario()!= null?
+                        reserva.getUsuario().getUsuaId():null)
                 .precioTotal(reserva.getPrecioTotal())
                 .estadoPago(reserva.getEstadoPago())
                 .fecha(reserva.getFecha())
@@ -22,9 +25,6 @@ public class ReservaMapper {
     public static Reserva dtoToModel (ReservaDTO reservaDTO){
         return Reserva.builder()
                 .reseId(reservaDTO.getReseId())
-                .vuelId(reservaDTO.getVuelId())
-                .asieId(reservaDTO.getAsieId())
-                .usuaId(reservaDTO.getUsuaId())
                 .precioTotal(reservaDTO.getPrecioTotal())
                 .estadoPago(reservaDTO.getEstadoPago())
                 .fecha(reservaDTO.getFecha())

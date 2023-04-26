@@ -20,7 +20,7 @@ public class TrayectoController {
     }
     @GetMapping("/obtenerTrayecto")
     public ResponseEntity<List<TrayectoDTO>> obtenerTrayecto(){
-        return new ResponseEntity(trayectoService.obtenerTrayecto(), HttpStatus.OK);
+        return new ResponseEntity(trayectoService.obtenerTrayectos(), HttpStatus.OK);
     }
     @PostMapping(path = "/guardarTrayecto",
             consumes = MediaType.APPLICATION_JSON_VALUE,
