@@ -92,65 +92,65 @@ public class TrayectoServiceImpl implements TrayectoService{
     @Override
     public TrayectoDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !trayectoRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
+            throw new Exception("No se ha encontrado el trayecto con Id " + id + ".");
         }
         return TrayectoMapper.modelToDto(trayectoRepository.getReferenceById(id));
     }
 
     private void validarClienteDTO(TrayectoDTO trayectoDTO, boolean esCreacion) throws Exception {
-        if (trayectoDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        if (trayectoDTO == null) throw new Exception("No han llegado los datos del trayecto.");
 
-        if (trayectoDTO.getTrayId() == null) throw new Exception("El id del cliente es obligatorio.");
+        if (trayectoDTO.getTrayId() == null) throw new Exception("El id del trayecto es obligatorio.");
 
         if (esCreacion) {
             if(trayectoRepository.existsById(trayectoDTO.getTrayId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("El trayecto con Id " +
                         trayectoDTO.getTrayId() + " ya se encuentra registrado.");
             }
 
         }
         if (!esCreacion) {
             if (!trayectoRepository.existsById(trayectoDTO.getTrayId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado el trayecto con Id " +
                         trayectoDTO.getTrayId() + ".");
             }
         }
 
         if (trayectoDTO.getAereoIdOrigen() == null || trayectoDTO.getAereoIdOrigen() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del origen del vuelo debe ser un número positivo.");
         }
 
         if (trayectoDTO.getAereoIdDestino() == null || trayectoDTO.getAereoIdDestino() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del destino del vuelo debe ser un número positivo.");
         }
 
         if (trayectoDTO.getAvioId() == null || trayectoDTO.getAvioId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del avion debe ser un número positivo.");
         }
 
         if (trayectoDTO.getVuelId() == null || trayectoDTO.getVuelId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del vuelo debe ser un número positivo.");
         }
 
 
         // Validar si el tipo de documento consultado no existe
         if (!trayectoRepository.existsById(trayectoDTO.getAereoIdOrigen())) {
-            throw new Exception("El tipo de documento " + trayectoDTO.getAereoIdOrigen()
+            throw new Exception("El ID del origen del vuelo " + trayectoDTO.getAereoIdOrigen()
                     + " no se encuentra en base de datos");
         }
 
         if (!trayectoRepository.existsById(trayectoDTO.getAereoIdDestino())) {
-            throw new Exception("El tipo de documento " + trayectoDTO.getAereoIdDestino()
+            throw new Exception("El ID del destino del vuelo " + trayectoDTO.getAereoIdDestino()
                     + " no se encuentra en base de datos");
         }
 
         if (!trayectoRepository.existsById(trayectoDTO.getAvioId())) {
-            throw new Exception("El tipo de documento " + trayectoDTO.getAvioId()
+            throw new Exception("El ID del avion " + trayectoDTO.getAvioId()
                     + " no se encuentra en base de datos");
         }
 
         if (!trayectoRepository.existsById(trayectoDTO.getVuelId())) {
-            throw new Exception("El tipo de documento " + trayectoDTO.getVuelId()
+            throw new Exception("El ID del vuelo" + trayectoDTO.getVuelId()
                     + " no se encuentra en base de datos");
         }
 

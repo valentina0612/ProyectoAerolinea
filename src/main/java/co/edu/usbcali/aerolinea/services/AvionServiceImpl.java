@@ -48,7 +48,7 @@ public class AvionServiceImpl implements AvionService{
     @Override
     public AvionDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !avionRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el avión con Id " + id + ".");
         }
         return AvionMapper.modelToDto(avionRepository.getReferenceById(id));
     }

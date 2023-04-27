@@ -1,5 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
 import co.edu.usbcali.aerolinea.services.TrayectoService;
@@ -32,5 +33,13 @@ public class TrayectoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<TrayectoDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try {
+            return new ResponseEntity(trayectoService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

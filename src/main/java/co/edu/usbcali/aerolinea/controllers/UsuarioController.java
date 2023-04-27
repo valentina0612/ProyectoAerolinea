@@ -1,5 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
@@ -33,6 +34,14 @@ public class UsuarioController {
         try {
             return new ResponseEntity(usuarioService.guardarUsuario(usuarioDTO), HttpStatus.OK);
         }catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try {
+            return new ResponseEntity(usuarioService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }

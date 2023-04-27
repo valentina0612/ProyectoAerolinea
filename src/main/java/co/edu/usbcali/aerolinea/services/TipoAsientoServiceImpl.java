@@ -46,7 +46,7 @@ public class TipoAsientoServiceImpl implements TipoAsientoService{
     @Override
     public TipoAsientoDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !tipoAsientoRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el tipo asiento con Id " + id + ".");
         }
         return TipoAsientoMapper.modelToDto(tipoAsientoRepository.getReferenceById(id));
     }

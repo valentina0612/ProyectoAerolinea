@@ -1,5 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.dtos.ReservaDTO;
 import co.edu.usbcali.aerolinea.services.ReservaService;
@@ -33,5 +34,13 @@ public class ReservaController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ReservaDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try {
+            return new ResponseEntity(reservaService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

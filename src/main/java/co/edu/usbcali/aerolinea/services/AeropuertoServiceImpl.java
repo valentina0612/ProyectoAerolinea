@@ -49,7 +49,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
     @Override
     public AeropuertoDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !aeropuertoRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el aeropuerto con Id " + id + ".");
         }
         return AeropuertoMapper.modelToDto(aeropuertoRepository.getReferenceById(id));
     }

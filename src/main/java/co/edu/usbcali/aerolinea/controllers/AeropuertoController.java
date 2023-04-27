@@ -36,4 +36,12 @@ public class AeropuertoController {
         }
 
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<AeropuertoDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+    try{
+        return new ResponseEntity(aeropuertoService.buscarPorId(id), HttpStatus.OK);
+    } catch (Exception e){
+        return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+    }
+    }
 }

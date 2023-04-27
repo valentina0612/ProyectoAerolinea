@@ -30,23 +30,23 @@ public class VuelosServiceImpl implements VuelosService{
     @Override
     public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
         if (vueloDTO == null){
-            throw new Exception("El usuario viene con datos nulos");
+            throw new Exception("El vuelo viene con datos nulos");
         }
         if (vueloDTO.getVueloId() == null){
-            throw new Exception("El ID no puede ser nulo");
+            throw new Exception("El ID del vuelo no puede ser nulo");
         }
         if (vueloDTO.getAeropuerto_aeroIdOrigen()<=0){
-            throw new Exception("id no válido");
+            throw new Exception("id del origen del vuelo no válido");
         }
         if(vueloDTO.getAeropuerto_aeroIdDestino() <= 0){
-            throw new Exception("id no válido");
+            throw new Exception("id del destino del vuelo no válido");
         }
         if (vueloDTO.getPrecio() <= 0 || vueloDTO.getPrecioAsientoVip() <= 0 || vueloDTO.getPrecioAsientoNormal() <= 0 || vueloDTO.getPrecioAsientoBasico() <= 0){
-            throw new Exception("precio no válido");
+            throw new Exception("precio del asiento no válido");
         }
 
         if(vueloRepository.findById(vueloDTO.getVueloId()).isPresent()){
-            throw new Exception("El ID no puede repetirse");
+            throw new Exception("El ID del vuelo no puede repetirse");
         }
         Aeropuerto aeropuertoOrigen = aeropuertoRepository.getReferenceById(vueloDTO.getAeropuerto_aeroIdOrigen());
         Aeropuerto aeropuertoDestino = aeropuertoRepository.getReferenceById(vueloDTO.getAeropuerto_aeroIdDestino());
@@ -66,53 +66,53 @@ public class VuelosServiceImpl implements VuelosService{
     @Override
     public VueloDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !vueloRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el vuelo con Id " + id + ".");
         }
         return VueloMapper.modelToDto(vueloRepository.getReferenceById(id));
     }
 
     private void validarClienteDTO(VueloDTO vueloDTO, boolean esCreacion) throws Exception {
-        if (vueloDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        if (vueloDTO == null) throw new Exception("No han llegado los datos del vuelo.");
 
-        if (vueloDTO.getVueloId() == null) throw new Exception("El id del cliente es obligatorio.");
+        if (vueloDTO.getVueloId() == null) throw new Exception("El id del vuelo es obligatorio.");
 
         if (esCreacion) {
             if(vueloRepository.existsById(vueloDTO.getVueloId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("El vuelo con Id " +
                         vueloDTO.getVueloId() + " ya se encuentra registrado.");
             }
 
         }
         if (esCreacion) {
             if(vueloRepository.existsById(vueloDTO.getVueloId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("El vuelo con Id " +
                         vueloDTO.getVueloId() + " ya se encuentra registrado.");
             }
         }
         if (!esCreacion) {
             if (!vueloRepository.existsById(vueloDTO.getVueloId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado el vuelo con Id " +
                         vueloDTO.getVueloId() + ".");
             }
         }
 
         if (vueloDTO.getAeropuerto_aeroIdDestino() == null || vueloDTO.getAeropuerto_aeroIdDestino() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del destino del vuelo debe ser un número positivo.");
         }
 
         if (vueloDTO.getAeropuerto_aeroIdOrigen() == null || vueloDTO.getAeropuerto_aeroIdOrigen() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del origen del vuelo debe ser un número positivo.");
         }
 
         // Validar si el tipo de documento consultado no existe
         if (!vueloRepository.existsById(vueloDTO.getAeropuerto_aeroIdDestino())) {
-            throw new Exception("El tipo de documento " + vueloDTO.getAeropuerto_aeroIdDestino()
+            throw new Exception("El ID del destino del vuelo " + vueloDTO.getAeropuerto_aeroIdDestino()
                     + " no se encuentra en base de datos");
         }
 
         // Validar si el tipo de documento consultado no existe
         if (!vueloRepository.existsById(vueloDTO.getAeropuerto_aeroIdOrigen())) {
-            throw new Exception("El tipo de documento " + vueloDTO.getAeropuerto_aeroIdOrigen()
+            throw new Exception("El ID del origen del vuelo " + vueloDTO.getAeropuerto_aeroIdOrigen()
                     + " no se encuentra en base de datos");
         }
 

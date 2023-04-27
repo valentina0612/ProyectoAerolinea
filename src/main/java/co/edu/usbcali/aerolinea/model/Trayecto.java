@@ -25,10 +25,10 @@ public class Trayecto {
     @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
     private Avion avion;
     @ManyToOne
-    @JoinColumn(name = "aereo_id_origen", referencedColumnName = "aero_id")
+    @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id")
     private Aeropuerto aeropuerto;
     @ManyToOne
-    @JoinColumn(name = "aereo_id_destino",referencedColumnName = "aero_id" )
+    @JoinColumn(name = "aero_id_destino",referencedColumnName = "aero_id" )
     private Aeropuerto aeropuerto2;
     @Column(name = "hora_salida", nullable = false)
     private String horaSalida;

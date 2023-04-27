@@ -42,9 +42,9 @@ public class FacturaServiceImpl implements FacturaService {
         if(facturaRepository.findById(facturaDTO.getFactId()).isPresent()) {
             throw new Exception("El ID no puede repetirse");
         }
-        Reserva reserva= reservaRepository.getReferenceById(facturaDTO.getFactId());
+        //Reserva reserva= reservaRepository.getReferenceById(facturaDTO.getFactId());
         Factura factura = FacturaMapper.dtoToModel(facturaDTO);
-        factura.setReserva(reserva);
+        //factura.setReserva(reserva);
         return FacturaMapper.modelToDto(facturaRepository.save(factura));
 
     }
@@ -60,45 +60,45 @@ public class FacturaServiceImpl implements FacturaService {
     @Override
     public FacturaDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !facturaRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
+            throw new Exception("No se ha encontrado la factura con Id " + id + ".");
         }
         return FacturaMapper.modelToDto(facturaRepository.getReferenceById(id));
     }
 
     private void validarClienteDTO(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
-        if (facturaDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
-        if (facturaDTO.getFactId() == null) throw new Exception("El id del cliente es obligatorio.");
+        if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
 
         if (esCreacion) {
             if(facturaRepository.existsById(facturaDTO.getFactId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("La factura con Id " +
                         facturaDTO.getFactId() + " ya se encuentra registrado.");
             }
         }
 
         if (esCreacion) {
             if(facturaRepository.existsById(facturaDTO.getFactId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("La factura con Id " +
                         facturaDTO.getFactId() + " ya se encuentra registrado.");
             }
         }
 
         if (!esCreacion) {
             if (!facturaRepository.existsById(facturaDTO.getFactId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado la factura con Id " +
                         facturaDTO.getFactId() + ".");
             }
 
         }
 
         if (facturaDTO.getReseId() == null || facturaDTO.getReseId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID de la reserva debe ser un número positivo.");
         }
 
         // Validar si el tipo de documento consultado no existe
         if (!facturaRepository.existsById(facturaDTO.getReseId())) {
-            throw new Exception("El tipo de documento " + facturaDTO.getReseId()
+            throw new Exception("El ID de la reserva " + facturaDTO.getReseId()
                     + " no se encuentra en base de datos");
         }
     }

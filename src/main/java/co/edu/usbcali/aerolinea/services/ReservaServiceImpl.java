@@ -78,55 +78,55 @@ public class ReservaServiceImpl implements ReservaService {
     @Override
     public ReservaDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !reservaRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
+            throw new Exception("No se ha encontrado la reserva con Id " + id + ".");
         }
         return ReservaMapper.modelToDto(reservaRepository.getReferenceById(id));
     }
 
     private void validarClienteDTO(ReservaDTO reservaDTO, boolean esCreacion) throws Exception {
-        if (reservaDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        if (reservaDTO == null) throw new Exception("No han llegado los datos de la reserva");
 
-        if (reservaDTO.getReseId() == null) throw new Exception("El id del cliente es obligatorio.");
+        if (reservaDTO.getReseId() == null) throw new Exception("El ID de la reserva es obligatorio.");
 
         if (esCreacion) {
             if(reservaRepository.existsById(reservaDTO.getReseId())) {
-                throw new Exception("El cliente con Id " +
-                        reservaDTO.getReseId() + " ya se encuentra registrado.");
+                throw new Exception("La reserva con Id " +
+                        reservaDTO.getReseId() + " ya se encuentra registrada.");
             }
 
         }
         if (!esCreacion) {
             if (!reservaRepository.existsById(reservaDTO.getReseId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado la reserva con Id " +
                         reservaDTO.getReseId() + ".");
             }
         }
 
         if (reservaDTO.getVuelId() == null || reservaDTO.getVuelId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del vuelo debe ser un número positivo.");
         }
 
         if (reservaDTO.getUsuaId() == null || reservaDTO.getUsuaId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del usuario debe ser un número positivo.");
         }
         if (reservaDTO.getAsieId() == null || reservaDTO.getAsieId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del asiento debe ser un número positivo.");
         }
 
 
         // Validar si el tipo de documento consultado no existe
         if (!reservaRepository.existsById(reservaDTO.getVuelId())) {
-            throw new Exception("El tipo de documento " + reservaDTO.getVuelId()
+            throw new Exception("El ID del vuelo " + reservaDTO.getVuelId()
                     + " no se encuentra en base de datos");
         }
 
         if (!reservaRepository.existsById(reservaDTO.getAsieId())) {
-            throw new Exception("El tipo de documento " + reservaDTO.getAsieId()
+            throw new Exception("El ID del asiento " + reservaDTO.getAsieId()
                     + " no se encuentra en base de datos");
         }
 
         if (!reservaRepository.existsById(reservaDTO.getUsuaId())) {
-            throw new Exception("El tipo de documento " + reservaDTO.getUsuaId()
+            throw new Exception("El ID del usuario " + reservaDTO.getUsuaId()
                     + " no se encuentra en base de datos");
         }
     }

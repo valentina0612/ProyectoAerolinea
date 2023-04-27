@@ -1,5 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
 import co.edu.usbcali.aerolinea.services.RolUsuarioService;
@@ -36,6 +37,14 @@ public class RolUsuarioController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<RolUsuarioDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try {
+            return new ResponseEntity(rolUsuarioService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
 

@@ -1,7 +1,9 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
+import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.services.AsientoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,5 +36,13 @@ public class AsientoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<AsientoDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try{
+            return new ResponseEntity(asientoService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

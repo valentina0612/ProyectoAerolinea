@@ -44,7 +44,6 @@ public class FacturaServicelmplTest {
         Usuario usuario = Usuario.builder()
                 .usuaId(1)
                 .rolUsuario(rolUsuario)
-                .descripcion("sdsa")
                 .cedula("121323")
                 .nombre("brayan")
                 .apellido("zamora")
@@ -114,13 +113,13 @@ public class FacturaServicelmplTest {
                 .build();
 
         List<Factura> facturaRetorno = Arrays.asList(Factura.builder()
-                        .factId(1)
+                        .factId(2)
                         .reserva(reserva)
                         .fecha("2020-07-23")
                         .estado("activo")
                         .build(),
                 Factura.builder()
-                        .factId(1)
+                        .factId(3)
                         .reserva(reserva)
                         .fecha("2020-07-23")
                         .estado("activo")
@@ -157,7 +156,6 @@ public class FacturaServicelmplTest {
         Usuario usuario = Usuario.builder()
                 .usuaId(1)
                 .rolUsuario(rolUsuario)
-                .descripcion("sdsa")
                 .cedula("121323")
                 .nombre("brayan")
                 .apellido("zamora")

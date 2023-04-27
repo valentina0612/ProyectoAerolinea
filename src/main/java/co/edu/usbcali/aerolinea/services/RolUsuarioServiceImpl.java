@@ -49,7 +49,7 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
     @Override
     public RolUsuarioDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !rolUsuarioRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el rol usuario con Id " + id + ".");
         }
         return RolUsuarioMapper.modelToDto(rolUsuarioRepository.getReferenceById(id));
     }

@@ -67,50 +67,52 @@ public class AsientoServiceImpl implements AsientoService{
         List<Asiento> asientos = asientoRepository.findAll();
         return AsientoMapper.modelToDtoList(asientos);
     }
+
     @Override
     public AsientoDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !asientoRepository.existsById(id)) {
-            throw new Exception("No se ha encontrado el cliente con Id " + id + ".");
+            throw new Exception("No se ha encontrado el asiento con Id " + id + ".");
         }
         return AsientoMapper.modelToDto(asientoRepository.getReferenceById(id));
     }
 
+    //Este método se usará cuando se implemente el método put
     private void validarClienteDTO(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
-        if (asientoDTO == null) throw new Exception("No han llegado los datos del cliente.");
+        if (asientoDTO == null) throw new Exception("No han llegado los datos del asiento.");
 
-        if (asientoDTO.getAsieId() == null) throw new Exception("El id del cliente es obligatorio.");
+        if (asientoDTO.getAsieId() == null) throw new Exception("El id del asiento es obligatorio.");
 
         if (esCreacion) {
             if(asientoRepository.existsById(asientoDTO.getAsieId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("El asiento con Id " +
                         asientoDTO.getAsieId() + " ya se encuentra registrado.");
             }
 
         }
         if (!esCreacion) {
             if (!asientoRepository.existsById(asientoDTO.getAsieId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado el asiento con Id " +
                         asientoDTO.getAsieId() + ".");
             }
         }
 
         if (asientoDTO.getTipoAsiento_tiasId() == null || asientoDTO.getTipoAsiento_tiasId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del tipo de asiento debe ser un número positivo.");
         }
 
         if (asientoDTO.getAvion_avioId() == null || asientoDTO.getAvion_avioId() <= 0) {
-            throw new Exception("El tipo de documento debe ser un número positivo.");
+            throw new Exception("El ID del avion debe ser un número positivo.");
         }
 
 
         // Validar si el tipo de documento consultado no existe
         if (!asientoRepository.existsById(asientoDTO.getTipoAsiento_tiasId())) {
-            throw new Exception("El tipo de documento " + asientoDTO.getTipoAsiento_tiasId()
+            throw new Exception("El ID de tipo de asiento " + asientoDTO.getTipoAsiento_tiasId()
                     + " no se encuentra en base de datos");
         }
 
         if (!asientoRepository.existsById(asientoDTO.getAvion_avioId())) {
-            throw new Exception("El tipo de documento " + asientoDTO.getAvion_avioId()
+            throw new Exception("El ID del avion " + asientoDTO.getAvion_avioId()
                     + " no se encuentra en base de datos");
         }
     }

@@ -1,5 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AvionDTO;
 import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
 import co.edu.usbcali.aerolinea.services.AvionService;
@@ -21,7 +22,7 @@ public class AvionController {
     }
 
     @GetMapping("/obtenerAviones")
-    public ResponseEntity<List<AvionDTO>> aviones(){
+    public ResponseEntity<List<AvionDTO>> aviones() {
         return new ResponseEntity(avionService.obtenerAviones(), HttpStatus.OK);
     }
 
@@ -31,12 +32,21 @@ public class AvionController {
     public ResponseEntity guardarAvion(@RequestBody AvionDTO avionDTO) {
         try {
             return new ResponseEntity(avionService.guardarAvion(avionDTO), HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AvionDTO> buscarPorId(@PathVariable Integer id) throws Exception {
+        try {
+            return new ResponseEntity(avionService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
+}
 
 
 
