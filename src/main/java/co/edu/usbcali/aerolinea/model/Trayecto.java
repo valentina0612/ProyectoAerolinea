@@ -31,9 +31,9 @@ public class Trayecto {
     @JoinColumn(name = "aereo_id_destino",referencedColumnName = "aero_id" )
     private Aeropuerto aeropuerto2;
     @Column(name = "hora_salida", nullable = false)
-    private Time horaSalida;
+    private String horaSalida;
     @Column(name = "hora_llegada", nullable = false)
-    private Time horaLlegada;
+    private String horaLlegada;
     @ManyToOne
     @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id" )
     private Vuelo vuelo;

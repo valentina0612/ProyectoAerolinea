@@ -8,7 +8,6 @@ public class AerolineaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AerolineaApplication.class, args);
-		System.out.println("prueba");
 	}
 
 

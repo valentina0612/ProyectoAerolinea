@@ -1,7 +1,10 @@
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
+import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
 import co.edu.usbcali.aerolinea.mapper.TrayectoMapper;
+import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.Trayecto;
@@ -10,9 +13,13 @@ import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import co.edu.usbcali.aerolinea.repository.AvionRepository;
 import co.edu.usbcali.aerolinea.repository.TrayectoRepository;
 import co.edu.usbcali.aerolinea.repository.VueloRepository;
+import co.edu.usbcali.aerolinea.utility.ConstantesUtility;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
 @Service
 public class TrayectoServiceImpl implements TrayectoService{
     private final TrayectoRepository trayectoRepository;
@@ -81,4 +88,72 @@ public class TrayectoServiceImpl implements TrayectoService{
         List<Trayecto>trayectos=trayectoRepository.findAll();
         return TrayectoMapper.modelToDtoList(trayectos);
     }
+
+    @Override
+    public TrayectoDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !trayectoRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
+        }
+        return TrayectoMapper.modelToDto(trayectoRepository.getReferenceById(id));
+    }
+
+    private void validarClienteDTO(TrayectoDTO trayectoDTO, boolean esCreacion) throws Exception {
+        if (trayectoDTO == null) throw new Exception("No han llegado los datos del cliente.");
+
+        if (trayectoDTO.getTrayId() == null) throw new Exception("El id del cliente es obligatorio.");
+
+        if (esCreacion) {
+            if(trayectoRepository.existsById(trayectoDTO.getTrayId())) {
+                throw new Exception("El cliente con Id " +
+                        trayectoDTO.getTrayId() + " ya se encuentra registrado.");
+            }
+
+        }
+        if (!esCreacion) {
+            if (!trayectoRepository.existsById(trayectoDTO.getTrayId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        trayectoDTO.getTrayId() + ".");
+            }
+        }
+
+        if (trayectoDTO.getAereoIdOrigen() == null || trayectoDTO.getAereoIdOrigen() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (trayectoDTO.getAereoIdDestino() == null || trayectoDTO.getAereoIdDestino() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (trayectoDTO.getAvioId() == null || trayectoDTO.getAvioId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (trayectoDTO.getVuelId() == null || trayectoDTO.getVuelId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+
+        // Validar si el tipo de documento consultado no existe
+        if (!trayectoRepository.existsById(trayectoDTO.getAereoIdOrigen())) {
+            throw new Exception("El tipo de documento " + trayectoDTO.getAereoIdOrigen()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!trayectoRepository.existsById(trayectoDTO.getAereoIdDestino())) {
+            throw new Exception("El tipo de documento " + trayectoDTO.getAereoIdDestino()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!trayectoRepository.existsById(trayectoDTO.getAvioId())) {
+            throw new Exception("El tipo de documento " + trayectoDTO.getAvioId()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!trayectoRepository.existsById(trayectoDTO.getVuelId())) {
+            throw new Exception("El tipo de documento " + trayectoDTO.getVuelId()
+                    + " no se encuentra en base de datos");
+        }
+
+    }
+
 }

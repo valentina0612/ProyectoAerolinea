@@ -26,7 +26,7 @@ public class Reserva {
     private Vuelo vuelo;
 
     @ManyToOne
-    @JoinColumn(name = "asie_id", referencedColumnName = "asi_id")
+    @JoinColumn(name = "asie_id", referencedColumnName = "asie_id")
     private Asiento asiento;
 
     @ManyToOne
@@ -41,7 +41,7 @@ public class Reserva {
 
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private String fecha;
 
     @Column(name = "estado", nullable = false)
     private String estado;

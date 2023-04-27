@@ -27,7 +27,7 @@ public class Factura {
 
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private String fecha;
     @Column(name = "estado", nullable = false)
     private String estado;
 }

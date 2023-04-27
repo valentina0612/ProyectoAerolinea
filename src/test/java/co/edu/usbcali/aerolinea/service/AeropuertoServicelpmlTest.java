@@ -2,6 +2,7 @@ package co.edu.usbcali.aerolinea.service;
 
 
 import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
+import co.edu.usbcali.aerolinea.dtos.VueloDTO;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import co.edu.usbcali.aerolinea.services.AeropuertoService;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class AeropuertoServicelpmlTest {
@@ -30,14 +32,13 @@ public class AeropuertoServicelpmlTest {
     @Test
     void obtenerAeropuertos_TestOK_(){
         //assertEquals(2,1);
-        Aeropuerto aeropuertoPrueba =
-                Aeropuerto.builder()
-                        .aeroId(1)
-                        .nombre("cliente prueba")
-                        .iata("MEX")
-                        .ubicacion("paris")
-                        .estado("activo")
-                        .build();
+        Aeropuerto.builder()
+                .aeroId(1)
+                .nombre("cliente prueba")
+                .iata("MEX")
+                .ubicacion("paris")
+                .estado("activo")
+                .build();
 
         List<Aeropuerto> aeropuertoRetorno = Arrays.asList(Aeropuerto.builder()
                         .aeroId(1)
@@ -55,7 +56,23 @@ public class AeropuertoServicelpmlTest {
                                 .build());
 
         Mockito.when(aeropuertoRepository.findAll()).thenReturn(aeropuertoRetorno);
+
+        List<AeropuertoDTO> aeropuerto = aeropuertoService.obtenerAeropuertos();
+
+        assertEquals(2, aeropuerto.size());
     }
+
+    @Test
+    public void obtenerAeropuertos_TestNotOk_() {
+        List<Aeropuerto> aeropuertos = Arrays.asList();
+
+        Mockito.when(aeropuertoRepository.findAll()).thenReturn(aeropuertos);
+
+        List<AeropuertoDTO> aeropuertosDTO = aeropuertoService.obtenerAeropuertos();
+
+        assertEquals(0, aeropuertosDTO.size());
+    }
+
 
     @Test
     void buscarPorId_TestOk_() throws Exception {
@@ -76,6 +93,13 @@ public class AeropuertoServicelpmlTest {
 
         // Verificación del resultado esperado
         assertEquals(aeropuertoDTO.getAeroId(), 1);
+    }
+
+    @Test
+    public void buscarPorIdNotOk() {
+        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> aeropuertoService.buscarPorId(1));
     }
 
 

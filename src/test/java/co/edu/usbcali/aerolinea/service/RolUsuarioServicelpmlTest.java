@@ -1,8 +1,11 @@
 package co.edu.usbcali.aerolinea.service;
 
 import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
+import co.edu.usbcali.aerolinea.dtos.AvionDTO;
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
+import co.edu.usbcali.aerolinea.dtos.VueloDTO;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
+import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.RolUsuario;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
@@ -18,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class RolUsuarioServicelpmlTest {
@@ -31,8 +35,7 @@ public class RolUsuarioServicelpmlTest {
     @Test
     void obtenerAeropuertos_TestOK_(){
         //assertEquals(2,1);
-        RolUsuario RolUsuarioPrueba =
-                RolUsuario.builder()
+        RolUsuario.builder()
                         .rousId(1)
                         .descripcion("asdsa")
                         .estado("activo")
@@ -50,6 +53,22 @@ public class RolUsuarioServicelpmlTest {
                                 .build());
 
         Mockito.when(rolUsuarioRepository.findAll()).thenReturn(RolUsuarioRetorno);
+
+        List<RolUsuarioDTO> usuario = rolUsuarioService.obtenerRolesUsuario();
+
+        assertEquals(2, usuario.size());
+
+    }
+
+    @Test
+    public void obtenerRolesUsuario_TestNotOk_() {
+        List<RolUsuario> rolUsuario = Arrays.asList();
+
+        Mockito.when(rolUsuarioRepository.findAll()).thenReturn(rolUsuario);
+
+        List<RolUsuarioDTO> rolUsuarioDTOS  = rolUsuarioService.obtenerRolesUsuario();
+
+        assertEquals(0, rolUsuarioDTOS.size());
     }
 
     @Test
@@ -69,6 +88,13 @@ public class RolUsuarioServicelpmlTest {
 
         // Verificación del resultado esperado
         assertEquals(rolUsuarioDTO.getRousId(), 1);
+    }
+
+    @Test
+    public void buscarPorIdNotOk() {
+        Mockito.when(rolUsuarioRepository.existsById(1)).thenReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioService.buscarPorId(1));
     }
 
 }

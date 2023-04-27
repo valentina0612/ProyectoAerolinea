@@ -1,6 +1,8 @@
 package co.edu.usbcali.aerolinea.service;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
+import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.TipoAsiento;
@@ -19,6 +21,7 @@ import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -38,8 +41,20 @@ public class AsientoServicelpmlTest{
 
     @Test
     void obtenerAsientos_TestOK_() throws Exception {
-        TipoAsiento tipoAsiento = TipoAsiento.builder().tiasId(1).build();
-        Avion avion = Avion.builder().avioID(2).build();
+        TipoAsiento tipoAsiento =
+                TipoAsiento.builder()
+                        .tiasId(1)
+                        .descripcion("sada")
+                        .estado("activo")
+                        .build();
+
+        Avion avion =
+                Avion.builder()
+                        .avioID(1)
+                        .modelo("bvv2")
+                        .estado("activo")
+                        .build();
+
         Asiento.builder()
                 .asieId(1)
                 .tipoAsiento(tipoAsiento)
@@ -76,9 +91,30 @@ public class AsientoServicelpmlTest{
 
     }
     @Test
+    public void obtenerAsientos_TestNotOk_() {
+        List<Asiento> asiento = Arrays.asList();
+
+        Mockito.when(asientoRepository.findAll()).thenReturn(asiento);
+
+        List<AsientoDTO> asientoDTOS  = asientoService.obtenerAsientos();
+
+        assertEquals(0, asientoDTOS.size());
+    }
+
+    @Test
     void buscarPorId_TestOK_() throws Exception {
-        TipoAsiento tipoAsiento = TipoAsiento.builder().tiasId(1).build();
-        Avion avion = Avion.builder().avioID(2).build();
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                        .tiasId(1)
+                        .descripcion("sada")
+                        .estado("activo")
+                        .build();
+
+        Avion avion = Avion.builder()
+                        .avioID(1)
+                        .modelo("bvv2")
+                        .estado("activo")
+                        .build();
+
         Asiento asientoPrueba = Asiento.builder()
                 .asieId(1)
                 .tipoAsiento(tipoAsiento)
@@ -97,6 +133,13 @@ public class AsientoServicelpmlTest{
 
         // Verificación del resultado esperado
         assertEquals(asientoDTO.getAsieId(), 1);
+    }
+
+    @Test
+    public void buscarPorIdNotOk() {
+        Mockito.when(asientoRepository.existsById(1)).thenReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> asientoService.buscarPorId(1));
     }
 
 

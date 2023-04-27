@@ -35,7 +35,6 @@ public class UsuarioController {
         }catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
-
     }
 }
 

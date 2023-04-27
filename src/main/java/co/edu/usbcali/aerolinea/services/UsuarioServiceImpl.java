@@ -91,7 +91,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 throw new Exception("El cliente con Id " +
                         usuarioDTO.getUsuaId() + " ya se encuentra registrado.");
             }
-            if (usuarioRepository.existsClienteByMail(usuarioDTO.getCorreo())) {
+            if (usuarioRepository.existsByCorreo(usuarioDTO.getCorreo())) {
                 throw new Exception("El correo electrónico " + usuarioDTO.getCorreo() + " ya está registrado para otro cliente.");
             }
         }
@@ -100,7 +100,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 throw new Exception("No se ha encontrado el cliente con Id " +
                         usuarioDTO.getUsuaId() + ".");
             }
-            if (usuarioRepository.existsClienteByMailAndIdIsNot(usuarioDTO.getCorreo(), usuarioDTO.getUsuaId())) {
+            if (usuarioRepository.existsByCorreoAndUsuaIdIsNot(usuarioDTO.getCorreo(), usuarioDTO.getUsuaId())) {
                 throw new Exception("El correo electrónico " + usuarioDTO.getCorreo() + " ya está registrado para otro cliente.");
             }
         }

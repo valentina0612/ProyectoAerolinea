@@ -16,8 +16,8 @@ public class TrayectoDTO {
     private Integer avioId;
     private Integer aereoIdOrigen;
     private Integer aereoIdDestino;
-    private Time horaSalida;
-    private Time horaLlegada;
+    private String horaSalida;
+    private String horaLlegada;
     private Integer vuelId;
     private String estado;
 }

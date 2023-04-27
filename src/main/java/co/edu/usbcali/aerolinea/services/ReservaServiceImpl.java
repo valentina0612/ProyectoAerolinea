@@ -1,7 +1,9 @@
 package co.edu.usbcali.aerolinea.services;
 
 import co.edu.usbcali.aerolinea.dtos.ReservaDTO;
+import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
 import co.edu.usbcali.aerolinea.mapper.ReservaMapper;
+import co.edu.usbcali.aerolinea.mapper.TrayectoMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
 import co.edu.usbcali.aerolinea.model.*;
 import co.edu.usbcali.aerolinea.repository.AsientoRepository;
@@ -71,6 +73,62 @@ public class ReservaServiceImpl implements ReservaService {
     public List<ReservaDTO> obtenerReservas() {
         List<Reserva> reservas = reservaRepository.findAll();
         return ReservaMapper.modelToDtoList(reservas);
+    }
+
+    @Override
+    public ReservaDTO buscarPorId(Integer id) throws Exception {
+        if (id == null || !reservaRepository.existsById(id)) {
+            throw new Exception("No se ha encontrado el usuario con Id " + id + ".");
+        }
+        return ReservaMapper.modelToDto(reservaRepository.getReferenceById(id));
+    }
+
+    private void validarClienteDTO(ReservaDTO reservaDTO, boolean esCreacion) throws Exception {
+        if (reservaDTO == null) throw new Exception("No han llegado los datos del cliente.");
+
+        if (reservaDTO.getReseId() == null) throw new Exception("El id del cliente es obligatorio.");
+
+        if (esCreacion) {
+            if(reservaRepository.existsById(reservaDTO.getReseId())) {
+                throw new Exception("El cliente con Id " +
+                        reservaDTO.getReseId() + " ya se encuentra registrado.");
+            }
+
+        }
+        if (!esCreacion) {
+            if (!reservaRepository.existsById(reservaDTO.getReseId())) {
+                throw new Exception("No se ha encontrado el cliente con Id " +
+                        reservaDTO.getReseId() + ".");
+            }
+        }
+
+        if (reservaDTO.getVuelId() == null || reservaDTO.getVuelId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+        if (reservaDTO.getUsuaId() == null || reservaDTO.getUsuaId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+        if (reservaDTO.getAsieId() == null || reservaDTO.getAsieId() <= 0) {
+            throw new Exception("El tipo de documento debe ser un número positivo.");
+        }
+
+
+        // Validar si el tipo de documento consultado no existe
+        if (!reservaRepository.existsById(reservaDTO.getVuelId())) {
+            throw new Exception("El tipo de documento " + reservaDTO.getVuelId()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!reservaRepository.existsById(reservaDTO.getAsieId())) {
+            throw new Exception("El tipo de documento " + reservaDTO.getAsieId()
+                    + " no se encuentra en base de datos");
+        }
+
+        if (!reservaRepository.existsById(reservaDTO.getUsuaId())) {
+            throw new Exception("El tipo de documento " + reservaDTO.getUsuaId()
+                    + " no se encuentra en base de datos");
+        }
     }
 
 }

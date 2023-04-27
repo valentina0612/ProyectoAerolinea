@@ -1,6 +1,7 @@
 package co.edu.usbcali.aerolinea.service;
 
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
+import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
 import co.edu.usbcali.aerolinea.model.*;
 import co.edu.usbcali.aerolinea.repository.*;
@@ -16,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @SpringBootTest
 public class UsuarioServicelmplTest {
 
@@ -31,7 +34,13 @@ public class UsuarioServicelmplTest {
 
     @Test
     void obtenerUsuarios_TestOK_() throws Exception {
-        RolUsuario rolUsuario = RolUsuario.builder().rousId(1).build();
+        RolUsuario rolUsuario =
+                RolUsuario.builder()
+                        .rousId(1)
+                        .descripcion("asdsa")
+                        .estado("activo")
+                        .build();
+
         Usuario.builder()
                 .usuaId(1)
                 .rolUsuario(rolUsuario)
@@ -73,9 +82,27 @@ public class UsuarioServicelmplTest {
 
 
     }
+
+    @Test
+    public void obtenerUsuarios_TestNotOk() {
+        List<Usuario> usuarios = Arrays.asList();
+
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+        List<UsuarioDTO> usuarioDTOS = usuarioService.obtenerUsuarios();
+
+        assertEquals(0, usuarioDTOS.size());
+    }
+
     @Test
     void buscarPorId() throws Exception {
-        RolUsuario rolUsuario = RolUsuario.builder().rousId(1).build();
+        RolUsuario rolUsuario =
+                RolUsuario.builder()
+                        .rousId(1)
+                        .descripcion("asdsa")
+                        .estado("activo")
+                        .build();
+
         Usuario usuarioPrueba = Usuario.builder()
                 .usuaId(1)
                 .rolUsuario(rolUsuario)
@@ -96,5 +123,12 @@ public class UsuarioServicelmplTest {
 
         // Verificación del resultado esperado
         assertEquals(usuarioDTO.getUsuaId(), 1);
+    }
+
+    @Test
+    public void buscarPorIdNotOk() {
+        Mockito.when(usuarioRepository.existsById(1)).thenReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> usuarioService.buscarPorId(1));
     }
 }

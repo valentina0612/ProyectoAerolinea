@@ -6,12 +6,13 @@ import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
+import co.edu.usbcali.aerolinea.services.AeropuertoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AeropuertoServiceImpl implements AeropuertoService{
+public class AeropuertoServiceImpl implements AeropuertoService {
     private final AeropuertoRepository aeropuertoRepository;
 
     public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository) {

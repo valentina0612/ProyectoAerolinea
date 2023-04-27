@@ -1,8 +1,11 @@
 package co.edu.usbcali.aerolinea.service;
 
 import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.AvionDTO;
+import co.edu.usbcali.aerolinea.dtos.VueloDTO;
 import co.edu.usbcali.aerolinea.model.Aeropuerto;
+import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.repository.AvionRepository;
 import co.edu.usbcali.aerolinea.services.AvionService;
@@ -16,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class AvionServicelpmlTest {
@@ -48,6 +52,21 @@ public class AvionServicelpmlTest {
                             .build());
 
         Mockito.when(avionRepository.findAll()).thenReturn(avionRetorno);
+
+        List<AvionDTO> avion = avionService.obtenerAviones();
+
+        assertEquals(2, avion.size());
+    }
+
+    @Test
+    public void obtenerAviones_TestNotOk_() {
+        List<Avion> avion = Arrays.asList();
+
+        Mockito.when(avionRepository.findAll()).thenReturn(avion);
+
+        List<AvionDTO> avionDTOS  = avionService.obtenerAviones();
+
+        assertEquals(0, avionDTOS.size());
     }
 
     @Test
@@ -67,5 +86,12 @@ public class AvionServicelpmlTest {
 
         // Verificación del resultado esperado
         assertEquals(avionDTO.getAvioID(), 1);
+    }
+
+    @Test
+    public void buscarPorIdNotOk() {
+        Mockito.when(avionRepository.existsById(1)).thenReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> avionService.buscarPorId(1));
     }
 }
