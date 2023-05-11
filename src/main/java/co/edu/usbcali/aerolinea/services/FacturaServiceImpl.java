@@ -1,13 +1,17 @@
 package co.edu.usbcali.aerolinea.services;
+import co.edu.usbcali.aerolinea.dtos.AvionDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
+import co.edu.usbcali.aerolinea.mapper.AvionMapper;
 import co.edu.usbcali.aerolinea.mapper.FacturaMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
+import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.Factura;
 import co.edu.usbcali.aerolinea.dtos.FacturaDTO;
 import co.edu.usbcali.aerolinea.model.Reserva;
 import co.edu.usbcali.aerolinea.repository.FacturaRepository;
 import co.edu.usbcali.aerolinea.repository.ReservaRepository;
 import co.edu.usbcali.aerolinea.utility.ConstantesUtility;
+import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,29 +28,14 @@ public class FacturaServiceImpl implements FacturaService {
     }
     @Override
     public FacturaDTO guardarFactura(FacturaDTO facturaDTO)throws Exception {
-        if (facturaDTO == null) {
-            throw new Exception("La factura viene con datos nulos");
-        }
-        if (facturaDTO.getFactId() == null) {
-            throw new Exception("El ID de la factura no puede ser nulo");
-        }
-        if (facturaDTO.getFactId()<0){
-            throw new Exception("El ID de la factura no puede ser negativo");
-        }
-        if (facturaDTO.getReseId()==null){
-            throw new Exception("El ID de la reserva no puede ser nulo");
-        }
-        if(facturaDTO.getReseId()<0){
-            throw new Exception("El ID de la reserva no puede ser negativo");
-        }
-        if(facturaRepository.findById(facturaDTO.getFactId()).isPresent()) {
-            throw new Exception("El ID no puede repetirse");
-        }
-        //Reserva reserva= reservaRepository.getReferenceById(facturaDTO.getFactId());
-        Factura factura = FacturaMapper.dtoToModel(facturaDTO);
-        //factura.setReserva(reserva);
-        return FacturaMapper.modelToDto(facturaRepository.save(factura));
+        validar(facturaDTO, true);
+        return  crearOModificar(facturaDTO);
+    }
 
+    @Override
+    public FacturaDTO modificarFactura(FacturaDTO facturaDTO) throws Exception {
+        validar(facturaDTO, false);
+        return  crearOModificar(facturaDTO);
     }
 
     @Override
@@ -65,17 +54,10 @@ public class FacturaServiceImpl implements FacturaService {
         return FacturaMapper.modelToDto(facturaRepository.getReferenceById(id));
     }
 
-    private void validarClienteDTO(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
+    private void validar(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
         if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
         if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
-
-        if (esCreacion) {
-            if(facturaRepository.existsById(facturaDTO.getFactId())) {
-                throw new Exception("La factura con Id " +
-                        facturaDTO.getFactId() + " ya se encuentra registrado.");
-            }
-        }
 
         if (esCreacion) {
             if(facturaRepository.existsById(facturaDTO.getFactId())) {
@@ -92,15 +74,17 @@ public class FacturaServiceImpl implements FacturaService {
 
         }
 
-        if (facturaDTO.getReseId() == null || facturaDTO.getReseId() <= 0) {
-            throw new Exception("El ID de la reserva debe ser un número positivo.");
-        }
-
-        // Validar si el tipo de documento consultado no existe
-        if (!facturaRepository.existsById(facturaDTO.getReseId())) {
+        if (!reservaRepository.existsById(facturaDTO.getReseId())) {
             throw new Exception("El ID de la reserva " + facturaDTO.getReseId()
                     + " no se encuentra en base de datos");
         }
+        ValidationUtility.stringIsNullOrBlank(facturaDTO.getEstado(), "El estado no debe ser nulo");
+        ValidationUtility.integerIsNullOrLessZero(facturaDTO.getFactId(), "El id de la factura debe ser positivo");
+        ValidationUtility.integerIsNullOrLessZero(facturaDTO.getReseId(), "El id la reserva debe ser positivo");
+    }
+    private FacturaDTO crearOModificar(FacturaDTO facturaDTO) {
+        Factura factura = FacturaMapper.dtoToModel(facturaDTO);
+        return FacturaMapper.modelToDto(facturaRepository.save(factura));
     }
 
 }

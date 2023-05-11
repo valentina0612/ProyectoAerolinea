@@ -16,7 +16,7 @@ public class AsientoDTO {
     private String ModeloAvion;
     private Integer avion_avioId;
     private String ubicacion;
-    private float precio;
+    private Integer precio;
     private  String estado;
 }
 

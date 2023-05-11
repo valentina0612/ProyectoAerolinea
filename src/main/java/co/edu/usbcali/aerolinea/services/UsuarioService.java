@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface UsuarioService {
     UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception;
+
+    UsuarioDTO modificarUsuario(UsuarioDTO usuarioDTO) throws Exception;
+
     List<UsuarioDTO> obtenerUsuarios();
 
     UsuarioDTO buscarPorId(Integer id) throws Exception;

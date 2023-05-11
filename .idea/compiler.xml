@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="aerolinea" />
         <module name="Aerolinea" />
+        <module name="ProyectoAerolinea" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Aerolinea" options="-parameters" />
+      <module name="ProyectoAerolinea" options="-parameters" />
       <module name="aerolinea" options="-parameters" />
     </option>
   </component>

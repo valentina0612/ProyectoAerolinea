@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RolUsuarioRepository extends JpaRepository<RolUsuario, Integer> {
-
+    boolean existsRolUsuarioByDescripcion(String descripcion);
+    boolean existsRolUsuarioByDescripcionAndAndRousIdIsNot(String descripcion, Integer id);
 }

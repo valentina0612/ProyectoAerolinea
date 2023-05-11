@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TipoAsientoRepository extends JpaRepository<TipoAsiento, Integer>{
+    boolean existsTipoAsientoByDescripcion(String descripcion);
+    boolean existsTipoAsientoByDescripcionAndTiasIdIsNot(String descripcion, Integer id);
 }

@@ -28,7 +28,7 @@ public class Asiento {
     @Column(length = 12)
     private String ubicacion;
     @Column(length = 19)
-    private float precio;
+    private Integer precio;
     @Column(length = 15, nullable = false)
     private  String estado;
     }

@@ -1,9 +1,10 @@
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
+import co.edu.usbcali.aerolinea.mapper.TrayectoMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
-import co.edu.usbcali.aerolinea.model.RolUsuario;
-import co.edu.usbcali.aerolinea.model.Usuario;
+import co.edu.usbcali.aerolinea.model.*;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import co.edu.usbcali.aerolinea.repository.UsuarioRepository;
 import co.edu.usbcali.aerolinea.utility.ConstantesUtility;
@@ -25,34 +26,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
     @Override
     public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception {
-        if (usuarioDTO == null){
-            throw new Exception("El usuario viene con datos nulos");
-        }
-        if (usuarioDTO.getUsuaId() == null){
-            throw new Exception("El ID no puede ser nulo");
-        }
-        if (usuarioDTO.getRolUsuario_rousid()<= 0){
-            throw new Exception("id no válido");
-        }
-        if (usuarioDTO.getApellido()== null || usuarioDTO.getApellido().trim().equals("")){
-            throw new Exception("El apellido no puede estar vacio");
-        }
-        if (usuarioDTO.getNombre()== null || usuarioDTO.getNombre().trim().equals("")){
-            throw new Exception("El nombre no puede estar vacio");
-        }
-        if (usuarioDTO.getCorreo()== null || usuarioDTO.getCorreo().trim().equals("")){
-            throw new Exception("El correo no puede estar vacio");
-        }
-        if (usuarioDTO.getCedula()== null || usuarioDTO.getCedula().trim().equals("")){
-            throw new Exception("La cédula no puede estar vacía");
-        }
-        if(usuarioRepository.findById(usuarioDTO.getUsuaId()).isPresent()){
-            throw new Exception("El ID no puede repetirse");
-        }
-        RolUsuario rolUsuario = rolUsuarioRepository.getReferenceById(usuarioDTO.getRolUsuario_rousid());
-        Usuario usuario = UsuarioMapper.dtoToModel(usuarioDTO);
-        usuario.setRolUsuario(rolUsuario);
-        return UsuarioMapper.modelToDto(usuarioRepository.save(usuario));
+       validar(usuarioDTO, true);
+       return crearOModificar(usuarioDTO);
+
+    }
+
+    @Override
+    public UsuarioDTO modificarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+        validar(usuarioDTO, false);
+        return crearOModificar(usuarioDTO);
     }
 
     @Override
@@ -69,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         return UsuarioMapper.modelToDto(usuarioRepository.getReferenceById(id));
     }
 
-    private void validarClienteDTO(UsuarioDTO usuarioDTO, boolean esCreacion) throws Exception {
+    private void validar(UsuarioDTO usuarioDTO, boolean esCreacion) throws Exception {
         if (usuarioDTO == null) throw new Exception("No han llegado los datos del usuario.");
 
         if (usuarioDTO.getUsuaId() == null) throw new Exception("El id del usuario es obligatorio.");
@@ -105,20 +87,20 @@ public class UsuarioServiceImpl implements UsuarioService {
             }
         }
 
-        if (usuarioDTO.getRolUsuario_rousid() == null || usuarioDTO.getRolUsuario_rousid() <= 0) {
-            throw new Exception("El ID del rol del usuario debe ser un número positivo.");
-        }
-
         // Validar si el tipo de documento consultado no existe
-        if (!usuarioRepository.existsById(usuarioDTO.getRolUsuario_rousid())) {
+        if (!rolUsuarioRepository.existsById(usuarioDTO.getRolUsuario_rousid())) {
             throw new Exception("El ID del rol del usuario " + usuarioDTO.getRolUsuario_rousid()
                     + " no se encuentra en base de datos");
         }
 
         if (StringUtils.isBlank(usuarioDTO.getNombre())) throw new Exception("El nombre del usuario es obligatorio.");
-
         if (StringUtils.isBlank(usuarioDTO.getApellido())) throw new Exception("El apellido del usuario es obligatorio.");
 
-
+    }
+    private UsuarioDTO crearOModificar(UsuarioDTO usuarioDTO) {
+        RolUsuario rolUsuario = rolUsuarioRepository.getReferenceById(usuarioDTO.getRolUsuario_rousid());
+        Usuario usuario = UsuarioMapper.dtoToModel(usuarioDTO);
+        usuario.setRolUsuario(rolUsuario);
+        return UsuarioMapper.modelToDto(usuarioRepository.save(usuario));
     }
 }

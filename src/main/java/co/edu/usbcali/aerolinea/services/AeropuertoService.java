@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface AeropuertoService {
     AeropuertoDTO  guardarAeropuerto (AeropuertoDTO  aeropuertoDTO) throws Exception;
+    AeropuertoDTO  modificarAeropuerto (AeropuertoDTO  aeropuertoDTO) throws Exception;
 
     List<AeropuertoDTO > obtenerAeropuertos();
 

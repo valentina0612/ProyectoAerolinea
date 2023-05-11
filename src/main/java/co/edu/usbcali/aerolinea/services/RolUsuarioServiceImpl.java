@@ -1,11 +1,15 @@
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.RolUsuarioDTO;
 import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
+import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.RolUsuarioMapper;
 import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
+import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.RolUsuario;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
+import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,25 +23,15 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
 
     @Override
     public RolUsuarioDTO guardarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
-        if (rolUsuarioDTO == null){
-            throw new Exception("El rol de usuario viene con datos nulos");
-        }
-        if (rolUsuarioDTO.getRousId() == null){
-            throw new Exception("El ID no puede ser nulo");
-        }
-        if (rolUsuarioDTO.getRousId()<0){
-            throw new Exception("El id no puede ser negativo");
-        }
-        if (rolUsuarioDTO.getDescripcion()== null || rolUsuarioDTO.getDescripcion().trim().equals("")){
-            throw new Exception("La descripción no puede estar vacia");
-        }
-        if(rolUsuarioRepository.findById(rolUsuarioDTO.getRousId()).isPresent()){
-            throw new Exception("El ID no puede repetirse");
-        }
-        RolUsuario rolUsuario = RolUsuarioMapper.dtoToModel(rolUsuarioDTO);
-        return RolUsuarioMapper.modelToDto(rolUsuarioRepository.save(rolUsuario));
+        validadaciones(rolUsuarioDTO, true);
+        return crearOModificar(rolUsuarioDTO);
     }
 
+    @Override
+    public RolUsuarioDTO modificarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
+        validadaciones(rolUsuarioDTO, false);
+        return crearOModificar(rolUsuarioDTO);
+    }
 
 
     @Override
@@ -52,6 +46,39 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
             throw new Exception("No se ha encontrado el rol usuario con Id " + id + ".");
         }
         return RolUsuarioMapper.modelToDto(rolUsuarioRepository.getReferenceById(id));
+    }
+    private void validadaciones (RolUsuarioDTO rolUsuarioDTO, boolean esCreacion) throws Exception {
+        ValidationUtility.isNull(rolUsuarioDTO, "No han llegado los datos del rol usuario.");
+
+        ValidationUtility.integerIsNullOrZero(rolUsuarioDTO.getRousId(), "El id del rol de usuario es obligatorio.");
+
+        //Validar si es creación o actualización
+        if (esCreacion) {
+            if(rolUsuarioRepository.existsById(rolUsuarioDTO.getRousId())) {
+                throw new Exception("El rol de usuario con Id " +
+                        rolUsuarioDTO.getRousId() + " ya se encuentra registrado.");
+            }
+            if (rolUsuarioRepository.existsRolUsuarioByDescripcion(rolUsuarioDTO.getDescripcion())) {
+                throw new Exception("El rol de usuario " + rolUsuarioDTO.getRousId() + " ya está registrado.");
+            }
+        }
+        if (!esCreacion) {
+            if (!rolUsuarioRepository.existsById(rolUsuarioDTO.getRousId())) {
+                throw new Exception("No se ha encontrado el rol de usuario con Id " +
+                        rolUsuarioDTO.getRousId() + ".");
+            }
+            if (rolUsuarioRepository.existsRolUsuarioByDescripcionAndAndRousIdIsNot(rolUsuarioDTO.getDescripcion(), rolUsuarioDTO.getRousId())) {
+                throw new Exception("El rol de usuario " + rolUsuarioDTO.getDescripcion() + " ya está registrado.");
+            }
+        }
+
+        ValidationUtility.stringIsNullOrBlank(rolUsuarioDTO.getDescripcion(), "La descriçión del rol usuario es obligatorio.");
+        ValidationUtility.stringIsNullOrBlank(rolUsuarioDTO.getEstado(), "El estado es obligatorio.");
+    }
+
+    private RolUsuarioDTO crearOModificar(RolUsuarioDTO rolUsuarioDTO) {
+        RolUsuario rolUsuario = RolUsuarioMapper.dtoToModel(rolUsuarioDTO);
+        return RolUsuarioMapper.modelToDto(rolUsuarioRepository.save(rolUsuario));
     }
 }
 

@@ -8,6 +8,8 @@ import java.util.List;
 public interface RolUsuarioService {
     RolUsuarioDTO guardarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception;
 
+    RolUsuarioDTO modificarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception;
+
     List<RolUsuarioDTO> obtenerRolesUsuario();
 
     RolUsuarioDTO buscarPorId(Integer id) throws Exception;

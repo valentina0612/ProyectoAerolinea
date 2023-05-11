@@ -1,11 +1,16 @@
 package co.edu.usbcali.aerolinea.services;
 
+import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.AvionDTO;
 import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
+import co.edu.usbcali.aerolinea.mapper.AsientoMapper;
 import co.edu.usbcali.aerolinea.mapper.AvionMapper;
 import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
+import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.model.Avion;
+import co.edu.usbcali.aerolinea.model.TipoAsiento;
 import co.edu.usbcali.aerolinea.repository.AvionRepository;
+import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,23 +25,14 @@ public class AvionServiceImpl implements AvionService{
     }
     @Override
     public AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception{
-        if (avionDTO == null) {
-            throw new Exception("El rol de usuario viene con datos nulos");
-        }
-        if (avionDTO.getAvioID() == null){
-            throw new Exception("El ID no puede ser nulo");
-        }
-        if (avionDTO.getAvioID()<0){
-            throw new Exception("El id no puede ser nulo");
-        }
-        if (avionDTO.getModelo()== null || avionDTO.getModelo().trim().equals("")){
-            throw new Exception("La descripción no puede estar vacia");
-        }
-        if(avionRepository.findById(avionDTO.getAvioID()).isPresent()){
-            throw new Exception("El ID no puede repetirse");
-        }
-        Avion avion = AvionMapper.dtoToModel(avionDTO);
-        return AvionMapper.modelToDto(avionRepository.save(avion));
+        validar(avionDTO, true);
+        return crearOModificar(avionDTO);
+    }
+
+    @Override
+    public AvionDTO modificarAvion(AvionDTO avionDTO) throws Exception {
+        validar(avionDTO, false);
+        return crearOModificar(avionDTO);
     }
 
     @Override
@@ -51,6 +47,32 @@ public class AvionServiceImpl implements AvionService{
             throw new Exception("No se ha encontrado el avión con Id " + id + ".");
         }
         return AvionMapper.modelToDto(avionRepository.getReferenceById(id));
+    }
+    private void validar(AvionDTO avionDTO, boolean esCreacion) throws Exception {
+
+        if (avionDTO == null) throw new Exception("No han llegado los datos del avión.");
+
+        if (avionDTO.getAvioID() == null) throw new Exception("El id del avión es obligatorio.");
+
+        if (esCreacion) {
+            if(avionRepository.existsById(avionDTO.getAvioID())) {
+                throw new Exception("El avión con Id " +
+                         avionDTO.getAvioID() + " ya se encuentra registrado.");
+            }
+        }
+        if (!esCreacion) {
+            if (!avionRepository.existsById(avionDTO.getAvioID())) {
+                throw new Exception("No se ha encontrado el avión con Id " +
+                        avionDTO.getAvioID()+ ".");
+            }
+        }
+        ValidationUtility.integerIsNullOrLessZero(avionDTO.getAvioID(), "El id del avión debe ser positivo");
+        ValidationUtility.stringIsNullOrBlank(avionDTO.getModelo(), "El modelo es obligatorio");
+        ValidationUtility.stringIsNullOrBlank(avionDTO.getEstado(), "El estado es obligatorio.");
+    }
+    private AvionDTO crearOModificar(AvionDTO avionDTO) {
+        Avion avion = AvionMapper.dtoToModel(avionDTO);
+        return AvionMapper.modelToDto(avionRepository.save(avion));
     }
 }
 

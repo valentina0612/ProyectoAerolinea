@@ -4,10 +4,12 @@ import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.AsientoMapper;
+import co.edu.usbcali.aerolinea.model.Aeropuerto;
 import co.edu.usbcali.aerolinea.model.Asiento;
 import co.edu.usbcali.aerolinea.model.Avion;
 import co.edu.usbcali.aerolinea.model.TipoAsiento;
 import co.edu.usbcali.aerolinea.repository.*;
+import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,37 +31,14 @@ public class AsientoServiceImpl implements AsientoService{
 
     @Override
     public AsientoDTO guardarAsiento(AsientoDTO asientoDTO) throws Exception {
-        if(asientoDTO == null){
-            throw new Exception("El asiento no puede ser nulo");
-        }
-        if(asientoDTO.getAsieId() == null){
-            throw new Exception("El ID no puede ser nulo");
-        }
-        if(asientoDTO.getTipoAsiento_tiasId() <= 0){
-            throw new Exception("Id de tipo asiento no válido");
-        }
-        if(asientoDTO.getAvion_avioId() <= 0){
-            throw new Exception("Id del avión no válido");
-        }
-        if(asientoDTO.getUbicacion() == null || asientoDTO.getUbicacion().trim().equals("")){
-            throw new Exception("Ubicación no válida");
-        }
-        if(asientoDTO.getPrecio() <=0 ){
-            throw new Exception("Precio no válido");
-        }
-        if(asientoDTO.getEstado() == null || asientoDTO.getEstado().trim().equals("")){
-            throw new Exception("Estado no válido");
-        }
-        if(asientoRepository.findById(asientoDTO.getAsieId()).isPresent()){
-            throw new Exception("El ID no puede repetirse");
-        }
-        TipoAsiento tipoAsiento = tipoAsientoRepository.getReferenceById(asientoDTO.getTipoAsiento_tiasId());
-        Avion avion = avionRepository.getReferenceById(asientoDTO.getAvion_avioId());
-        Asiento asiento = AsientoMapper.dtoToModel(asientoDTO);
-        asiento.setTipoAsiento(tipoAsiento);
-        asiento.setAvion(avion);
-        return AsientoMapper.modelToDto(asientoRepository.save(asiento));
+        validar(asientoDTO,true);
+        return crearOModificar(asientoDTO);
+    }
 
+    @Override
+    public AsientoDTO modificarAsiento(AsientoDTO asientoDTO) throws Exception {
+        validar(asientoDTO,false);
+        return crearOModificar(asientoDTO);
     }
 
     @Override
@@ -77,7 +56,7 @@ public class AsientoServiceImpl implements AsientoService{
     }
 
     //Este método se usará cuando se implemente el método put
-    private void validarClienteDTO(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
+    private void validar(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
         if (asientoDTO == null) throw new Exception("No han llegado los datos del asiento.");
 
         if (asientoDTO.getAsieId() == null) throw new Exception("El id del asiento es obligatorio.");
@@ -87,7 +66,6 @@ public class AsientoServiceImpl implements AsientoService{
                 throw new Exception("El asiento con Id " +
                         asientoDTO.getAsieId() + " ya se encuentra registrado.");
             }
-
         }
         if (!esCreacion) {
             if (!asientoRepository.existsById(asientoDTO.getAsieId())) {
@@ -96,24 +74,33 @@ public class AsientoServiceImpl implements AsientoService{
             }
         }
 
-        if (asientoDTO.getTipoAsiento_tiasId() == null || asientoDTO.getTipoAsiento_tiasId() <= 0) {
-            throw new Exception("El ID del tipo de asiento debe ser un número positivo.");
-        }
 
-        if (asientoDTO.getAvion_avioId() == null || asientoDTO.getAvion_avioId() <= 0) {
-            throw new Exception("El ID del avion debe ser un número positivo.");
-        }
-
-
-        // Validar si el tipo de documento consultado no existe
-        if (!asientoRepository.existsById(asientoDTO.getTipoAsiento_tiasId())) {
+        if (!tipoAsientoRepository.existsById(asientoDTO.getTipoAsiento_tiasId())) {
             throw new Exception("El ID de tipo de asiento " + asientoDTO.getTipoAsiento_tiasId()
                     + " no se encuentra en base de datos");
         }
 
-        if (!asientoRepository.existsById(asientoDTO.getAvion_avioId())) {
+        if (!avionRepository.existsById(asientoDTO.getAvion_avioId())) {
             throw new Exception("El ID del avion " + asientoDTO.getAvion_avioId()
                     + " no se encuentra en base de datos");
         }
+        ValidationUtility.stringIsNullOrBlank(asientoDTO.getUbicacion(), "La ubicación es obligatorio.");
+        ValidationUtility.integerIsNullOrLessZero(asientoDTO.getPrecio(), "El precio debe ser mayor a 0");
+        ValidationUtility.integerIsNullOrLessZero(asientoDTO.getTipoAsiento_tiasId(), "El ID del tipo de asiento debe ser un número positivo");
+        ValidationUtility.integerIsNullOrLessZero(asientoDTO.getAvion_avioId(), "El ID del avión debe ser positivo");
+        ValidationUtility.stringIsNullOrBlank(asientoDTO.getEstado(), "El estado es obligatorio.");
+    }
+    private AsientoDTO crearOModificar(AsientoDTO asientoDTO) {
+        // Mapeo el cliente hacia Domain/Modelo/Entity
+        Asiento asiento=AsientoMapper.dtoToModel(asientoDTO);
+
+        TipoAsiento tipoAsiento = tipoAsientoRepository.getReferenceById(asientoDTO.getTipoAsiento_tiasId());
+
+        Avion avion = avionRepository.getReferenceById(asientoDTO.getAvion_avioId());
+
+        asiento.setTipoAsiento(tipoAsiento);
+        asiento.setAvion(avion);
+
+        return AsientoMapper.modelToDto(asientoRepository.save(asiento));
     }
 }

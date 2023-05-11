@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AeropuertoRepository extends JpaRepository<Aeropuerto, Integer> {
+    boolean existsAeropuertoByNombre(String nombre);
+    boolean existsClienteByNombreAndIdIsNot(String nombre, Integer id);
 }

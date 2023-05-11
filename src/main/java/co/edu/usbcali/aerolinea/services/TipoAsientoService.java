@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface TipoAsientoService{
     TipoAsientoDTO guardarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception;
+
+    TipoAsientoDTO modificarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception;
     List<TipoAsientoDTO> obtenerTipoAsiento();
 
     TipoAsientoDTO buscarPorId(Integer id) throws Exception;

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface FacturaService {
     FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception;
+
+    FacturaDTO modificarFactura(FacturaDTO facturaDTO) throws Exception;
     List<FacturaDTO> obtenerFacturas();
     FacturaDTO buscarPorId(Integer id) throws Exception;
 }
