@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Time;
+import java.util.Date;
 
 @Data
 @Builder
@@ -16,8 +17,8 @@ public class TrayectoDTO {
     private Integer avioId;
     private Integer aereoIdOrigen;
     private Integer aereoIdDestino;
-    private String horaSalida;
-    private String horaLlegada;
+    private Date horaSalida;
+    private Date horaLlegada;
     private Integer vuelId;
     private String estado;
 }

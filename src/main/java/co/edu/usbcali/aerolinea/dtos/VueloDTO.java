@@ -21,8 +21,8 @@ public class VueloDTO {
     private String nombreAeroOrigen;
     private String nombreAeroDestino;
     private float precio;
-    private String hora_salida;
-    private String hora_llegada;
+    private Date hora_salida;
+    private Date hora_llegada;
     private float precioAsientoVip;
     private float precioAsientoNormal;
     private float precioAsientoBasico;

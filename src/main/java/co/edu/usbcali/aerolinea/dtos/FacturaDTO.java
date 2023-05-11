@@ -14,7 +14,7 @@ import java.util.Date;
 public class FacturaDTO {
     private Integer factId;
     private Integer reseId;
-    private String fecha;
+    private Date fecha;
     private String estado;
 
 

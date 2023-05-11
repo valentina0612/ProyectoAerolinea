@@ -3,14 +3,18 @@ package co.edu.usbcali.aerolinea.service;
 import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
 import co.edu.usbcali.aerolinea.model.*;
-import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
-import co.edu.usbcali.aerolinea.repository.AvionRepository;
-import co.edu.usbcali.aerolinea.repository.TipoAsientoRepository;
-import co.edu.usbcali.aerolinea.repository.TrayectoRepository;
+import co.edu.usbcali.aerolinea.repository.*;
 import co.edu.usbcali.aerolinea.services.TipoAsientoService;
 import co.edu.usbcali.aerolinea.services.TrayectoService;
+import co.edu.usbcali.aerolinea.services.TrayectoServiceImpl;
 import co.edu.usbcali.aerolinea.services.VuelosService;
+import co.edu.usbcali.aerolinea.utility.AeropuertoUtilityTest;
+import co.edu.usbcali.aerolinea.utility.AvionUtilityTest;
+import co.edu.usbcali.aerolinea.utility.TrayectoUtilityTest;
+import co.edu.usbcali.aerolinea.utility.VuelosUtilityTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,165 +26,65 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class TrayectoServicelmplTest {
-    @Autowired
-    private TrayectoService trayectoService;
+    @InjectMocks
+    private TrayectoServiceImpl trayectoServiceImpl;
 
-    @MockBean
-    private AeropuertoRepository aeropuertoRepository;
-
-    @MockBean
-    private AvionRepository avionRepository;
-
-    @MockBean
-    private VuelosService vuelosService;
-
-    @MockBean
+    @Mock
     private TrayectoRepository trayectoRepository;
 
+    @Mock
+    private AvionRepository avionRepository;
+
+    @Mock
+    private AeropuertoRepository aeropuertoRepository;
+
+    @Mock
+    private VueloRepository vueloRepository;
 
     @Test
-    void obtenerTrayectos_TestOK_(){
+    public void obtenerTrayectosOk() {
+        given(trayectoRepository.findAll()).willReturn(TrayectoUtilityTest.TRAYECTOS);
 
-        Aeropuerto aeropuerto =
-                Aeropuerto.builder()
-                        .aeroId(1)
-                        .nombre("cliente prueba")
-                        .iata("MEX")
-                        .ubicacion("paris")
-                        .estado("activo")
-                        .build();
+        List<TrayectoDTO> trayectosSavedDTO = trayectoServiceImpl.obtenerTrayectos();
 
-        Avion avion =
-                Avion.builder()
-                        .avioID(1)
-                        .modelo("bvv2")
-                        .estado("activo")
-                        .build();
-
-        Vuelo vuelo =
-                Vuelo.builder()
-                        .vueloId(1)
-                        .aeropuertoOrigen(aeropuerto)
-                        .aeropuertoDestino(aeropuerto)
-                        .precio(3243)
-                        .hora_salida("12:00")
-                        .hora_llegada("12:23")
-                        .precioAsientoVip(3223)
-                        .precioAsientoNormal(2321)
-                        .precioAsientoBasico(2134)
-                        .estado("activo")
-                        .build();
-
-        Trayecto.builder()
-                .trayId(1)
-                .avion(avion)
-                .aeropuerto(aeropuerto)
-                .aeropuerto2(aeropuerto)
-                .horaSalida("2020-02-20")
-                .horaLlegada("2020-05-20")
-                .vuelo(vuelo)
-                .estado("Activo")
-                .build();
-
-        List<Trayecto> trayectoRetorno = Arrays.asList(Trayecto.builder()
-                        .trayId(2)
-                        .avion(avion)
-                        .aeropuerto(aeropuerto)
-                        .aeropuerto2(aeropuerto)
-                        .horaSalida("2020-02-20")
-                        .horaLlegada("2020-05-20")
-                        .vuelo(vuelo)
-                        .estado("Activo")
-                        .build());
-                Trayecto.builder()
-                            .trayId(3)
-                            .avion(avion)
-                            .aeropuerto(aeropuerto)
-                            .aeropuerto2(aeropuerto)
-                            .horaSalida("2020-02-25")
-                            .horaLlegada("2020-07-23")
-                            .vuelo(vuelo)
-                            .estado("Activo")
-                            .build();
-
-        Mockito.when(trayectoRepository.findAll()).thenReturn(trayectoRetorno);
-
-        List<TrayectoDTO> trayecto = trayectoService.obtenerTrayectos();
-
-        assertEquals(1, trayecto.size());
+        assertEquals(TrayectoUtilityTest.TRAYECTOS_SIZE, trayectosSavedDTO.size());
+        assertEquals(TrayectoUtilityTest.ID_UNO, trayectosSavedDTO.get(0).getTrayId());
     }
 
     @Test
-    public void obtenerTrayecto_TestNotOk_() {
-        List<Trayecto> trayecto = Arrays.asList();
+    public void obtenerTrayectosNotOk() {
+        given(trayectoRepository.findAll()).willReturn(TrayectoUtilityTest.TRAYECTOS_VACIO);
 
-        Mockito.when(trayectoRepository.findAll()).thenReturn(trayecto);
+        List<TrayectoDTO> trayectosSavedDTO = trayectoServiceImpl.obtenerTrayectos();
 
-        List<TrayectoDTO> trayectoDTO  = trayectoService.obtenerTrayectos();
-
-        assertEquals(0, trayectoDTO.size());
+        assertEquals(TrayectoUtilityTest.TRAYECTOS_VACIO_SIZE, trayectosSavedDTO.size());
     }
 
     @Test
-    void buscarPorId_TestOk_() throws Exception {
-        Aeropuerto aeropuerto =
-                Aeropuerto.builder()
-                        .aeroId(1)
-                        .nombre("cliente prueba")
-                        .iata("MEX")
-                        .ubicacion("paris")
-                        .estado("activo")
-                        .build();
+    public void buscarPorId_TestOk_() throws Exception {
+        avionRepository.save(AvionUtilityTest.AVION_UNO);
+        aeropuertoRepository.save(AeropuertoUtilityTest.AEROPUERTO_UNO);
+        aeropuertoRepository.save(AeropuertoUtilityTest.AEROPUERTO_DOS);
+        vueloRepository.save(VuelosUtilityTest.VUELO_UNO);
+        trayectoRepository.save(TrayectoUtilityTest.TRAYECTO_UNO);
 
-        Avion avion =
-                Avion.builder()
-                        .avioID(1)
-                        .modelo("bvv2")
-                        .estado("activo")
-                        .build();
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
+        given(trayectoRepository.getReferenceById(TrayectoUtilityTest.ID_UNO)).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
 
-        Vuelo vuelo =
-                Vuelo.builder()
-                        .vueloId(1)
-                        .aeropuertoOrigen(aeropuerto)
-                        .aeropuertoDestino(aeropuerto)
-                        .precio(3243)
-                        .hora_salida("12:00")
-                        .hora_llegada("12:23")
-                        .precioAsientoVip(3223)
-                        .precioAsientoNormal(2321)
-                        .precioAsientoBasico(2134)
-                        .estado("activo")
-                        .build();
+        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.buscarPorId(TrayectoUtilityTest.ID_UNO);
 
-        Trayecto trayectoPrueba = Trayecto.builder()
-                        .trayId(1)
-                        .avion(avion)
-                        .aeropuerto(aeropuerto)
-                        .aeropuerto2(aeropuerto)
-                        .horaSalida("2020-02-20")
-                        .horaLlegada("2020-05-20")
-                        .vuelo(vuelo)
-                        .estado("Activo")
-                        .build();
-
-        Mockito.when(trayectoRepository.existsById(1)).thenReturn(true);
-        Mockito.when(trayectoRepository.getReferenceById(1)).thenReturn(trayectoPrueba);
-
-        // Llamado al método a probar
-        TrayectoDTO trayectoDTO = trayectoService.buscarPorId(1);
-
-        // Verificación del resultado esperado
-        assertEquals(trayectoDTO.getTrayId(), 1);
+        assertEquals(TrayectoUtilityTest.ID_UNO, trayectoSavedDTO.getTrayId());
     }
 
     @Test
-    public void buscarPorIdNotOk() {
-        Mockito.when(trayectoRepository.existsById(1)).thenReturn(false);
+    public void buscarPorIdPorIdNotOk() {
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> trayectoService.buscarPorId(1));
+        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.buscarPorId(TrayectoUtilityTest.ID_UNO));
     }
 }

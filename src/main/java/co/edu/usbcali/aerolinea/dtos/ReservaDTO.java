@@ -18,7 +18,7 @@ public class ReservaDTO {
     private Integer usuaId;
     private Integer precioTotal;
     private String estadoPago;
-    private String fecha;
+    private Date fecha;
     private String estado;
 
 }

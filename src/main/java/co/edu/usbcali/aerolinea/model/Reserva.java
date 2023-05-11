@@ -41,7 +41,7 @@ public class Reserva {
 
     @Column(name = "fecha", nullable = false)
     @Temporal(TemporalType.DATE)
-    private String fecha;
+    private Date fecha;
 
     @Column(name = "estado", nullable = false)
     private String estado;

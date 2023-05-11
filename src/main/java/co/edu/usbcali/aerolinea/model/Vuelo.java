@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,9 +31,9 @@ public class Vuelo {
     @Column(length = 19, nullable = false)
     private float precio;
     @Column(length = 30)
-    private String hora_salida;
+    private Date hora_salida;
     @Column(length = 30)
-    private String hora_llegada;
+    private Date hora_llegada;
     @Column(length = 19)
     private float precioAsientoVip;
     @Column(length = 19)

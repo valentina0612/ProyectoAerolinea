@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -31,9 +32,9 @@ public class Trayecto {
     @JoinColumn(name = "aero_id_destino",referencedColumnName = "aero_id" )
     private Aeropuerto aeropuerto2;
     @Column(name = "hora_salida", nullable = false)
-    private String horaSalida;
+    private Date horaSalida;
     @Column(name = "hora_llegada", nullable = false)
-    private String horaLlegada;
+    private Date horaLlegada;
     @ManyToOne
     @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id" )
     private Vuelo vuelo;

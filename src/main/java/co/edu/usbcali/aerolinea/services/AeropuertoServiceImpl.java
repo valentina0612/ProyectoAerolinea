@@ -67,7 +67,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
                 throw new Exception("No se ha encontrado el cliente con Id " +
                         aeropuertoDTO.getAeroId() + ".");
             }
-            if (aeropuertoRepository.existsClienteByNombreAndIdIsNot(aeropuertoDTO.getNombre(), aeropuertoDTO.getAeroId())) {
+            if (aeropuertoRepository.existsAeropuertoByNombreAndAeroId(aeropuertoDTO.getNombre(), aeropuertoDTO.getAeroId())) {
                 throw new Exception("El nombre " + aeropuertoDTO.getNombre() + " ya está registrado para otro aeropuerto.");
             }
         }

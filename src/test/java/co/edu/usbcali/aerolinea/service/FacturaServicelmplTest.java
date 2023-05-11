@@ -8,8 +8,13 @@ import co.edu.usbcali.aerolinea.repository.ReservaRepository;
 import co.edu.usbcali.aerolinea.repository.RolUsuarioRepository;
 import co.edu.usbcali.aerolinea.repository.UsuarioRepository;
 import co.edu.usbcali.aerolinea.services.FacturaService;
+import co.edu.usbcali.aerolinea.services.FacturaServiceImpl;
 import co.edu.usbcali.aerolinea.services.UsuarioService;
+import co.edu.usbcali.aerolinea.utility.FacturaUtilityTest;
+import co.edu.usbcali.aerolinea.utility.ReservaUtilityTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,227 +25,57 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class FacturaServicelmplTest {
-    @Autowired
-    private FacturaService facturaService;
+    @InjectMocks
+    private FacturaServiceImpl facturaServiceImpl;
 
-    @MockBean
-    private ReservaRepository reservaRepository;
-
-    @MockBean
+    @Mock
     private FacturaRepository facturaRepository;
 
+    @Mock
+    private ReservaRepository reservaRepository;
+
     @Test
-    void obtenerFacturas_TestOK_() throws Exception {
-        RolUsuario rolUsuario =
-                RolUsuario.builder()
-                        .rousId(1)
-                        .descripcion("asdsa")
-                        .estado("activo")
-                        .build();
+    public void obtenerFacturasOk() {
+        given(facturaRepository.findAll()).willReturn(FacturaUtilityTest.FACTURAS);
 
-        Usuario usuario = Usuario.builder()
-                .usuaId(1)
-                .rolUsuario(rolUsuario)
-                .cedula("121323")
-                .nombre("brayan")
-                .apellido("zamora")
-                .correo("brayanzamora@gmail.com")
-                .estado("activo")
-                .build();
+        List<FacturaDTO> facturasSavedDTO = facturaServiceImpl.obtenerFacturas();
 
-        Aeropuerto aeropuerto = Aeropuerto.builder()
-                .aeroId(1)
-                .nombre("cliente prueba")
-                .iata("MEX")
-                .ubicacion("paris")
-                .estado("activo")
-                .build();
-
-        Vuelo vuelo = Vuelo.builder()
-                .vueloId(1)
-                .aeropuertoOrigen(aeropuerto)
-                .aeropuertoDestino(aeropuerto)
-                .precio(3243)
-                .hora_salida("12:00")
-                .hora_llegada("12:23")
-                .precioAsientoVip(3223)
-                .precioAsientoNormal(2321)
-                .precioAsientoBasico(2134)
-                .estado("activo")
-                .build();
-
-        TipoAsiento tipoAsiento =
-                TipoAsiento.builder()
-                        .tiasId(1)
-                        .descripcion("sada")
-                        .estado("activo")
-                        .build();
-
-        Avion avion = Avion.builder()
-                .avioID(1)
-                .modelo("bvv2")
-                .estado("activo")
-                .build();
-
-        Asiento asiento = Asiento.builder()
-                .asieId(1)
-                .tipoAsiento(tipoAsiento)
-                .avion(avion)
-                .ubicacion("DSADA")
-                .precio(2323)
-                .estado("activo")
-                .build();
-
-        Reserva reserva = Reserva.builder()
-                .reseId(1)
-                .vuelo(vuelo)
-                .asiento(asiento)
-                .usuario(usuario)
-                .precioTotal(234)
-                .estadoPago("pagado")
-                .fecha("2020-07-23")
-                .estado("activo")
-                .build();
-
-        Factura.builder()
-                .factId(1)
-                .reserva(reserva)
-                .fecha("2020-07-23")
-                .estado("activo")
-                .build();
-
-        List<Factura> facturaRetorno = Arrays.asList(Factura.builder()
-                        .factId(2)
-                        .reserva(reserva)
-                        .fecha("2020-07-23")
-                        .estado("activo")
-                        .build(),
-                Factura.builder()
-                        .factId(3)
-                        .reserva(reserva)
-                        .fecha("2020-07-23")
-                        .estado("activo")
-                        .build());
-
-        // Mock de la respuesta del repositorio
-        Mockito.when(facturaRepository.findAll()).thenReturn(facturaRetorno);
-
-        List<FacturaDTO> factura = facturaService.obtenerFacturas();
-
-        assertEquals(2, factura.size());
+        assertEquals(FacturaUtilityTest.FACTURAS_SIZE, facturasSavedDTO.size());
+        assertEquals(FacturaUtilityTest.ID_UNO, facturasSavedDTO.get(0).getFactId());
     }
 
     @Test
-    public void obtenerFacturas_TestNotOk() {
-        List<Factura> factura = Arrays.asList();
+    public void obtenerFacturasNotOk() {
+        given(facturaRepository.findAll()).willReturn(FacturaUtilityTest.FACTURAS_VACIO);
 
-        Mockito.when(facturaRepository.findAll()).thenReturn(factura);
+        List<FacturaDTO> facturasSavedDTO = facturaServiceImpl.obtenerFacturas();
 
-        List<FacturaDTO> facturaDTOS = facturaService.obtenerFacturas();
-
-        assertEquals(0, facturaDTOS.size());
+        assertEquals(FacturaUtilityTest.FACTURAS_VACIO_SIZE, facturasSavedDTO.size());
     }
 
     @Test
-    void buscarPorId() throws Exception {
-        RolUsuario rolUsuario =
-                RolUsuario.builder()
-                        .rousId(1)
-                        .descripcion("asdsa")
-                        .estado("activo")
-                        .build();
+    public void buscarPorId_TestOk_() throws Exception {
+        reservaRepository.save(ReservaUtilityTest.RESERVA_UNO);
+        facturaRepository.save(FacturaUtilityTest.FACTURA_UNO);
 
-        Usuario usuario = Usuario.builder()
-                .usuaId(1)
-                .rolUsuario(rolUsuario)
-                .cedula("121323")
-                .nombre("brayan")
-                .apellido("zamora")
-                .correo("brayanzamora@gmail.com")
-                .estado("activo")
-                .build();
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+        given(facturaRepository.getReferenceById(FacturaUtilityTest.ID_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
-        Aeropuerto aeropuerto = Aeropuerto.builder()
-                .aeroId(1)
-                .nombre("cliente prueba")
-                .iata("MEX")
-                .ubicacion("paris")
-                .estado("activo")
-                .build();
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.buscarPorId(FacturaUtilityTest.ID_UNO);
 
-        Vuelo vuelo = Vuelo.builder()
-                .vueloId(1)
-                .aeropuertoOrigen(aeropuerto)
-                .aeropuertoDestino(aeropuerto)
-                .precio(3243)
-                .hora_salida("12:00")
-                .hora_llegada("12:23")
-                .precioAsientoVip(3223)
-                .precioAsientoNormal(2321)
-                .precioAsientoBasico(2134)
-                .estado("activo")
-                .build();
-
-        TipoAsiento tipoAsiento =
-                TipoAsiento.builder()
-                        .tiasId(1)
-                        .descripcion("sada")
-                        .estado("activo")
-                        .build();
-
-        Avion avion = Avion.builder()
-                .avioID(1)
-                .modelo("bvv2")
-                .estado("activo")
-                .build();
-
-        Asiento asiento = Asiento.builder()
-                .asieId(1)
-                .tipoAsiento(tipoAsiento)
-                .avion(avion)
-                .ubicacion("DSADA")
-                .precio(2323)
-                .estado("activo")
-                .build();
-
-        Reserva reserva = Reserva.builder()
-                .reseId(1)
-                .vuelo(vuelo)
-                .asiento(asiento)
-                .usuario(usuario)
-                .precioTotal(234)
-                .estadoPago("pagado")
-                .fecha("2020-07-23")
-                .estado("activo")
-                .build();
-
-        Factura facturaPrueba =Factura.builder()
-                .factId(1)
-                .reserva(reserva)
-                .fecha("2020-07-23")
-                .estado("activo")
-                .build();
-
-
-
-        // Mock de la respuesta del repositorio
-        Mockito.when(facturaRepository.existsById(1)).thenReturn(true);
-        Mockito.when(facturaRepository.getReferenceById(1)).thenReturn(facturaPrueba);
-
-        // Llamado al método a probar
-        FacturaDTO facturaDTO = facturaService.buscarPorId(1);
-
-        // Verificación del resultado esperado
-        assertEquals(facturaDTO.getFactId(), 1);
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getFactId());
     }
 
     @Test
-    public void buscarPorIdNotOk() {
-        Mockito.when(facturaRepository.existsById(1)).thenReturn(false);
+    public void buscarPorIdPorIdNotOk() {
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> facturaService.buscarPorId(1));
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.buscarPorId(FacturaUtilityTest.ID_UNO));
     }
+
 }

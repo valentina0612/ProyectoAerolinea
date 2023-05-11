@@ -7,7 +7,12 @@ import co.edu.usbcali.aerolinea.model.*;
 import co.edu.usbcali.aerolinea.repository.*;
 import co.edu.usbcali.aerolinea.services.AsientoService;
 import co.edu.usbcali.aerolinea.services.UsuarioService;
+import co.edu.usbcali.aerolinea.services.UsuarioServiceImpl;
+import co.edu.usbcali.aerolinea.utility.RolUsuarioUtilityTest;
+import co.edu.usbcali.aerolinea.utility.UsuarioUtilityTest;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,113 +23,57 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class UsuarioServicelmplTest {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    @InjectMocks
+    private UsuarioServiceImpl usuarioServiceImpl;
 
-    @MockBean
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @Mock
     private RolUsuarioRepository rolUsuarioRepository;
 
-    @MockBean
-    UsuarioRepository usuarioRepository;
-
-
     @Test
-    void obtenerUsuarios_TestOK_() throws Exception {
-        RolUsuario rolUsuario =
-                RolUsuario.builder()
-                        .rousId(1)
-                        .descripcion("asdsa")
-                        .estado("activo")
-                        .build();
+    public void obtenerUsuariosOk() {
+        given(usuarioRepository.findAll()).willReturn(UsuarioUtilityTest.USUARIOS);
 
-        Usuario.builder()
-                .usuaId(1)
-                .rolUsuario(rolUsuario)
-                .cedula("121323")
-                .nombre("brayan")
-                .apellido("zamora")
-                .correo("brayanzamora@gmail.com")
-                .estado("activo")
-                .build();
+        List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuarios();
 
-        List<Usuario> usuariosRetorno = Arrays.asList(Usuario.builder()
-                        .usuaId(1)
-                        .rolUsuario(rolUsuario)
-                        .cedula("121323")
-                        .nombre("brayan")
-                        .apellido("zamora")
-                        .correo("brayanzamora@gmail.com")
-                        .estado("activo")
-                        .build(),
-                Usuario.builder()
-                                .usuaId(1)
-                                .rolUsuario(rolUsuario)
-                                .cedula("121323")
-                                .nombre("brayan")
-                                .apellido("zamora")
-                                .correo("brayanzamora@gmail.com")
-                                .estado("activo")
-                                .build());
-
-        // Mock de la respuesta del repositorio
-        Mockito.when(usuarioRepository.findAll()).thenReturn(usuariosRetorno);
-
-        List<UsuarioDTO> usuario = usuarioService.obtenerUsuarios();
-
-        assertEquals(2, usuario.size());
-
-
+        assertEquals(UsuarioUtilityTest.USUARIOS_SIZE, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.CEDULA_UNO, usuariosSavedDTO.get(0).getCedula());
     }
 
     @Test
-    public void obtenerUsuarios_TestNotOk() {
-        List<Usuario> usuarios = Arrays.asList();
+    public void obtenerUsuariosNotOk() {
+        given(usuarioRepository.findAll()).willReturn(UsuarioUtilityTest.USUARIOS_VACIO);
 
-        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+        List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuarios();
 
-        List<UsuarioDTO> usuarioDTOS = usuarioService.obtenerUsuarios();
-
-        assertEquals(0, usuarioDTOS.size());
+        assertEquals(UsuarioUtilityTest.USUARIOS_VACIO_SIZE, usuariosSavedDTO.size());
     }
 
     @Test
-    void buscarPorId() throws Exception {
-        RolUsuario rolUsuario =
-                RolUsuario.builder()
-                        .rousId(1)
-                        .descripcion("asdsa")
-                        .estado("activo")
-                        .build();
+    public void buscarPorId_TestOk_() throws Exception {
+        rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO);
 
-        Usuario usuarioPrueba = Usuario.builder()
-                .usuaId(1)
-                .rolUsuario(rolUsuario)
-                .cedula("121323")
-                .nombre("brayan")
-                .apellido("zamora")
-                .correo("brayanzamora@gmail.com")
-                .estado("activo")
-                .build();
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
-        // Mock de la respuesta del repositorio
-        Mockito.when(usuarioRepository.existsById(1)).thenReturn(true);
-        Mockito.when(usuarioRepository.getReferenceById(1)).thenReturn(usuarioPrueba);
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.buscarPorId(UsuarioUtilityTest.ID_UNO);
 
-        // Llamado al método a probar
-        UsuarioDTO usuarioDTO = usuarioService.buscarPorId(1);
-
-        // Verificación del resultado esperado
-        assertEquals(usuarioDTO.getUsuaId(), 1);
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getUsuaId());
     }
 
     @Test
-    public void buscarPorIdNotOk() {
-        Mockito.when(usuarioRepository.existsById(1)).thenReturn(false);
+    public void buscarPorIdPorIdNotOk() {
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> usuarioService.buscarPorId(1));
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.buscarPorId(UsuarioUtilityTest.ID_UNO));
     }
+
 }
