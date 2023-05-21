@@ -47,4 +47,5 @@ public class AsientoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }

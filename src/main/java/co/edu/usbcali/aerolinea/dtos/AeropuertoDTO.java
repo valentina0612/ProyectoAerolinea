@@ -1,9 +1,7 @@
 package co.edu.usbcali.aerolinea.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,3 +13,5 @@ public class AeropuertoDTO {
     private String ubicacion;
     private String estado;
 }
+
+

@@ -1,36 +1,40 @@
 package co.edu.usbcali.aerolinea.controllers;
 
-import co.edu.usbcali.aerolinea.exceptions.AeropuertoExceptions;
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.repository.AeropuertoRepository;
 import co.edu.usbcali.aerolinea.services.AeropuertoService;
-import org.aspectj.lang.annotation.Before;
+import co.edu.usbcali.aerolinea.utility.AeropuertoUtilityTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
+@SpringBootTest
 public class AeropuertoControllerTest {
-    @Mock //Objeto Mock de Mockito
-    private AeropuertoService aeropuertoService;
-
-    @InjectMocks //Setea un controlador para inyectar los objetos de mockito en él
+    @Autowired
     private AeropuertoController aeropuertoController;
 
-    private MockMvc mockMvc;
+    @MockBean
+    private AeropuertoRepository aeropuertoRepository;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this); //Inicializa el controlador y los mocks
-        mockMvc = MockMvcBuilders.standaloneSetup(aeropuertoController).build();
+    @MockBean
+    private AeropuertoService aeropuertoService;
+
+    @Test
+    void guardarUsuario()throws Exception{
+        when(aeropuertoService.guardarAeropuerto(any(AeropuertoDTO.class))).thenReturn(AeropuertoUtilityTest.AEROPUERTODTO);
+        ResponseEntity<AeropuertoDTO> response = aeropuertoController.guardarAeropuerto(AeropuertoUtilityTest.AEROPUERTODTO);
+        verify(aeropuertoService).guardarAeropuerto(eq(AeropuertoUtilityTest.AEROPUERTODTO));
+        assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
     }
+
 }
+
