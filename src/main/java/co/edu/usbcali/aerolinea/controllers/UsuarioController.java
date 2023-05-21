@@ -1,9 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
-import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
-import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
-import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
-import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
+import co.edu.usbcali.aerolinea.dtos.*;
 import co.edu.usbcali.aerolinea.services.TipoAsientoService;
 import co.edu.usbcali.aerolinea.services.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -51,6 +48,29 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> login(@PathVariable String correo, String cedula) throws Exception {
         try {
             return new ResponseEntity(usuarioService.login(correo,cedula), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(path = "/modificarUsuario",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity modificarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        try {
+            return new ResponseEntity(usuarioService.modificarUsuario(usuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(path = "/UsuariosActivos")
+    public ResponseEntity<List<UsuarioDTO>> obtenerUsuariosActivos() {
+        return new ResponseEntity(usuarioService.obtenerUsuariosActivos(), HttpStatus.OK);
+    }
+    @PutMapping(value = "/eliminarUsuari/{idUsuario}")
+    public ResponseEntity eliminarAeropuerto(@PathVariable("idUsuario") Integer idUsuario) {
+        try {
+            return new ResponseEntity(usuarioService.eliminarUsuario(idUsuario), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

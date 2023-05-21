@@ -56,7 +56,7 @@ public class AvionServiceImpl implements AvionService{
     }
 
     @Override
-    public AvionDTO eliminarAeropuerto(Integer id) throws Exception {
+    public AvionDTO eliminarAvion(Integer id) throws Exception {
         AvionDTO avionEliminado = buscarPorId(id);
         avionEliminado.setEstado("Inactivo");
         return crearOModificar(avionEliminado);

@@ -1,6 +1,7 @@
 
 package co.edu.usbcali.aerolinea.controllers;
 
+import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
 import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.VueloDTO;
 import co.edu.usbcali.aerolinea.services.VuelosService;
@@ -45,5 +46,26 @@ public class VueloController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    @PutMapping(path = "/modificarVuelo",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity modificarVuelo(@RequestBody VueloDTO vueloDTO) {
+        try {
+            return new ResponseEntity(vueloService.modificarVuelo(vueloDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(path = "/vuelosActivos")
+    public ResponseEntity<List<VueloDTO>> obtenerVuelosActivos() {
+        return new ResponseEntity(vueloService.obtenerVuelosActivos(), HttpStatus.OK);
+    }
+    @PutMapping(value = "/eliminarVuelo/{idVuelo}")
+    public ResponseEntity eliminarAeropuerto(@PathVariable("idVuelo") Integer idVuelo) {
+        try {
+            return new ResponseEntity(vueloService.eliminarVuelo(idVuelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package co.edu.usbcali.aerolinea.controllers;
 
-import co.edu.usbcali.aerolinea.dtos.AeropuertoDTO;
-import co.edu.usbcali.aerolinea.dtos.MensajeDTO;
-import co.edu.usbcali.aerolinea.dtos.ReservaDTO;
+import co.edu.usbcali.aerolinea.dtos.*;
 import co.edu.usbcali.aerolinea.services.ReservaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +47,38 @@ public class ReservaController {
     @GetMapping("/obtenerReservasVuelo/{id}")
     public ResponseEntity<List<ReservaDTO>> obtenerReservasVuelo(@PathVariable Integer id) {
         try {
-            return new ResponseEntity(reservaService.buscarPorId(id), HttpStatus.OK);
+            return new ResponseEntity(reservaService.obtenerReservasVuelo(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping(path = "/modificarReserva",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity modificarReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            return new ResponseEntity(reservaService.modificarReserva(reservaDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(path = "/reservasUsuario/")
+    public ResponseEntity<List<ReservaDTO>> obtenerFacturasActivas() {
+        return new ResponseEntity(reservaService.obtenerReservasActivas(), HttpStatus.OK);
+    }
+    @PutMapping(value = "/eliminarReserva/{idReserva}")
+    public ResponseEntity eliminarAsiento(@PathVariable("idReserva") Integer idReserva) {
+        try {
+            return new ResponseEntity(reservaService.eliminarReserva(idReserva), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtenerReservasUsuario/{id}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasUsuario(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity(reservaService.obtenerReservasUsuario(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

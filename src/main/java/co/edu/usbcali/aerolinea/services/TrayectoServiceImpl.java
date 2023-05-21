@@ -4,6 +4,7 @@ import co.edu.usbcali.aerolinea.dtos.AsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.TipoAsientoDTO;
 import co.edu.usbcali.aerolinea.dtos.TrayectoDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
+import co.edu.usbcali.aerolinea.mapper.ReservaMapper;
 import co.edu.usbcali.aerolinea.mapper.TipoAsientoMapper;
 import co.edu.usbcali.aerolinea.mapper.TrayectoMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
@@ -70,6 +71,15 @@ public class TrayectoServiceImpl implements TrayectoService{
     @Override
     public List<TrayectoDTO> obtenerTrayectosActivos() {
         return TrayectoMapper.modelToDtoList(trayectoRepository.findByEstado("Activo"));
+    }
+
+    @Override
+    public List<TrayectoDTO> obtenerTrayectosVuelo(Integer idVuelo) throws Exception{
+        Vuelo vuelo = vueloRepository.findById(idVuelo)
+                .orElseThrow(() -> new Exception("No se ha encontrado ese vuelo"));
+
+        List<Trayecto> trayectos = trayectoRepository.findByVueloAndEstado(vuelo, "Activo");
+        return TrayectoMapper.modelToDtoList(trayectos);
     }
 
     private void validar(TrayectoDTO trayectoDTO, boolean esCreacion) throws Exception {

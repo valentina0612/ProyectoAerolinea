@@ -13,4 +13,6 @@ import java.util.List;
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     List<Reserva> findAllByEstadoAndVuelo(String estado, Vuelo vuelo);
     List<Reserva> findAllByUsuario(Usuario usuario);
+
+    List<Reserva> findByEstado(String estado);
 }

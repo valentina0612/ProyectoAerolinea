@@ -56,16 +56,11 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public List<FacturaDTO> obtenerFacturasPagadas() {
+    public List<FacturaDTO> obtenerFacturasActivas() {
         List<Factura> facturas = facturaRepository.findAllByEstado("Activo");
         return FacturaMapper.modelToDtoList(facturas);
     }
 
-    @Override
-    public List<FacturaDTO> obtenerFacturasPendientes() {
-        List<Factura> facturas = facturaRepository.findAllByEstado("Inactivo");
-        return FacturaMapper.modelToDtoList(facturas);
-    }
 
     @Override
     public FacturaDTO eliminarFactura(Integer id) throws Exception {

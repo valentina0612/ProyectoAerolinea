@@ -11,8 +11,7 @@ public interface FacturaService {
     FacturaDTO modificarFactura(FacturaDTO facturaDTO) throws Exception;
     List<FacturaDTO> obtenerFacturas();
     FacturaDTO buscarPorId(Integer id) throws Exception;
-    List<FacturaDTO> obtenerFacturasPagadas();
-    List<FacturaDTO> obtenerFacturasPendientes();
+    List<FacturaDTO> obtenerFacturasActivas();
 
     FacturaDTO eliminarFactura(Integer id) throws  Exception;
 

@@ -74,6 +74,11 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
+    public List<ReservaDTO> obtenerReservasActivas() {
+        return ReservaMapper.modelToDtoList(reservaRepository.findByEstado("Activo"));
+    }
+
+    @Override
     public ReservaDTO eliminarReserva(Integer id) throws Exception {
         ReservaDTO reservaEliminada = buscarPorId(id);
         reservaEliminada.setEstado("Inactivo");

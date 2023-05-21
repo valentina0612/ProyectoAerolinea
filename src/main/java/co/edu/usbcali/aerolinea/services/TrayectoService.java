@@ -16,4 +16,6 @@ public interface TrayectoService {
 
     List<TrayectoDTO> obtenerTrayectosActivos();
 
+    List<TrayectoDTO> obtenerTrayectosVuelo(Integer idVuelo) throws Exception;
+
 }
