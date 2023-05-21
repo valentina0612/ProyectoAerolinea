@@ -16,6 +16,7 @@ import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -80,6 +81,8 @@ public class FacturaServiceImpl implements FacturaService {
         if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
         if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
+
+        if(facturaDTO.getFecha().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             if(facturaRepository.existsById(facturaDTO.getFactId())) {

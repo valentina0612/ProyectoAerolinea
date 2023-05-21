@@ -18,6 +18,7 @@ import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -75,6 +76,10 @@ public class VuelosServiceImpl implements VuelosService{
         if (vueloDTO == null) throw new Exception("No han llegado los datos del vuelo.");
 
         if (vueloDTO.getVueloId() == null) throw new Exception("El id del vuelo es obligatorio.");
+
+        if(vueloDTO.getHora_llegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+
+        if(vueloDTO.getHora_salida().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             if(vueloRepository.existsById(vueloDTO.getVueloId())) {

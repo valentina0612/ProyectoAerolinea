@@ -18,6 +18,7 @@ import co.edu.usbcali.aerolinea.utility.ValidationUtility;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -86,6 +87,10 @@ public class TrayectoServiceImpl implements TrayectoService{
         if (trayectoDTO == null) throw new Exception("No han llegado los datos del trayecto.");
 
         if (trayectoDTO.getTrayId() == null) throw new Exception("El id del trayecto es obligatorio.");
+
+        if(trayectoDTO.getHoraLlegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+
+        if(trayectoDTO.getHoraSalida().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             if(trayectoRepository.existsById(trayectoDTO.getTrayId())) {
