@@ -12,4 +12,10 @@ public interface AeropuertoService {
     List<AeropuertoDTO > obtenerAeropuertos();
 
     AeropuertoDTO buscarPorId(Integer id) throws Exception;
+
+    AeropuertoDTO eliminarAeropuerto(Integer id) throws Exception;
+
+    AeropuertoDTO buscarPorNombre(String nombre) throws Exception;
+
+    List<AeropuertoDTO> obtenerAeropuertosActivos();
 }

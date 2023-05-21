@@ -11,4 +11,8 @@ public interface VuelosService {
     VueloDTO modificarVuelo(VueloDTO vueloDTO) throws Exception;
     List<VueloDTO> obtenerVuelos();
     VueloDTO buscarPorId(Integer id) throws Exception;
+
+    VueloDTO eliminarVuelo(Integer id) throws Exception;
+
+    List<VueloDTO> obtenerVuelosActivos();
 }

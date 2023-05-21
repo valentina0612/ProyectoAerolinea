@@ -45,12 +45,34 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         }
         return AeropuertoMapper.modelToDto(aeropuertoRepository.getReferenceById(id));
     }
+
+    @Override
+    public AeropuertoDTO eliminarAeropuerto(Integer id) throws Exception {
+        AeropuertoDTO aeropuertoEliminado = buscarPorId(id);
+        aeropuertoEliminado.setEstado("Inactivo");
+        return crearOModificar(aeropuertoEliminado);
+    }
+
+    @Override
+    public AeropuertoDTO buscarPorNombre(String nombre) throws Exception {
+        if (nombre == null || !aeropuertoRepository.existsAeropuertoByNombre(nombre)) {
+            throw new Exception("No se ha encontrado el aeropuerto con nombre " + nombre + ".");
+        }
+        return AeropuertoMapper.modelToDto(aeropuertoRepository.findByNombre(nombre));
+    }
+
+    @Override
+    public List<AeropuertoDTO> obtenerAeropuertosActivos() {
+        List<Aeropuerto> aeropuertos = aeropuertoRepository.findAllByEstado("Activo");
+        return AeropuertoMapper.modelToDtoList(aeropuertos);
+    }
+
     private void Validadaciones (AeropuertoDTO aeropuertoDTO, boolean esCreacion) throws Exception {
         //Validar clienteDTO
         ValidationUtility.isNull(aeropuertoDTO, "No han llegado los datos del aeropuerto.");
 
-        //Validar id cliente
-        ValidationUtility.integerIsNullOrZero(aeropuertoDTO.getAeroId(), "El id del aeropuesto es obligatorio.");
+
+        ValidationUtility.integerIsNullOrZero(aeropuertoDTO.getAeroId(), "El id del aeropuerto es obligatorio.");
 
         //Validar si es creación o actualización
         if (esCreacion) {
@@ -64,7 +86,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         }
         if (!esCreacion) {
             if (!aeropuertoRepository.existsById(aeropuertoDTO.getAeroId())) {
-                throw new Exception("No se ha encontrado el cliente con Id " +
+                throw new Exception("No se ha encontrado el aeropuerto con Id " +
                         aeropuertoDTO.getAeroId() + ".");
             }
             if (aeropuertoRepository.existsAeropuertoByNombreAndAeroId(aeropuertoDTO.getNombre(), aeropuertoDTO.getAeroId())) {
@@ -81,7 +103,6 @@ public class AeropuertoServiceImpl implements AeropuertoService {
     }
 
     private AeropuertoDTO crearOModificar(AeropuertoDTO aeropuertoDTO) {
-        // Mapeo el cliente hacia Domain/Modelo/Entity
         Aeropuerto aeropuerto = AeropuertoMapper.dtoToModel(aeropuertoDTO);
 
         return AeropuertoMapper.modelToDto(aeropuertoRepository.save(aeropuerto));

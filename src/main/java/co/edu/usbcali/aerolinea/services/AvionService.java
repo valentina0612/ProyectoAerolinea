@@ -12,4 +12,6 @@ public interface AvionService {
     AvionDTO modificarAvion(AvionDTO avionDTO) throws Exception;
     List<AvionDTO> obtenerAviones();
     AvionDTO buscarPorId(Integer id) throws Exception;
+    List<AvionDTO> obtenerAvionesActivos();
+    AvionDTO eliminarAeropuerto(Integer id) throws Exception;
 }

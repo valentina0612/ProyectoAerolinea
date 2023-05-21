@@ -13,4 +13,10 @@ public interface UsuarioService {
     List<UsuarioDTO> obtenerUsuarios();
 
     UsuarioDTO buscarPorId(Integer id) throws Exception;
+
+    UsuarioDTO eliminarUsuario(Integer id) throws Exception;
+
+    List<UsuarioDTO> obtenerUsuariosActivos();
+
+    UsuarioDTO login(String correo, String cedula) throws Exception;
 }

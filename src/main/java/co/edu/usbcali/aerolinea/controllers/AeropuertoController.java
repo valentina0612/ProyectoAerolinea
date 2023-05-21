@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/aeropuerto")
+@CrossOrigin(origins = "*")
 public class AeropuertoController {
     private final AeropuertoService aeropuertoService;
 
@@ -22,7 +23,9 @@ public class AeropuertoController {
 
     @GetMapping("/obtenerAeropuertos")
     public ResponseEntity<List<AeropuertoDTO>> aeropuertos(){
-        return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
+        return new ResponseEntity(
+                aeropuertoService.obtenerAeropuertos()
+                , HttpStatus.OK);
     }
 
     @PostMapping(path = "/guardarAeropuerto",
@@ -38,10 +41,32 @@ public class AeropuertoController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<AeropuertoDTO> buscarPorId(@PathVariable Integer id) throws Exception {
-    try{
-        return new ResponseEntity(aeropuertoService.buscarPorId(id), HttpStatus.OK);
-    } catch (Exception e){
-        return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        try {
+            return new ResponseEntity(aeropuertoService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
+    @PutMapping(path = "/modificarAeropuerto",
+                consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity modificarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+            try {
+                return new ResponseEntity(aeropuertoService.modificarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+            }
+        }
+    @GetMapping(path = "/aeropuertosActivos")
+    public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertosActivos() {
+        return new ResponseEntity(aeropuertoService.obtenerAeropuertosActivos(), HttpStatus.OK);
+    }
+    @PutMapping(value = "/eliminarAeropuerto/{idAeropuerto}")
+    public ResponseEntity eliminarAeropuerto(@PathVariable("idAeropuerto") Integer idAeropuerto) {
+        try {
+            return new ResponseEntity(aeropuertoService.eliminarAeropuerto(idAeropuerto), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

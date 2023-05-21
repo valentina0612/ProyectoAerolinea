@@ -15,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin(origins = "*")
+
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
@@ -41,6 +43,14 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) throws Exception {
         try {
             return new ResponseEntity(usuarioService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/login/{correo}/{cedula}")
+    public ResponseEntity<UsuarioDTO> login(@PathVariable String correo, String cedula) throws Exception {
+        try {
+            return new ResponseEntity(usuarioService.login(correo,cedula), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

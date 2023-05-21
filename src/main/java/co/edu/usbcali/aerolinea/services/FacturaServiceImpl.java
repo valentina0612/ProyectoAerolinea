@@ -1,6 +1,7 @@
 package co.edu.usbcali.aerolinea.services;
 import co.edu.usbcali.aerolinea.dtos.AvionDTO;
 import co.edu.usbcali.aerolinea.dtos.UsuarioDTO;
+import co.edu.usbcali.aerolinea.mapper.AeropuertoMapper;
 import co.edu.usbcali.aerolinea.mapper.AvionMapper;
 import co.edu.usbcali.aerolinea.mapper.FacturaMapper;
 import co.edu.usbcali.aerolinea.mapper.UsuarioMapper;
@@ -54,6 +55,32 @@ public class FacturaServiceImpl implements FacturaService {
         return FacturaMapper.modelToDto(facturaRepository.getReferenceById(id));
     }
 
+    @Override
+    public List<FacturaDTO> obtenerFacturasPagadas() {
+        List<Factura> facturas = facturaRepository.findAllByEstado("Activo");
+        return FacturaMapper.modelToDtoList(facturas);
+    }
+
+    @Override
+    public List<FacturaDTO> obtenerFacturasPendientes() {
+        List<Factura> facturas = facturaRepository.findAllByEstado("Inactivo");
+        return FacturaMapper.modelToDtoList(facturas);
+    }
+
+    @Override
+    public FacturaDTO eliminarFactura(Integer id) throws Exception {
+        FacturaDTO facturaEliminada = buscarPorId(id);
+        facturaEliminada.setEstado("Inactivo");
+        return crearOModificar(facturaEliminada);
+    }
+
+    @Override
+    public FacturaDTO obtenerFacturaReserva(Integer idReserva) throws Exception {
+        Reserva reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new Exception("No se ha encontrado esa reserva"));
+        return FacturaMapper.modelToDto(facturaRepository.findByReserva(reserva));
+    }
+
     private void validar(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
         if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
@@ -70,6 +97,9 @@ public class FacturaServiceImpl implements FacturaService {
             if (!facturaRepository.existsById(facturaDTO.getFactId())) {
                 throw new Exception("No se ha encontrado la factura con Id " +
                         facturaDTO.getFactId() + ".");
+            }
+            if (facturaRepository.existsByReservaAndFactId(facturaDTO.getReseId(), facturaDTO.getFactId())) {
+                throw new Exception("La reserva" + facturaDTO.getReseId()+ " ya tiene su respectiva factura.");
             }
 
         }

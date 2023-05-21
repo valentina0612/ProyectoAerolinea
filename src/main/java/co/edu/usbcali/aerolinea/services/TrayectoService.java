@@ -12,4 +12,8 @@ public interface TrayectoService {
     List<TrayectoDTO> obtenerTrayectos();
     TrayectoDTO buscarPorId(Integer id) throws Exception;
 
+    TrayectoDTO eliminarTrayecto(Integer id) throws Exception;
+
+    List<TrayectoDTO> obtenerTrayectosActivos();
+
 }

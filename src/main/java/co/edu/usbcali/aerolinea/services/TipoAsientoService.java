@@ -11,4 +11,8 @@ public interface TipoAsientoService{
     List<TipoAsientoDTO> obtenerTipoAsiento();
 
     TipoAsientoDTO buscarPorId(Integer id) throws Exception;
+
+    TipoAsientoDTO eliminarTipoAsiento(Integer id) throws Exception;
+
+    List<TipoAsientoDTO> obtenerTipoAsientosActivos();
 }

@@ -51,6 +51,31 @@ public class UsuarioServiceImpl implements UsuarioService {
         return UsuarioMapper.modelToDto(usuarioRepository.getReferenceById(id));
     }
 
+    @Override
+    public UsuarioDTO eliminarUsuario(Integer id) throws Exception {
+        UsuarioDTO usuarioEliminado = buscarPorId(id);
+        usuarioEliminado.setEstado("Inactivo");
+        return crearOModificar(usuarioEliminado);
+    }
+
+    @Override
+    public List<UsuarioDTO> obtenerUsuariosActivos() {
+        return UsuarioMapper.modelToDtoList(usuarioRepository.findByEstado("Activo"));
+    }
+
+    @Override
+    public UsuarioDTO login(String correo, String cedula) throws Exception {
+        Usuario usuario = usuarioRepository.findByCorreo(correo);
+        if (usuario == null) {
+            throw new Exception("El usuario con correo " + correo + " no se encuentra registrado.");
+        }
+        if (!usuario.getCedula().equals(cedula)) {
+            throw new Exception("La contraseña es incorrecta.");
+        }
+        return UsuarioMapper.modelToDto(usuario);
+    }
+
+
     private void validar(UsuarioDTO usuarioDTO, boolean esCreacion) throws Exception {
         if (usuarioDTO == null) throw new Exception("No han llegado los datos del usuario.");
 

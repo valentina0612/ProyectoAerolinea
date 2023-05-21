@@ -55,6 +55,31 @@ public class ReservaServiceImpl implements ReservaService {
         return ReservaMapper.modelToDto(reservaRepository.getReferenceById(id));
     }
 
+    @Override
+    public List<ReservaDTO> obtenerReservasVuelo(Integer idVuelo) throws Exception {
+        Vuelo vuelo = vueloRepository.findById(idVuelo)
+                .orElseThrow(() -> new Exception("No se ha encontrado ese vuelo"));
+
+        List<Reserva> reservas = reservaRepository.findAllByEstadoAndVuelo("Activo",vuelo);
+        return ReservaMapper.modelToDtoList(reservas);
+    }
+
+
+    @Override
+    public List<ReservaDTO> obtenerReservasUsuario(Integer idUsuario) throws  Exception{
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new Exception("No se ha encontrado ese usuario"));
+        List<Reserva> reservas = reservaRepository.findAllByUsuario(usuario);
+        return ReservaMapper.modelToDtoList(reservas);
+    }
+
+    @Override
+    public ReservaDTO eliminarReserva(Integer id) throws Exception {
+        ReservaDTO reservaEliminada = buscarPorId(id);
+        reservaEliminada.setEstado("Inactivo");
+        return  crearOModificar(reservaEliminada);
+    }
+
     private void validar(ReservaDTO reservaDTO, boolean esCreacion) throws Exception {
         if (reservaDTO == null) throw new Exception("No han llegado los datos de la reserva");
 

@@ -55,6 +55,19 @@ public class AsientoServiceImpl implements AsientoService{
         return AsientoMapper.modelToDto(asientoRepository.getReferenceById(id));
     }
 
+    @Override
+    public List<AsientoDTO> obtenerAsientosActivos() {
+        List<Asiento> asientos = asientoRepository.findAllByEstado("Activo");
+        return AsientoMapper.modelToDtoList(asientos);
+    }
+
+    @Override
+    public AsientoDTO asientoOcupado(Integer id) throws Exception {
+        AsientoDTO asientoOcupado = buscarPorId(id);
+        asientoOcupado.setEstado("Inactivo");
+        return crearOModificar(asientoOcupado);
+    }
+
     //Este método se usará cuando se implemente el método put
     private void validar(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
         if (asientoDTO == null) throw new Exception("No han llegado los datos del asiento.");

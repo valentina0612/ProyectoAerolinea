@@ -13,5 +13,8 @@ public interface RolUsuarioService {
     List<RolUsuarioDTO> obtenerRolesUsuario();
 
     RolUsuarioDTO buscarPorId(Integer id) throws Exception;
+    RolUsuarioDTO eliminarRolUsuario(Integer id) throws Exception;
+
+    List<RolUsuarioDTO> obtenerRolesActivos();
 }
 

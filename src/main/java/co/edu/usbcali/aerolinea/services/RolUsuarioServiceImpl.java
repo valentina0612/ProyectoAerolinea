@@ -47,6 +47,20 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         }
         return RolUsuarioMapper.modelToDto(rolUsuarioRepository.getReferenceById(id));
     }
+
+    @Override
+    public RolUsuarioDTO eliminarRolUsuario(Integer id) throws Exception {
+        RolUsuarioDTO rolUsuarioEliminado = buscarPorId(id);
+        rolUsuarioEliminado.setDescripcion("Inactivo");
+        return modificarRolUsuario(rolUsuarioEliminado);
+    }
+
+    @Override
+    public List<RolUsuarioDTO> obtenerRolesActivos() {
+        List<RolUsuario> rolesUsuario = rolUsuarioRepository.findByEstado("Activo");
+        return RolUsuarioMapper.modelToDtoList(rolesUsuario);
+    }
+
     private void validadaciones (RolUsuarioDTO rolUsuarioDTO, boolean esCreacion) throws Exception {
         ValidationUtility.isNull(rolUsuarioDTO, "No han llegado los datos del rol usuario.");
 

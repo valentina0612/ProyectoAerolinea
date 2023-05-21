@@ -48,6 +48,20 @@ public class AvionServiceImpl implements AvionService{
         }
         return AvionMapper.modelToDto(avionRepository.getReferenceById(id));
     }
+
+    @Override
+    public List<AvionDTO> obtenerAvionesActivos() {
+        List<Avion> aviones = avionRepository.findAllByEstado("Activo");
+        return AvionMapper.modelToDtoList(aviones);
+    }
+
+    @Override
+    public AvionDTO eliminarAeropuerto(Integer id) throws Exception {
+        AvionDTO avionEliminado = buscarPorId(id);
+        avionEliminado.setEstado("Inactivo");
+        return crearOModificar(avionEliminado);
+    }
+
     private void validar(AvionDTO avionDTO, boolean esCreacion) throws Exception {
 
         if (avionDTO == null) throw new Exception("No han llegado los datos del avión.");

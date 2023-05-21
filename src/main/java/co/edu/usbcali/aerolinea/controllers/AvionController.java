@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/avion")
+@CrossOrigin(origins = "*")
+
 public class AvionController {
     private final AvionService avionService;
 

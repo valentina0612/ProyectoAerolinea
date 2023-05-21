@@ -59,6 +59,18 @@ public class VuelosServiceImpl implements VuelosService{
         return VueloMapper.modelToDto(vueloRepository.getReferenceById(id));
     }
 
+    @Override
+    public VueloDTO eliminarVuelo(Integer id) throws Exception {
+        VueloDTO vueloEliminado = buscarPorId(id);
+        vueloEliminado.setEstado("Inactivo");
+        return crearOModificar(vueloEliminado);
+    }
+
+    @Override
+    public List<VueloDTO> obtenerVuelosActivos() {
+        return VueloMapper.modelToDtoList(vueloRepository.findByEstado("Activo"));
+    }
+
     private void validar(VueloDTO vueloDTO, boolean esCreacion) throws Exception {
         if (vueloDTO == null) throw new Exception("No han llegado los datos del vuelo.");
 

@@ -9,9 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 @RestController
 @RequestMapping("/reserva")
+@CrossOrigin(origins = "*")
+
 public class ReservaController {
     private final ReservaService reservaService;
 
@@ -43,4 +46,14 @@ public class ReservaController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/obtenerReservasVuelo/{id}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasVuelo(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity(reservaService.buscarPorId(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

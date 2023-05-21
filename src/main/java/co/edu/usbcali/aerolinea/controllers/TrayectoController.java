@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/trayecto")
+@CrossOrigin(origins = "*")
+
 public class TrayectoController {
     private final TrayectoService trayectoService;
 

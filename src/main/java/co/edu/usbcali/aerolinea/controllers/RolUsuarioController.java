@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rolusuario")
+@CrossOrigin(origins = "*")
+
 public class RolUsuarioController {
 
     private final RolUsuarioService rolUsuarioService;

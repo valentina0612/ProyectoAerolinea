@@ -60,6 +60,18 @@ public class TrayectoServiceImpl implements TrayectoService{
         return TrayectoMapper.modelToDto(trayectoRepository.getReferenceById(id));
     }
 
+    @Override
+    public TrayectoDTO eliminarTrayecto(Integer id) throws Exception {
+        TrayectoDTO trayectoEliminado = buscarPorId(id);
+        trayectoEliminado.setEstado("Inactivo");
+        return crearOModificar(trayectoEliminado);
+    }
+
+    @Override
+    public List<TrayectoDTO> obtenerTrayectosActivos() {
+        return TrayectoMapper.modelToDtoList(trayectoRepository.findByEstado("Activo"));
+    }
+
     private void validar(TrayectoDTO trayectoDTO, boolean esCreacion) throws Exception {
         if (trayectoDTO == null) throw new Exception("No han llegado los datos del trayecto.");
 

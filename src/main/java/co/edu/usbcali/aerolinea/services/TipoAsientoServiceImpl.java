@@ -45,6 +45,19 @@ public class TipoAsientoServiceImpl implements TipoAsientoService{
         }
         return TipoAsientoMapper.modelToDto(tipoAsientoRepository.getReferenceById(id));
     }
+
+    @Override
+    public TipoAsientoDTO eliminarTipoAsiento(Integer id) throws Exception {
+        TipoAsientoDTO tipoAsientoEliminado = buscarPorId(id);
+        tipoAsientoEliminado.setEstado("Inactivo");
+        return crearOModificar(tipoAsientoEliminado);
+    }
+
+    @Override
+    public List<TipoAsientoDTO> obtenerTipoAsientosActivos() {
+        return TipoAsientoMapper.modelToDtoList(tipoAsientoRepository.findByEstado("Activo"));
+    }
+
     private void validadaciones (TipoAsientoDTO tipoAsientoDTO, boolean esCreacion) throws Exception {
         ValidationUtility.isNull(tipoAsientoDTO, "No han llegado los datos del tipo de asiento.");
 
