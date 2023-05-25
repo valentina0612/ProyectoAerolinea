@@ -21,7 +21,7 @@ public class FacturaMapper {
     }
     public static Factura dtoToModel (FacturaDTO facturaDTO){
         return Factura.builder()
-                .factId(facturaDTO.getFactId())
+                //.factId(facturaDTO.getFactId())
                 .fecha(facturaDTO.getFecha())
                 .build();
     }

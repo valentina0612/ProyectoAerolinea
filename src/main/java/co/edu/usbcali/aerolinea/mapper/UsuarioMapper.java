@@ -27,7 +27,7 @@ public class UsuarioMapper {
     }
     public static Usuario dtoToModel (UsuarioDTO usuarioDTO){
         return Usuario.builder()
-                .usuaId(usuarioDTO.getUsuaId())
+                //.usuaId(usuarioDTO.getUsuaId())
                 .cedula(usuarioDTO.getCedula())
                 .nombre(usuarioDTO.getNombre())
                 .apellido(usuarioDTO.getApellido())

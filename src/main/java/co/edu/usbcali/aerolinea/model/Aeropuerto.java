@@ -29,4 +29,6 @@ public class Aeropuerto {
 
     @Column(length = 1, nullable = false)
     private String estado;
+
+
 }

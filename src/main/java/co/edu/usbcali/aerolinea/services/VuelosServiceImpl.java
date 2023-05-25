@@ -75,7 +75,7 @@ public class VuelosServiceImpl implements VuelosService{
     private void validar(VueloDTO vueloDTO, boolean esCreacion) throws Exception {
         if (vueloDTO == null) throw new Exception("No han llegado los datos del vuelo.");
 
-        if (vueloDTO.getVueloId() == null) throw new Exception("El id del vuelo es obligatorio.");
+        //if (vueloDTO.getVueloId() == null) throw new Exception("El id del vuelo es obligatorio.");
 
         if(vueloDTO.getHora_llegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
@@ -89,10 +89,13 @@ public class VuelosServiceImpl implements VuelosService{
 
         }
         if (esCreacion) {
+            /*
             if(vueloRepository.existsById(vueloDTO.getVueloId())) {
                 throw new Exception("El vuelo con Id " +
                         vueloDTO.getVueloId() + " ya se encuentra registrado.");
             }
+
+             */
         }
         if (!esCreacion) {
             if (!vueloRepository.existsById(vueloDTO.getVueloId())) {

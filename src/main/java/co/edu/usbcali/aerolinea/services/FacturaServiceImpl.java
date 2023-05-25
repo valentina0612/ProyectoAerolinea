@@ -80,15 +80,18 @@ public class FacturaServiceImpl implements FacturaService {
     private void validar(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
         if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
-        if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
+        //if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
 
         if(facturaDTO.getFecha().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
+            /*
             if(facturaRepository.existsById(facturaDTO.getFactId())) {
                 throw new Exception("La factura con Id " +
                         facturaDTO.getFactId() + " ya se encuentra registrado.");
             }
+
+             */
         }
 
         if (!esCreacion) {
@@ -108,7 +111,7 @@ public class FacturaServiceImpl implements FacturaService {
         }
         ValidationUtility.stringIsNullOrBlank(facturaDTO.getEstado(), "El estado no debe ser nulo");
         ValidationUtility.integerIsNullOrLessZero(facturaDTO.getFactId(), "El id de la factura debe ser positivo");
-        ValidationUtility.integerIsNullOrLessZero(facturaDTO.getReseId(), "El id la reserva debe ser positivo");
+        //ValidationUtility.integerIsNullOrLessZero(facturaDTO.getReseId(), "El id la reserva debe ser positivo");
     }
     private FacturaDTO crearOModificar(FacturaDTO facturaDTO) {
         Factura factura = FacturaMapper.dtoToModel(facturaDTO);

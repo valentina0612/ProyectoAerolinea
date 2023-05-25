@@ -35,7 +35,7 @@ public class VueloMapper {
     }
     public static Vuelo dtoToModel (VueloDTO vueloDTO){
         return Vuelo.builder()
-                .vueloId(vueloDTO.getVueloId())
+                //.vueloId(vueloDTO.getVueloId())
                 .precio(vueloDTO.getPrecio())
                 .hora_salida(vueloDTO.getHora_salida())
                 .hora_llegada(vueloDTO.getHora_llegada())

@@ -72,13 +72,16 @@ public class AsientoServiceImpl implements AsientoService{
     private void validar(AsientoDTO asientoDTO, boolean esCreacion) throws Exception {
         if (asientoDTO == null) throw new Exception("No han llegado los datos del asiento.");
 
-        if (asientoDTO.getAsieId() == null) throw new Exception("El id del asiento es obligatorio.");
+        //if (asientoDTO.getAsieId() == null) throw new Exception("El id del asiento es obligatorio.");
 
         if (esCreacion) {
+            /*
             if(asientoRepository.existsById(asientoDTO.getAsieId())) {
                 throw new Exception("El asiento con Id " +
                         asientoDTO.getAsieId() + " ya se encuentra registrado.");
             }
+
+             */
         }
         if (!esCreacion) {
             if (!asientoRepository.existsById(asientoDTO.getAsieId())) {
@@ -100,7 +103,7 @@ public class AsientoServiceImpl implements AsientoService{
         ValidationUtility.stringIsNullOrBlank(asientoDTO.getUbicacion(), "La ubicación es obligatorio.");
         ValidationUtility.integerIsNullOrLessZero(asientoDTO.getPrecio(), "El precio debe ser mayor a 0");
         ValidationUtility.integerIsNullOrLessZero(asientoDTO.getTipoAsiento_tiasId(), "El ID del tipo de asiento debe ser un número positivo");
-        ValidationUtility.integerIsNullOrLessZero(asientoDTO.getAvion_avioId(), "El ID del avión debe ser positivo");
+        //ValidationUtility.integerIsNullOrLessZero(asientoDTO.getAvion_avioId(), "El ID del avión debe ser positivo");
         ValidationUtility.stringIsNullOrBlank(asientoDTO.getEstado(), "El estado es obligatorio.");
     }
     private AsientoDTO crearOModificar(AsientoDTO asientoDTO) {

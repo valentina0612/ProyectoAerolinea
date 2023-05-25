@@ -79,7 +79,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private void validar(UsuarioDTO usuarioDTO, boolean esCreacion) throws Exception {
         if (usuarioDTO == null) throw new Exception("No han llegado los datos del usuario.");
 
-        if (usuarioDTO.getUsuaId() == null) throw new Exception("El id del usuario es obligatorio.");
+        //if (usuarioDTO.getUsuaId() == null) throw new Exception("El id del usuario es obligatorio.");
 
         if (StringUtils.isBlank(usuarioDTO.getCorreo()) ||
                 !Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, usuarioDTO.getCorreo())) {
@@ -94,13 +94,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         }
         if (esCreacion) {
+            /*
             if(usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
                 throw new Exception("El usuario con Id " +
                         usuarioDTO.getUsuaId() + " ya se encuentra registrado.");
             }
+
+             */
             if (usuarioRepository.existsByCorreo(usuarioDTO.getCorreo())) {
                 throw new Exception("El correo electrónico " + usuarioDTO.getCorreo() + " ya está registrado para otro usuario.");
             }
+            if (usuarioRepository.existsByCedula(usuarioDTO.getCedula())) {
+                throw new Exception("La cédula " + usuarioDTO.getCedula() + " ya está registrado para otro usuario.");
+            }
+
         }
         if (!esCreacion) {
             if (!usuarioRepository.existsById(usuarioDTO.getUsuaId())) {

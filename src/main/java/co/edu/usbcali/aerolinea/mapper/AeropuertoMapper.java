@@ -19,8 +19,8 @@ public class AeropuertoMapper {
     }
 
     public static Aeropuerto dtoToModel (AeropuertoDTO aeropuertoDto){
-        return Aeropuerto.builder().
-                aeroId(aeropuertoDto.getAeroId())
+        return Aeropuerto.builder()
+                //.aeroId(aeropuertoDto.getAeroId())
                 .nombre(aeropuertoDto.getNombre())
                 .iata(aeropuertoDto.getIata())
                 .ubicacion(aeropuertoDto.getUbicacion())

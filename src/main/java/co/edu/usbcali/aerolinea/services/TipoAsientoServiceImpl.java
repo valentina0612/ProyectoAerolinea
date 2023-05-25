@@ -74,10 +74,13 @@ public class TipoAsientoServiceImpl implements TipoAsientoService{
             }
         }
         if (!esCreacion) {
+            /*
             if (!tipoAsientoRepository.existsById(tipoAsientoDTO.getTiasId())) {
                 throw new Exception("No se ha encontrado el tipo de asiento con Id " +
                         tipoAsientoDTO.getDescripcion() + ".");
             }
+
+             */
             if (tipoAsientoRepository.existsTipoAsientoByDescripcionAndTiasIdIsNot(tipoAsientoDTO.getDescripcion(), tipoAsientoDTO.getTiasId())) {
                 throw new Exception("El tipo de asiento " + tipoAsientoDTO.getDescripcion() + " ya está registrado.");
             }

@@ -72,14 +72,16 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         ValidationUtility.isNull(aeropuertoDTO, "No han llegado los datos del aeropuerto.");
 
 
-        ValidationUtility.integerIsNullOrZero(aeropuertoDTO.getAeroId(), "El id del aeropuerto es obligatorio.");
+        //ValidationUtility.integerIsNullOrZero(aeropuertoDTO.getAeroId(), "El id del aeropuerto es obligatorio.");
 
         //Validar si es creación o actualización
         if (esCreacion) {
+            /*
             if(aeropuertoRepository.existsById(aeropuertoDTO.getAeroId())) {
-                throw new Exception("El cliente con Id " +
+                throw new Exception("El aeropuerto con Id " +
                         aeropuertoDTO.getAeroId() + " ya se encuentra registrado.");
             }
+    */
             if (aeropuertoRepository.existsAeropuertoByNombre(aeropuertoDTO.getNombre())) {
                 throw new Exception("El nombre " + aeropuertoDTO.getNombre() + " ya está registrado.");
             }

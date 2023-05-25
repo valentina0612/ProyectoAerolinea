@@ -64,14 +64,17 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
     private void validadaciones (RolUsuarioDTO rolUsuarioDTO, boolean esCreacion) throws Exception {
         ValidationUtility.isNull(rolUsuarioDTO, "No han llegado los datos del rol usuario.");
 
-        ValidationUtility.integerIsNullOrZero(rolUsuarioDTO.getRousId(), "El id del rol de usuario es obligatorio.");
+        //ValidationUtility.integerIsNullOrZero(rolUsuarioDTO.getRousId(), "El id del rol de usuario es obligatorio.");
 
         //Validar si es creación o actualización
         if (esCreacion) {
+            /*
             if(rolUsuarioRepository.existsById(rolUsuarioDTO.getRousId())) {
                 throw new Exception("El rol de usuario con Id " +
                         rolUsuarioDTO.getRousId() + " ya se encuentra registrado.");
             }
+
+             */
             if (rolUsuarioRepository.existsRolUsuarioByDescripcion(rolUsuarioDTO.getDescripcion())) {
                 throw new Exception("El rol de usuario " + rolUsuarioDTO.getRousId() + " ya está registrado.");
             }

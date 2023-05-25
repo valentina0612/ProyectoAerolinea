@@ -66,13 +66,15 @@ public class AvionServiceImpl implements AvionService{
 
         if (avionDTO == null) throw new Exception("No han llegado los datos del avión.");
 
-        if (avionDTO.getAvioID() == null) throw new Exception("El id del avión es obligatorio.");
+        //if (avionDTO.getAvioID() == null) throw new Exception("El id del avión es obligatorio.");
 
         if (esCreacion) {
+            /*
             if(avionRepository.existsById(avionDTO.getAvioID())) {
                 throw new Exception("El avión con Id " +
                          avionDTO.getAvioID() + " ya se encuentra registrado.");
-            }
+            }/
+             */
         }
         if (!esCreacion) {
             if (!avionRepository.existsById(avionDTO.getAvioID())) {
@@ -80,7 +82,7 @@ public class AvionServiceImpl implements AvionService{
                         avionDTO.getAvioID()+ ".");
             }
         }
-        ValidationUtility.integerIsNullOrLessZero(avionDTO.getAvioID(), "El id del avión debe ser positivo");
+        //ValidationUtility.integerIsNullOrLessZero(avionDTO.getAvioID(), "El id del avión debe ser positivo");
         ValidationUtility.stringIsNullOrBlank(avionDTO.getModelo(), "El modelo es obligatorio");
         ValidationUtility.stringIsNullOrBlank(avionDTO.getEstado(), "El estado es obligatorio.");
     }

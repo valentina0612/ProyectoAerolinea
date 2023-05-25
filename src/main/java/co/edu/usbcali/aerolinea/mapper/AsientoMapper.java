@@ -27,7 +27,7 @@ public class AsientoMapper {
     }
     public static Asiento dtoToModel (AsientoDTO asientoDTO){
         return Asiento.builder()
-                .asieId(asientoDTO.getAsieId())
+                //.asieId(asientoDTO.getAsieId())
                 .ubicacion(asientoDTO.getUbicacion())
                 .precio(asientoDTO.getPrecio())
                 .estado(asientoDTO.getEstado())

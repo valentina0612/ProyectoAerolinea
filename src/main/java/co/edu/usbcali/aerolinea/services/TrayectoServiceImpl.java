@@ -86,17 +86,20 @@ public class TrayectoServiceImpl implements TrayectoService{
     private void validar(TrayectoDTO trayectoDTO, boolean esCreacion) throws Exception {
         if (trayectoDTO == null) throw new Exception("No han llegado los datos del trayecto.");
 
-        if (trayectoDTO.getTrayId() == null) throw new Exception("El id del trayecto es obligatorio.");
+        //if (trayectoDTO.getTrayId() == null) throw new Exception("El id del trayecto es obligatorio.");
 
         if(trayectoDTO.getHoraLlegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if(trayectoDTO.getHoraSalida().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
+            /*
             if(trayectoRepository.existsById(trayectoDTO.getTrayId())) {
                 throw new Exception("El trayecto con Id " +
                         trayectoDTO.getTrayId() + " ya se encuentra registrado.");
             }
+
+             */
 
         }
         if (!esCreacion) {

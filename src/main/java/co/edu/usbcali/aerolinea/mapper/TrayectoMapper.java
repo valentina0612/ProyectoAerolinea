@@ -26,7 +26,7 @@ public class TrayectoMapper {
     }
     public static Trayecto dtoToModel (TrayectoDTO trayectoDTO){
         return Trayecto.builder()
-                .trayId(trayectoDTO.getTrayId())
+                //.trayId(trayectoDTO.getTrayId())
                 .horaSalida(trayectoDTO.getHoraSalida())
                 .horaLlegada(trayectoDTO.getHoraLlegada())
                 .estado(trayectoDTO.getEstado())

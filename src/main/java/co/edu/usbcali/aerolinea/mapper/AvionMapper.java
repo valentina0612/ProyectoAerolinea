@@ -17,7 +17,7 @@ public class AvionMapper {
     }
     public static Avion dtoToModel (AvionDTO avionDTO){
         return Avion.builder()
-                .avioID(avionDTO.getAvioID())
+                //.avioID(avionDTO.getAvioID())
                 .modelo(avionDTO.getModelo())
                 .estado(avionDTO.getEstado())
                 .build();

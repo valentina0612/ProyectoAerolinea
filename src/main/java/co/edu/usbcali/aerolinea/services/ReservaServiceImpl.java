@@ -90,15 +90,18 @@ public class ReservaServiceImpl implements ReservaService {
     private void validar(ReservaDTO reservaDTO, boolean esCreacion) throws Exception {
         if (reservaDTO == null) throw new Exception("No han llegado los datos de la reserva");
 
-        if (reservaDTO.getReseId() == null) throw new Exception("El ID de la reserva es obligatorio.");
+        //if (reservaDTO.getReseId() == null) throw new Exception("El ID de la reserva es obligatorio.");
 
         if(reservaDTO.getFecha().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
+            /*
             if(reservaRepository.existsById(reservaDTO.getReseId())) {
                 throw new Exception("La reserva con Id " +
                         reservaDTO.getReseId() + " ya se encuentra registrada.");
             }
+
+             */
 
         }
         if (!esCreacion) {
