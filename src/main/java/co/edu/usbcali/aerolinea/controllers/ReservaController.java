@@ -63,11 +63,11 @@ public class ReservaController {
         }
     }
     @GetMapping(path = "/reservasUsuario/")
-    public ResponseEntity<List<ReservaDTO>> obtenerFacturasActivas() {
+    public ResponseEntity<List<ReservaDTO>> obtenerReservaActivas() {
         return new ResponseEntity(reservaService.obtenerReservasActivas(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarReserva/{idReserva}")
-    public ResponseEntity eliminarAsiento(@PathVariable("idReserva") Integer idReserva) {
+    public ResponseEntity eliminarReserva(@PathVariable("idReserva") Integer idReserva) {
         try {
             return new ResponseEntity(reservaService.eliminarReserva(idReserva), HttpStatus.OK);
         } catch (Exception e) {

@@ -68,7 +68,7 @@ public class UsuarioController {
         return new ResponseEntity(usuarioService.obtenerUsuariosActivos(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarUsuari/{idUsuario}")
-    public ResponseEntity eliminarAeropuerto(@PathVariable("idUsuario") Integer idUsuario) {
+    public ResponseEntity eliminarUsuario(@PathVariable("idUsuario") Integer idUsuario) {
         try {
             return new ResponseEntity(usuarioService.eliminarUsuario(idUsuario), HttpStatus.OK);
         } catch (Exception e) {

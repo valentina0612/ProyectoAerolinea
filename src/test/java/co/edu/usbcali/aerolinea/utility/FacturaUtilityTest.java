@@ -15,10 +15,14 @@ public class FacturaUtilityTest {
     public static String ESTADO_UNO = "A";
     public static Integer FACTURAS_SIZE = 2;
     public static Integer FACTURAS_VACIO_SIZE = 0;
-
+    public static Date FECHA_FUTURO_DATE;
+    public static Integer ID_DOS = 2;
     public static String FECHA_FUTURO = "2023-11-27 08:00";
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
-    public static Date FECHA_FUTURO_DATE;
+
+
+    public static String FECHA_REQUIRED_MESSAGE = "La fecha de la factura no puede ser nula o vacía";
+    public static String ID_NOT_FOUND_MESSAGE = "La factura con id %s no existe";
 
     static {
         try {
@@ -42,14 +46,29 @@ public class FacturaUtilityTest {
             .estado("A")
             .build();
 
-    public static FacturaDTO FACTURADTO = FacturaDTO.builder()
+    public static FacturaDTO FACTURADTO_UNO = FacturaDTO.builder()
             .factId(1)
             .reseId(ReservaUtilityTest.ID_UNO)
             .fecha(FECHA_FUTURO_DATE)
             .estado("A")
             .build();
 
-    public static List<Factura> FACTURAS = Arrays.asList(FACTURA_UNO, FACTURA_DOS);
+    public static FacturaDTO FACTURADTO_DOS = FacturaDTO.builder()
+            .factId(2)
+            .reseId(ReservaUtilityTest.ID_UNO)
+            .fecha(FECHA_FUTURO_DATE)
+            .estado("A")
+            .build();
 
+    public static FacturaDTO FACTURADTO_FECHA_NULL = FacturaDTO.builder()
+            .factId(1)
+            .reseId(ReservaUtilityTest.ID_UNO)
+            .fecha(null)
+            .estado("A")
+            .build();
+
+    public static List<Factura> FACTURAS = Arrays.asList(FACTURA_UNO, FACTURA_DOS);
+    public static List<FacturaDTO> FACTURASDTO = Arrays.asList(FACTURADTO_UNO, FACTURADTO_DOS);
     public static List<Factura> FACTURAS_VACIO = Arrays.asList();
+    public static List<FacturaDTO> FACTURASDTO_VACIO = Arrays.asList();
 }

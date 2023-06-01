@@ -61,7 +61,7 @@ public class VueloController {
         return new ResponseEntity(vueloService.obtenerVuelosActivos(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarVuelo/{idVuelo}")
-    public ResponseEntity eliminarAeropuerto(@PathVariable("idVuelo") Integer idVuelo) {
+    public ResponseEntity eliminarVuelo(@PathVariable("idVuelo") Integer idVuelo) {
         try {
             return new ResponseEntity(vueloService.eliminarVuelo(idVuelo), HttpStatus.OK);
         } catch (Exception e) {

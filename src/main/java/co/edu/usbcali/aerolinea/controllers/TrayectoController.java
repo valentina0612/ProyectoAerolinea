@@ -56,7 +56,7 @@ public class TrayectoController {
         }
     }
     @GetMapping(path = "/TrayectosActivos")
-    public ResponseEntity<List<AsientoDTO>> obtenerTrayectosActivos() {
+    public ResponseEntity<List<TrayectoDTO>> obtenerTrayectosActivos() {
         return new ResponseEntity(trayectoService.obtenerTrayectosActivos(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarTrayecto/{idTrayecto}")

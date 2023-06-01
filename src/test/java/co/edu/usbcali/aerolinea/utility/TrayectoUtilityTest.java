@@ -14,6 +14,7 @@ public class TrayectoUtilityTest {
     public static Date HORA_SALIDA_UNO = new Date();
     public static Date HORA_LLEGADA_UNO = new Date();
     public static String ESTADO_UNO = "A";
+    public static Integer ID_DOS = 2;
     public static Integer TRAYECTOS_SIZE = 2;
     public static Integer TRAYECTOS_VACIO_SIZE = 0;
     public static String FECHA_FUTURO = "2023-11-27 08:00";
@@ -21,6 +22,9 @@ public class TrayectoUtilityTest {
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
     public static Date FECHA_FUTURO_DATE;
     public static Date FECHA_FUTURO_DATE_DOS;
+
+    public static String HORASALIDA_REQUIRED_MESSAGE = "La hora de salida no puede ser nula";
+    public static String ID_NOT_FOUND_MESSAGE = "El trayecto con id %s no existe";
 
     static {
         try {
@@ -59,7 +63,7 @@ public class TrayectoUtilityTest {
             .estado("A")
             .build();
 
-    public static TrayectoDTO TRAYECTODTO = TrayectoDTO.builder()
+    public static TrayectoDTO TRAYECTODTO_UNO = TrayectoDTO.builder()
             .trayId(1)
             .avioId(AvionUtilityTest.AVION_UNO.getAvioID())
             .aereoIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
@@ -70,7 +74,32 @@ public class TrayectoUtilityTest {
             .estado("A")
             .build();
 
-    public static List<Trayecto> TRAYECTOS = Arrays.asList(TRAYECTO_UNO, TRAYECTO_DOS);
+    public static TrayectoDTO TRAYECTODTO_DOS = TrayectoDTO.builder()
+            .trayId(2)
+            .avioId(AvionUtilityTest.AVION_UNO.getAvioID())
+            .aereoIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
+            .aereoIdDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getAeroId())
+            .horaSalida(FECHA_FUTURO_DATE)
+            .horaLlegada(FECHA_FUTURO_DATE_DOS)
+            .vuelId(VuelosUtilityTest.VUELO_UNO.getVueloId())
+            .estado("A")
+            .build();
 
+    public static TrayectoDTO TRAYECTODTO_HORASALIDA_NULL = TrayectoDTO.builder()
+            .trayId(1)
+            .trayId(2)
+            .avioId(AvionUtilityTest.AVION_UNO.getAvioID())
+            .aereoIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
+            .aereoIdDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getAeroId())
+            .horaSalida(null)
+            .horaLlegada(FECHA_FUTURO_DATE_DOS)
+            .vuelId(VuelosUtilityTest.VUELO_UNO.getVueloId())
+            .estado("A")
+            .build();
+
+    public static List<Trayecto> TRAYECTOS = Arrays.asList(TRAYECTO_UNO, TRAYECTO_DOS);
+    public static List<TrayectoDTO> TRAYECTOSDTO = Arrays.asList(TRAYECTODTO_UNO, TRAYECTODTO_DOS);
     public static List<Trayecto> TRAYECTOS_VACIO = Arrays.asList();
+    public static List<TrayectoDTO> TRAYECTOSDTO_VACIO = Arrays.asList();
+
 }

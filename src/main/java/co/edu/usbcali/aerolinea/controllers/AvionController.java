@@ -64,7 +64,7 @@ public class AvionController {
         return new ResponseEntity(avionService.obtenerAvionesActivos(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarAvion/{idAvion}")
-    public ResponseEntity eliminarAsiento(@PathVariable("idAvion") Integer idAvion) {
+    public ResponseEntity eliminarAvion(@PathVariable("idAvion") Integer idAvion) {
         try {
             return new ResponseEntity(avionService.eliminarAvion(idAvion), HttpStatus.OK);
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AeropuertoUtilityTest {
+
     public static Integer ID_UNO = 1;
     public static String NOMBRE_UNO = "Aeropuerto Internacional El Dorado";
     public static String IATA_UNO = "BOG";
@@ -19,6 +20,9 @@ public class AeropuertoUtilityTest {
     public static String ESTADO_DOS = "A";
     public static Integer AEROPUERTOS_SIZE = 2;
     public static Integer AEROPUERTOS_VACIO_SIZE = 0;
+
+    public static String NOMBRE_REQUIRED_MESSAGE = "El nombre del aeropuerto no puede ser nulo  o vacío";
+    public static String ID_NOT_FOUND_MESSAGE = "El aeropuerto con id %s no existe";
 
     public static Aeropuerto AEROPUERTO_UNO = Aeropuerto.builder()
             .aeroId(1)
@@ -36,15 +40,32 @@ public class AeropuertoUtilityTest {
             .estado("A")
             .build();
 
-    public static AeropuertoDTO AEROPUERTODTO = AeropuertoDTO.builder()
-            .aeroId(2)
+    public static AeropuertoDTO AEROPUERTODTO_UNO = AeropuertoDTO.builder()
+            .aeroId(1)
             .nombre("Aeropuerto Internacional El Dorado")
             .iata("BOG")
             .ubicacion("Bogotá")
             .estado("A")
             .build();
 
-    public static List<Aeropuerto> AEROPUERTOS = Arrays.asList(AEROPUERTO_UNO, AEROPUERTO_DOS);
+    public static AeropuertoDTO AEROPUERTODTO_DOS = AeropuertoDTO.builder()
+            .aeroId(2)
+            .nombre("Aeropuerto Internacional Alfonso Bonilla Aragón")
+            .iata("COL")
+            .ubicacion("Santiago de Cali")
+            .estado("A")
+            .build();
 
+    public static AeropuertoDTO AEROPUERTODTO_NOMBRE_NULL = AeropuertoDTO.builder()
+            .aeroId(1)
+            .nombre(null)
+            .iata("BOG")
+            .ubicacion("Bogotá")
+            .estado("A")
+            .build();
+
+    public static List<Aeropuerto> AEROPUERTOS = Arrays.asList(AEROPUERTO_UNO, AEROPUERTO_DOS);
     public static List<Aeropuerto> AEROPUERTOS_VACIO = Arrays.asList();
+    public static List<AeropuertoDTO> AEROPUERTOSDTO = Arrays.asList(AEROPUERTODTO_UNO, AEROPUERTODTO_DOS);
+    public static List<AeropuertoDTO> AEROPUERTOSDTO_VACIO = Arrays.asList();
 }

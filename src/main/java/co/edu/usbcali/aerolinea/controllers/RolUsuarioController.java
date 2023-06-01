@@ -63,7 +63,7 @@ public class RolUsuarioController {
         return new ResponseEntity(rolUsuarioService.obtenerRolesActivos(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarRolUsuario/{idRolUsuario}")
-    public ResponseEntity eliminarAsiento(@PathVariable("idRolUsuario") Integer idRolUsuario) {
+    public ResponseEntity eliminarRol(@PathVariable("idRolUsuario") Integer idRolUsuario) {
         try {
             return new ResponseEntity(rolUsuarioService.eliminarRolUsuario(idRolUsuario), HttpStatus.OK);
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class VuelosUtilityTest {
     public static Integer ID_UNO = 1;
+    public static Integer ID_DOS = 2;
     public static long PRECIO_UNO = 100000;
     public static Date HORA_SALIDA_UNO = new Date();
     public static Date HORA_LLEGADA_UNO = new Date();
@@ -25,6 +26,9 @@ public class VuelosUtilityTest {
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
     public static Date FECHA_FUTURO_DATE;
     public static Date FECHA_FUTURO_DATE_DOS;
+    public static String HORASALIDA_REQUIRED_MESSAGE = "La hora de salida del vuelo no puede ser nula";
+    public static String ID_NOT_FOUND_MESSAGE = "El vuelo con id %s no existe";
+
 
     static {
         try {
@@ -67,7 +71,7 @@ public class VuelosUtilityTest {
             .estado("A")
             .build();
 
-    public static VueloDTO VUELODTO = VueloDTO.builder()
+    public static VueloDTO VUELODTO_UNO = VueloDTO.builder()
             .vueloId(1)
             .aeropuerto_aeroIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
             .aeropuerto_aeroIdDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getAeroId())
@@ -79,8 +83,36 @@ public class VuelosUtilityTest {
             .precioAsientoBasico(10000)
             .estado("A")
             .build();
+    public static VueloDTO VUELODTO_DOS = VueloDTO.builder()
+            .vueloId(2)
+            .aeropuerto_aeroIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
+            .aeropuerto_aeroIdDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getAeroId())
+            .precio(150000)
+            .hora_salida(FECHA_FUTURO_DATE)
+            .hora_llegada(FECHA_FUTURO_DATE_DOS)
+            .precioAsientoVip(80000)
+            .precioAsientoNormal(50000)
+            .precioAsientoBasico(30000)
+            .estado("A")
+            .build();
+
+    public static VueloDTO VUELODTO_HORASALIDA_NULL = VueloDTO.builder()
+            .vueloId(1)
+            .aeropuerto_aeroIdOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getAeroId())
+            .aeropuerto_aeroIdDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getAeroId())
+            .precio(100000)
+            .hora_salida(null)
+            .hora_llegada(FECHA_FUTURO_DATE_DOS)
+            .precioAsientoVip(50000)
+            .precioAsientoNormal(30000)
+            .precioAsientoBasico(10000)
+            .estado("A")
+            .build();
 
     public static List<Vuelo> VUELOS = Arrays.asList(VUELO_UNO, VUELO_DOS);
+    public static List<VueloDTO> VUELOSDTO = Arrays.asList(VUELODTO_UNO, VUELODTO_DOS);
 
     public static List<Vuelo> VUELOS_VACIO = Arrays.asList();
+    public static List<VueloDTO> VUELOSDTO_VACIO = Arrays.asList();
+
 }

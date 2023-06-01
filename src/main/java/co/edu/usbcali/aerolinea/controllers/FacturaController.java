@@ -59,11 +59,11 @@ public class FacturaController {
         }
     }
     @GetMapping(path = "/facturasActivas")
-    public ResponseEntity<List<AvionDTO>> obtenerFacturasActivas() {
+    public ResponseEntity<List<FacturaDTO>> obtenerFacturasActivas() {
         return new ResponseEntity(facturaService.obtenerFacturasActivas(), HttpStatus.OK);
     }
     @PutMapping(value = "/eliminarFactura/{idFactura}")
-    public ResponseEntity eliminarAsiento(@PathVariable("idFactura") Integer idFactura) {
+    public ResponseEntity eliminarFactura(@PathVariable("idFactura") Integer idFactura) {
         try {
             return new ResponseEntity(facturaService.eliminarFactura(idFactura), HttpStatus.OK);
         } catch (Exception e) {
