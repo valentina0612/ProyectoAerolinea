@@ -11,5 +11,7 @@ public interface AeropuertoRepository extends JpaRepository<Aeropuerto, Integer>
     boolean existsAeropuertoByNombre(String nombre);
     boolean existsAeropuertoByNombreAndAeroId(String nombre, Integer id);
     Aeropuerto findByNombre(String nombre);
+
+    Aeropuerto findByUbicacion(String ubicacion);
     List<Aeropuerto> findAllByEstado(String estado);
 }

@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/vuelo")
@@ -60,6 +63,16 @@ public class VueloController {
     public ResponseEntity<List<VueloDTO>> obtenerVuelosActivos() {
         return new ResponseEntity(vueloService.obtenerVuelosActivos(), HttpStatus.OK);
     }
+
+    @GetMapping(path = "/{origen}/{destino}")
+    public ResponseEntity<List<VueloDTO>> filtrarVuelos(@PathVariable String origen, @PathVariable String destino) {
+        try {
+            return new ResponseEntity(vueloService.filtrarVuelos(origen, destino), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+        }
+
     @PutMapping(value = "/eliminarVuelo/{idVuelo}")
     public ResponseEntity eliminarVuelo(@PathVariable("idVuelo") Integer idVuelo) {
         try {

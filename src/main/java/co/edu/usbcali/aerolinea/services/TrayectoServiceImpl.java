@@ -88,9 +88,6 @@ public class TrayectoServiceImpl implements TrayectoService{
 
         //if (trayectoDTO.getTrayId() == null) throw new Exception("El id del trayecto es obligatorio.");
 
-        if(trayectoDTO.getHoraLlegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
-
-        if(trayectoDTO.getHoraSalida().after(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             /*

@@ -10,6 +10,8 @@ public interface VuelosService {
 
     VueloDTO modificarVuelo(VueloDTO vueloDTO) throws Exception;
     List<VueloDTO> obtenerVuelos();
+
+    List<VueloDTO> filtrarVuelos(String origen, String destino);
     VueloDTO buscarPorId(Integer id) throws Exception;
 
     VueloDTO eliminarVuelo(Integer id) throws Exception;

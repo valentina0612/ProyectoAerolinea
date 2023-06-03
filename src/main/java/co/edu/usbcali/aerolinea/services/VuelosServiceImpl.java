@@ -53,6 +53,11 @@ public class VuelosServiceImpl implements VuelosService{
     }
 
     @Override
+    public List<VueloDTO> filtrarVuelos(String origen, String destino) {
+        return VueloMapper.modelToDtoList(vueloRepository.findByAeropuertoDestino_UbicacionAndAeropuertoOrigen_Ubicacion(destino, origen));
+    }
+
+    @Override
     public VueloDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !vueloRepository.existsById(id)) {
             throw new Exception("No se ha encontrado el vuelo con Id " + id + ".");
@@ -77,17 +82,11 @@ public class VuelosServiceImpl implements VuelosService{
 
         //if (vueloDTO.getVueloId() == null) throw new Exception("El id del vuelo es obligatorio.");
 
-        if(vueloDTO.getHora_llegada().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+        // if (vueloDTO.getHora_llegada().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
-        if(vueloDTO.getHora_salida().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+       //if (vueloDTO.getHora_salida().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
-        if (esCreacion) {
-            if(vueloRepository.existsById(vueloDTO.getVueloId())) {
-                throw new Exception("El vuelo con Id " +
-                        vueloDTO.getVueloId() + " ya se encuentra registrado.");
-            }
 
-        }
         if (esCreacion) {
             /*
             if(vueloRepository.existsById(vueloDTO.getVueloId())) {
@@ -114,11 +113,7 @@ public class VuelosServiceImpl implements VuelosService{
             throw new Exception("El ID del aeropuerto de origen " + vueloDTO.getAeropuerto_aeroIdOrigen()
                     + " no se encuentra en base de datos");
         }
-        if (!vueloRepository.existsById(vueloDTO.getVueloId())) {
-            throw new Exception("El ID del vuelo " + vueloDTO.getVueloId()
-                    + " no se encuentra en base de datos");
 
-        }
         ValidationUtility.stringIsNullOrBlank(vueloDTO.getEstado(), "El estado no puede ser nulo");
         }
     private VueloDTO crearOModificar(VueloDTO vueloDTO) {

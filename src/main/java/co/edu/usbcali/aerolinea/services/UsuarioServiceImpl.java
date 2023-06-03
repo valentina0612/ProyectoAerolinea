@@ -69,9 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null) {
             throw new Exception("El usuario con correo " + correo + " no se encuentra registrado.");
         }
-        if (!usuario.getCedula().equals(cedula)) {
-            throw new Exception("La contraseña es incorrecta.");
-        }
+
         return UsuarioMapper.modelToDto(usuario);
     }
 
@@ -86,13 +84,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new Exception("El correo electrónico no es válido.");
         }
 
-        if (esCreacion) {
-            if(usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
-                throw new Exception("El usuario con Id " +
-                        usuarioDTO.getUsuaId() + " ya se encuentra registrado.");
-            }
-
-        }
         if (esCreacion) {
             /*
             if(usuarioRepository.existsById(usuarioDTO.getUsuaId())) {
