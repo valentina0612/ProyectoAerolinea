@@ -11,5 +11,5 @@ import java.util.List;
 public interface VueloRepository extends JpaRepository<Vuelo, Integer> {
     List<Vuelo> findByEstado(String estado);
 
-    List<Vuelo> findByAeropuertoDestino_UbicacionAndAeropuertoOrigen_Ubicacion(String aeropuertoDestino, String aeropuertoOrigen);
+    List<Vuelo> findByAeropuertoDestino_UbicacionAndAeropuertoOrigen_UbicacionAndEstado(String aeropuertoDestino, String aeropuertoOrigen, String estado);
 }
