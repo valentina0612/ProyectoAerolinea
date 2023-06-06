@@ -12,7 +12,7 @@ import java.util.List;
 public class FacturaUtilityTest {
     public static Integer ID_UNO = 1;
     public static Date FECHA_UNO = new Date();
-    public static String ESTADO_UNO = "A";
+    public static String ESTADO_UNO = "Activo";
     public static Integer FACTURAS_SIZE = 2;
     public static Integer FACTURAS_VACIO_SIZE = 0;
     public static Date FECHA_FUTURO_DATE;
@@ -36,35 +36,35 @@ public class FacturaUtilityTest {
             .factId(1)
             .reserva(ReservaUtilityTest.RESERVA_UNO)
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Factura FACTURA_DOS = Factura.builder()
             .factId(2)
             .reserva(ReservaUtilityTest.RESERVA_UNO)
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static FacturaDTO FACTURADTO_UNO = FacturaDTO.builder()
             .factId(1)
             .reseId(ReservaUtilityTest.ID_UNO)
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static FacturaDTO FACTURADTO_DOS = FacturaDTO.builder()
             .factId(2)
             .reseId(ReservaUtilityTest.ID_UNO)
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static FacturaDTO FACTURADTO_FECHA_NULL = FacturaDTO.builder()
             .factId(1)
             .reseId(ReservaUtilityTest.ID_UNO)
             .fecha(null)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Factura> FACTURAS = Arrays.asList(FACTURA_UNO, FACTURA_DOS);

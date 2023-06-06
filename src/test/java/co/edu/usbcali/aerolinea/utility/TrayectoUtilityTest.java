@@ -13,7 +13,7 @@ public class TrayectoUtilityTest {
     public static Integer ID_UNO = 1;
     public static Date HORA_SALIDA_UNO = new Date();
     public static Date HORA_LLEGADA_UNO = new Date();
-    public static String ESTADO_UNO = "A";
+    public static String ESTADO_UNO = "Activo";
     public static Integer ID_DOS = 2;
     public static Integer TRAYECTOS_SIZE = 2;
     public static Integer TRAYECTOS_VACIO_SIZE = 0;
@@ -49,7 +49,7 @@ public class TrayectoUtilityTest {
             .horaSalida(FECHA_FUTURO_DATE)
             .horaLlegada(FECHA_FUTURO_DATE_DOS)
             .vuelo(VuelosUtilityTest.VUELO_UNO)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Trayecto TRAYECTO_DOS = Trayecto.builder()
@@ -60,7 +60,7 @@ public class TrayectoUtilityTest {
             .horaSalida(FECHA_FUTURO_DATE)
             .horaLlegada(FECHA_FUTURO_DATE_DOS)
             .vuelo(VuelosUtilityTest.VUELO_UNO)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TrayectoDTO TRAYECTODTO_UNO = TrayectoDTO.builder()
@@ -71,7 +71,7 @@ public class TrayectoUtilityTest {
             .horaSalida(FECHA_FUTURO_DATE)
             .horaLlegada(FECHA_FUTURO_DATE_DOS)
             .vuelId(VuelosUtilityTest.VUELO_UNO.getVueloId())
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TrayectoDTO TRAYECTODTO_DOS = TrayectoDTO.builder()
@@ -82,7 +82,7 @@ public class TrayectoUtilityTest {
             .horaSalida(FECHA_FUTURO_DATE)
             .horaLlegada(FECHA_FUTURO_DATE_DOS)
             .vuelId(VuelosUtilityTest.VUELO_UNO.getVueloId())
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TrayectoDTO TRAYECTODTO_HORASALIDA_NULL = TrayectoDTO.builder()
@@ -94,7 +94,7 @@ public class TrayectoUtilityTest {
             .horaSalida(null)
             .horaLlegada(FECHA_FUTURO_DATE_DOS)
             .vuelId(VuelosUtilityTest.VUELO_UNO.getVueloId())
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Trayecto> TRAYECTOS = Arrays.asList(TRAYECTO_UNO, TRAYECTO_DOS);

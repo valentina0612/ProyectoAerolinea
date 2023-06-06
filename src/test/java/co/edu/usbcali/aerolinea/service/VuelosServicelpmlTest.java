@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -37,6 +38,28 @@ public class VuelosServicelpmlTest {
 
     @Mock
     private AeropuertoRepository aeropuertoRepository;
+
+
+    @Test
+    public void guardarVueloOk() throws Exception {
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_UNO)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_UNO)).willReturn(AeropuertoUtilityTest.AEROPUERTO_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(false);
+        given(vueloRepository.save(any())).willReturn(VuelosUtilityTest.VUELO_UNO);
+
+        VueloDTO vueloSavedDTO = vuelosServiceImpl.guardarVuelo(VuelosUtilityTest.VUELODTO_UNO);
+
+        assertEquals(VuelosUtilityTest.ID_UNO, vueloSavedDTO.getVueloId());
+    }
+
+    @Test
+    public void guardarVueloNotOk() {
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> vuelosServiceImpl.guardarVuelo(VuelosUtilityTest.VUELODTO_UNO));
+    }
 
     @Test
     public void obtenerVuelosOk() {
@@ -53,6 +76,25 @@ public class VuelosServicelpmlTest {
         given(vueloRepository.findAll()).willReturn(VuelosUtilityTest.VUELOS_VACIO);
 
         List<VueloDTO> vuelosSavedDTO = vuelosServiceImpl.obtenerVuelos();
+
+        assertEquals(VuelosUtilityTest.VUELOS_VACIO_SIZE, vuelosSavedDTO.size());
+    }
+
+    @Test
+    public void obtenerVuelosActivosOk() {
+        given(vueloRepository.findByEstado("Activo")).willReturn(VuelosUtilityTest.VUELOS);
+
+        List<VueloDTO> vuelosSavedDTO = vuelosServiceImpl.obtenerVuelosActivos();
+
+        assertEquals(VuelosUtilityTest.VUELOS_SIZE, vuelosSavedDTO.size());
+        assertEquals(VuelosUtilityTest.PRECIO_UNO, vuelosSavedDTO.get(0).getPrecio());
+    }
+
+    @Test
+    public void obtenerVuelosActivosNotOk() {
+        given(vueloRepository.findByEstado("Activo")).willReturn(VuelosUtilityTest.VUELOS_VACIO);
+
+        List<VueloDTO> vuelosSavedDTO = vuelosServiceImpl.obtenerVuelosActivos();
 
         assertEquals(VuelosUtilityTest.VUELOS_VACIO_SIZE, vuelosSavedDTO.size());
     }
@@ -76,6 +118,28 @@ public class VuelosServicelpmlTest {
         given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> vuelosServiceImpl.buscarPorId(VuelosUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void modificarVueloOk() throws Exception {
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_UNO)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_UNO)).willReturn(AeropuertoUtilityTest.AEROPUERTO_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.save(any())).willReturn(VuelosUtilityTest.VUELO_UNO);
+
+        VueloDTO vueloSavedDTO = vuelosServiceImpl.modificarVuelo(VuelosUtilityTest.VUELODTO_UNO);
+
+        assertEquals(VuelosUtilityTest.ID_UNO, vueloSavedDTO.getVueloId());
+    }
+
+
+    @Test
+    public void modificarVueloNotOk() {
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> vuelosServiceImpl.modificarVuelo(VuelosUtilityTest.VUELODTO_UNO));
     }
 
 }

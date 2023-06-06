@@ -12,12 +12,12 @@ public class AeropuertoUtilityTest {
     public static String NOMBRE_UNO = "Aeropuerto Internacional El Dorado";
     public static String IATA_UNO = "BOG";
     public static String UBICACION_UNO = "Bogotá";
-    public static String ESTADO_UNO = "A";
+    public static String ESTADO_UNO = "Activo";
     public static Integer ID_DOS = 2;
     public static String NOMBRE_DOS = "Aeropuerto Internacional Alfonso Bonilla Aragón";
     public static String IATA_DOS = "COL";
     public static String UBICACION_DOS = "Santiago de Cali";
-    public static String ESTADO_DOS = "A";
+    public static String ESTADO_DOS = "Activo";
     public static Integer AEROPUERTOS_SIZE = 2;
     public static Integer AEROPUERTOS_VACIO_SIZE = 0;
 
@@ -29,7 +29,7 @@ public class AeropuertoUtilityTest {
             .nombre("Aeropuerto Internacional El Dorado")
             .iata("BOG")
             .ubicacion("Bogotá")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Aeropuerto AEROPUERTO_DOS = Aeropuerto.builder()
@@ -37,7 +37,7 @@ public class AeropuertoUtilityTest {
             .nombre("Aeropuerto Internacional Alfonso Bonilla Aragón")
             .iata("COL")
             .ubicacion("Santiago de Cali")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static AeropuertoDTO AEROPUERTODTO_UNO = AeropuertoDTO.builder()
@@ -45,7 +45,7 @@ public class AeropuertoUtilityTest {
             .nombre("Aeropuerto Internacional El Dorado")
             .iata("BOG")
             .ubicacion("Bogotá")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static AeropuertoDTO AEROPUERTODTO_DOS = AeropuertoDTO.builder()
@@ -53,7 +53,7 @@ public class AeropuertoUtilityTest {
             .nombre("Aeropuerto Internacional Alfonso Bonilla Aragón")
             .iata("COL")
             .ubicacion("Santiago de Cali")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static AeropuertoDTO AEROPUERTODTO_NOMBRE_NULL = AeropuertoDTO.builder()
@@ -61,7 +61,7 @@ public class AeropuertoUtilityTest {
             .nombre(null)
             .iata("BOG")
             .ubicacion("Bogotá")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Aeropuerto> AEROPUERTOS = Arrays.asList(AEROPUERTO_UNO, AEROPUERTO_DOS);

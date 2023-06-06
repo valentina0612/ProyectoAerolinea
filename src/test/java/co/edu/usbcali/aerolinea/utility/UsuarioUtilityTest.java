@@ -26,7 +26,7 @@ public class UsuarioUtilityTest {
             .nombre("Santiago")
             .apellido("García")
             .correo("santiagogarcia@gmail.com")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Usuario USUARIO_DOS = Usuario.builder()
@@ -36,7 +36,7 @@ public class UsuarioUtilityTest {
             .nombre("Juan")
             .apellido("Pérez")
             .correo("juanperez@gmail.com")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static UsuarioDTO USUARIODTO_UNO = UsuarioDTO.builder()
@@ -46,7 +46,7 @@ public class UsuarioUtilityTest {
             .nombre("Santiago")
             .apellido("García")
             .correo("santiagogarcia@gmail.com")
-            .estado("A")
+            .estado("Activo")
             .build();
     public static UsuarioDTO USUARIODTO_DOS = UsuarioDTO.builder()
             .usuaId(2)
@@ -55,7 +55,7 @@ public class UsuarioUtilityTest {
             .nombre("Juan")
             .apellido("Pérez")
             .correo("juanperez@gmail.com")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static UsuarioDTO USUARIODTO_CEDULA_NULL = UsuarioDTO.builder()
@@ -65,7 +65,7 @@ public class UsuarioUtilityTest {
             .nombre("Santiago")
             .apellido("García")
             .correo("juanperez@gmail.com")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Usuario> USUARIOS = Arrays.asList(USUARIO_UNO, USUARIO_DOS);

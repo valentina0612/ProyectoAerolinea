@@ -37,8 +37,22 @@ public class RolUsuarioServicelpmlTest {
     @Mock
     private RolUsuarioRepository rolUsuarioRepository;
 
+    @Test
+    public void guardarRolUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
+        given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO_UNO);
 
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getRousId());
+    }
+
+    @Test
+    public void guardarRolUsuarioNotOk() {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO_UNO));
+    }
     @Test
     public void obtenerRolUsuariosOk() {
         given(rolUsuarioRepository.findAll()).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS);
@@ -57,7 +71,24 @@ public class RolUsuarioServicelpmlTest {
 
         assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
     }
+    @Test
+    public void obtenerRolUsuariosActivosOk() {
+        given(rolUsuarioRepository.findByEstado("Activo")).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS);
 
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolesActivos();
+
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_SIZE, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.DESCRIPCION_UNO, rolUsuariosSavedDTO.get(0).getDescripcion());
+    }
+
+    @Test
+    public void obtenerRolUsuariosActivosNotOk() {
+        given(rolUsuarioRepository.findByEstado("Activo")).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO);
+
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolesActivos();
+
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
+    }
     @Test
     public void buscarPorId_TestOk_() throws Exception {
         rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
@@ -75,6 +106,22 @@ public class RolUsuarioServicelpmlTest {
         given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.buscarPorId(RolUsuarioUtilityTest.ID_UNO));
+    }
+    @Test
+    public void actualizarRolUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.modificarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO_UNO);
+
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getRousId());
+    }
+
+    @Test
+    public void actualizarRolUsuarioNotOk() {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.modificarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO_UNO));
     }
 
 }

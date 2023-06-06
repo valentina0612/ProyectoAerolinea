@@ -12,6 +12,7 @@ import co.edu.usbcali.aerolinea.repository.TipoAsientoRepository;
 import co.edu.usbcali.aerolinea.services.AsientoService;
 import co.edu.usbcali.aerolinea.services.AsientoServiceImpl;
 import co.edu.usbcali.aerolinea.utility.AsientoUtilityTest;
+import co.edu.usbcali.aerolinea.utility.AvionUtilityTest;
 import co.edu.usbcali.aerolinea.utility.TipoAsientoUtilityTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,8 +39,32 @@ import static org.mockito.BDDMockito.given;
         private AsientoRepository asientoRepository;
 
         @Mock
+        private AvionRepository avionRepository ;
+
+        @Mock
         private TipoAsientoRepository tipoAsientoRepository;
 
+        @Test
+        public void guardarAsientoOk() throws Exception {
+            given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
+            given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.ID_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
+            given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(false);
+            given(asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+            given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
+            given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
+
+
+            AsientoDTO asientoSavedDTO = asientoServiceImpl.guardarAsiento(AsientoUtilityTest.ASIENTODTO_UNO);
+
+            assertEquals(AsientoUtilityTest.ID_UNO, asientoSavedDTO.getAsieId());
+        }
+
+        @Test
+        public void guardarAsientoNotOk() {
+            given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+
+            assertThrows(java.lang.Exception.class, () -> asientoServiceImpl.guardarAsiento(AsientoUtilityTest.ASIENTODTO_UNO));
+        }
 
         @Test
         public void obtenerAsientosOk() {
@@ -56,6 +81,25 @@ import static org.mockito.BDDMockito.given;
             given(asientoRepository.findAll()).willReturn(AsientoUtilityTest.ASIENTOS_VACIO);
 
             List<AsientoDTO> asientosSavedDTO = asientoServiceImpl.obtenerAsientos();
+
+            assertEquals(AsientoUtilityTest.ASIENTOS_VACIO_SIZE, asientosSavedDTO.size());
+        }
+
+        @Test
+        public void obtenerAsientosActivosOk() {
+            given(asientoRepository.findAllByEstado("Activo")).willReturn(AsientoUtilityTest.ASIENTOS);
+
+            List<AsientoDTO> asientosSavedDTO = asientoServiceImpl.obtenerAsientosActivos();
+
+            assertEquals(AsientoUtilityTest.ASIENTOS_SIZE, asientosSavedDTO.size());
+            assertEquals(AsientoUtilityTest.UBICACION_UNO, asientosSavedDTO.get(0).getUbicacion());
+        }
+
+        @Test
+        public void obtenerAsientosActivosNotOk() {
+            given(asientoRepository.findAllByEstado("Activo")).willReturn(AsientoUtilityTest.ASIENTOS_VACIO);
+
+            List<AsientoDTO> asientosSavedDTO = asientoServiceImpl.obtenerAsientosActivos();
 
             assertEquals(AsientoUtilityTest.ASIENTOS_VACIO_SIZE, asientosSavedDTO.size());
         }
@@ -78,5 +122,26 @@ import static org.mockito.BDDMockito.given;
             given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(false);
 
             assertThrows(java.lang.Exception.class, () -> asientoServiceImpl.buscarPorId(AsientoUtilityTest.ID_UNO));
+        }
+
+        @Test
+        public void actualizarAsientoOk() throws Exception {
+            given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
+            given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.ID_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
+            given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+            given(asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+            given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
+            given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
+
+            AsientoDTO asientoSavedDTO = asientoServiceImpl.modificarAsiento(AsientoUtilityTest.ASIENTODTO_UNO);
+
+            assertEquals(AsientoUtilityTest.ID_UNO, asientoSavedDTO.getAsieId());
+        }
+
+        @Test
+        public void actualizarAsientoNotOk() {
+            given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(false);
+
+            assertThrows(java.lang.Exception.class, () -> asientoServiceImpl.modificarAsiento(AsientoUtilityTest.ASIENTODTO_UNO));
         }
     }

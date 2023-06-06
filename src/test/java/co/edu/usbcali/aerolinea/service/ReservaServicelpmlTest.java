@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -43,6 +44,28 @@ public class ReservaServicelpmlTest {
     private UsuarioRepository usuarioRepository;
 
     @Test
+    public void guardarReservaOk() throws Exception {
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VuelosUtilityTest.ID_UNO)).willReturn(VuelosUtilityTest.VUELO_UNO);
+        given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+        given(asientoRepository.getReferenceById(AsientoUtilityTest.ID_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
+        given(reservaRepository.save(any())).willReturn(ReservaUtilityTest.RESERVA_UNO);
+
+        ReservaDTO reservaSavedDTO = reservaServiceImpl.guardarReserva(ReservaUtilityTest.RESERVADTO_UNO);
+
+        assertEquals(ReservaUtilityTest.ID_UNO, reservaSavedDTO.getReseId());
+    }
+
+    @Test
+    public void guardarReservaNotOk() {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.guardarReserva(ReservaUtilityTest.RESERVADTO_UNO));
+    }
+    @Test
     public void obtenerReservasOk() {
         given(reservaRepository.findAll()).willReturn(ReservaUtilityTest.RESERVAS);
 
@@ -60,7 +83,24 @@ public class ReservaServicelpmlTest {
 
         assertEquals(ReservaUtilityTest.RESERVAS_VACIO_SIZE, reservasSavedDTO.size());
     }
+    @Test
+    public void obtenerReservasActivasOk() {
+        given(reservaRepository.findByEstado("Activo")).willReturn(ReservaUtilityTest.RESERVAS);
 
+        List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservasActivas();
+
+        assertEquals(ReservaUtilityTest.RESERVAS_SIZE, reservasSavedDTO.size());
+        assertEquals(ReservaUtilityTest.PRECIO_TOTAL_UNO, reservasSavedDTO.get(0).getPrecioTotal());
+    }
+
+    @Test
+    public void obtenerReservasActivasNotOk() {
+        given(reservaRepository.findByEstado("Activo")).willReturn(ReservaUtilityTest.RESERVAS_VACIO);
+
+        List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservasActivas();
+
+        assertEquals(ReservaUtilityTest.RESERVAS_VACIO_SIZE, reservasSavedDTO.size());
+    }
 
     @Test
     public void obtenerReservaPorIdOk() throws Exception {
@@ -82,6 +122,28 @@ public class ReservaServicelpmlTest {
         given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.buscarPorId(ReservaUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void actualizarReservaOk() throws Exception {
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VuelosUtilityTest.ID_UNO)).willReturn(VuelosUtilityTest.VUELO_UNO);
+        given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+        given(asientoRepository.getReferenceById(AsientoUtilityTest.ID_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.save(any())).willReturn(ReservaUtilityTest.RESERVA_UNO);
+
+        ReservaDTO reservaSavedDTO = reservaServiceImpl.modificarReserva(ReservaUtilityTest.RESERVADTO_UNO);
+
+        assertEquals(ReservaUtilityTest.ID_UNO, reservaSavedDTO.getReseId());
+    }
+    @Test
+    public void actualizarReservaNotOk() {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.modificarReserva(ReservaUtilityTest.RESERVADTO_UNO));
     }
 
 }

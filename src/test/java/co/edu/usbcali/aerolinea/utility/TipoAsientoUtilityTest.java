@@ -9,7 +9,7 @@ import java.util.List;
 public class TipoAsientoUtilityTest {
     public static Integer ID_UNO = 1;
     public static String DESCRIPCION_UNO = "Ejecutivo";
-    public static String ESTADO_UNO = "A";
+    public static String ESTADO_UNO = "Activo";
 
     public static Integer ID_DOS = 2;
     public static Integer TIPOASIENTOS_SIZE = 2;
@@ -21,31 +21,31 @@ public class TipoAsientoUtilityTest {
     public static TipoAsiento TIPOASIENTO_UNO = TipoAsiento.builder()
             .tiasId(1)
             .descripcion("Ejecutivo")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TipoAsiento TIPOASIENTO_DOS = TipoAsiento.builder()
             .tiasId(2)
             .descripcion("Económico")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TipoAsientoDTO TIPOASIENTODTO_UNO = TipoAsientoDTO.builder()
             .tiasId(1)
             .descripcion("Ejecutivo")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TipoAsientoDTO TIPOASIENTODTO_DOS = TipoAsientoDTO.builder()
             .tiasId(2)
             .descripcion("Económico")
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static TipoAsientoDTO TIPOASIENTODTO_DESCRIPCION_NULL = TipoAsientoDTO.builder()
             .tiasId(1)
             .descripcion(null)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<TipoAsiento> TIPOASIENTOS = Arrays.asList(TIPOASIENTO_UNO, TIPOASIENTO_DOS);

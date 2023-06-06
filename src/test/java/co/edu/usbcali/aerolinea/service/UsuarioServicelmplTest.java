@@ -38,6 +38,24 @@ public class UsuarioServicelmplTest {
     private RolUsuarioRepository rolUsuarioRepository;
 
     @Test
+    public void guardarUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
+        given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO_UNO);
+
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getUsuaId());
+    }
+
+    @Test
+    public void guardarUsuarioNotOk() {
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO_UNO));
+    }
+    @Test
     public void obtenerUsuariosOk() {
         given(usuarioRepository.findAll()).willReturn(UsuarioUtilityTest.USUARIOS);
 
@@ -52,6 +70,25 @@ public class UsuarioServicelmplTest {
         given(usuarioRepository.findAll()).willReturn(UsuarioUtilityTest.USUARIOS_VACIO);
 
         List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuarios();
+
+        assertEquals(UsuarioUtilityTest.USUARIOS_VACIO_SIZE, usuariosSavedDTO.size());
+    }
+
+    @Test
+    public void obtenerUsuariosActivosOk() {
+        given(usuarioRepository.findByEstado("Activo")).willReturn(UsuarioUtilityTest.USUARIOS);
+
+        List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuariosActivos();
+
+        assertEquals(UsuarioUtilityTest.USUARIOS_SIZE, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.CEDULA_UNO, usuariosSavedDTO.get(0).getCedula());
+    }
+
+    @Test
+    public void obtenerUsuariosActivosNotOk() {
+        given(usuarioRepository.findByEstado("Activo")).willReturn(UsuarioUtilityTest.USUARIOS_VACIO);
+
+        List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuariosActivos();
 
         assertEquals(UsuarioUtilityTest.USUARIOS_VACIO_SIZE, usuariosSavedDTO.size());
     }
@@ -74,6 +111,25 @@ public class UsuarioServicelmplTest {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.buscarPorId(UsuarioUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void actualizarUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.modificarUsuario(UsuarioUtilityTest.USUARIODTO_UNO);
+
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getUsuaId());
+    }
+
+    @Test
+    public void actualizarUsuarioNotOk() {
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.modificarUsuario(UsuarioUtilityTest.USUARIODTO_UNO));
     }
 
 }

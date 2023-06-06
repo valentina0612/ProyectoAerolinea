@@ -92,7 +92,7 @@ public class ReservaServiceImpl implements ReservaService {
 
         //if (reservaDTO.getReseId() == null) throw new Exception("El ID de la reserva es obligatorio.");
 
-        if(reservaDTO.getFecha().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+        if(reservaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             /*

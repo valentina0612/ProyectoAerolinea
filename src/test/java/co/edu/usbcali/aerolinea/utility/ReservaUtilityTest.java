@@ -14,9 +14,9 @@ public class ReservaUtilityTest {
 
     public static Integer ID_DOS = 2;
     public static Integer PRECIO_TOTAL_UNO = 100000;
-    public static String ESTADO_PAGO_UNO = "A";
+    public static String ESTADO_PAGO_UNO = "Activo";
     public static Date FECHA_UNO = new Date();
-    public static String ESTADO_UNO = "A";
+    public static String ESTADO_UNO = "Activo";
     public static Integer RESERVAS_SIZE = 2;
     public static Integer RESERVAS_VACIO_SIZE = 0;
     public static String FECHA_FUTURO = "2023-11-27 08:00";
@@ -41,9 +41,9 @@ public class ReservaUtilityTest {
             .asiento(AsientoUtilityTest.ASIENTO_UNO)
             .usuario(UsuarioUtilityTest.USUARIO_UNO)
             .precioTotal(100000)
-            .estadoPago("A")
+            .estadoPago("Activo")
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Reserva RESERVA_DOS = Reserva.builder()
@@ -52,9 +52,9 @@ public class ReservaUtilityTest {
             .asiento(AsientoUtilityTest.ASIENTO_UNO)
             .usuario(UsuarioUtilityTest.USUARIO_UNO)
             .precioTotal(150000)
-            .estadoPago("A")
+            .estadoPago("Activo")
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static ReservaDTO RESERVADTO_UNO = ReservaDTO.builder()
@@ -63,9 +63,9 @@ public class ReservaUtilityTest {
             .asieId(AsientoUtilityTest.ASIENTO_UNO.getAsieId())
             .usuaId(UsuarioUtilityTest.USUARIO_UNO.getUsuaId())
             .precioTotal(100000)
-            .estadoPago("A")
+            .estadoPago("Activo")
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static ReservaDTO RESERVADTO_DOS = ReservaDTO.builder()
@@ -74,9 +74,9 @@ public class ReservaUtilityTest {
             .asieId(AsientoUtilityTest.ASIENTO_UNO.getAsieId())
             .usuaId(UsuarioUtilityTest.USUARIO_UNO.getUsuaId())
             .precioTotal(150000)
-            .estadoPago("A")
+            .estadoPago("Activo")
             .fecha(FECHA_FUTURO_DATE)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static ReservaDTO RESERVADTO_FECHA_NULL = ReservaDTO.builder()
@@ -85,9 +85,9 @@ public class ReservaUtilityTest {
             .asieId(AsientoUtilityTest.ASIENTO_UNO.getAsieId())
             .usuaId(UsuarioUtilityTest.USUARIO_UNO.getUsuaId())
             .precioTotal(100000)
-            .estadoPago("A")
+            .estadoPago("Activo")
             .fecha(null)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Reserva> RESERVAS = Arrays.asList(RESERVA_UNO, RESERVA_DOS);

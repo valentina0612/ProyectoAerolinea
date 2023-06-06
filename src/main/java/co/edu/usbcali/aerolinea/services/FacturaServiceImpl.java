@@ -82,7 +82,7 @@ public class FacturaServiceImpl implements FacturaService {
 
         //if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
 
-        if(facturaDTO.getFecha().after(new Date())) throw new Exception("Esa fecha ya pasó.");
+        if(facturaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             /*

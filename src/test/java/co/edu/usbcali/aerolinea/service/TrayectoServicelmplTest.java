@@ -47,6 +47,30 @@ public class TrayectoServicelmplTest {
     private VueloRepository vueloRepository;
 
     @Test
+    public void guardarTrayectoOk() throws Exception {
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
+        given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_UNO)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_UNO)).willReturn(AeropuertoUtilityTest.AEROPUERTO_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VuelosUtilityTest.ID_UNO)).willReturn(VuelosUtilityTest.VUELO_UNO);
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
+        given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
+
+        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO);
+
+        assertEquals(TrayectoUtilityTest.ID_UNO, trayectoSavedDTO.getTrayId());
+    }
+
+    @Test
+    public void guardarTrayectoNotOk() {
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO));
+    }
+    @Test
     public void obtenerTrayectosOk() {
         given(trayectoRepository.findAll()).willReturn(TrayectoUtilityTest.TRAYECTOS);
 
@@ -64,7 +88,24 @@ public class TrayectoServicelmplTest {
 
         assertEquals(TrayectoUtilityTest.TRAYECTOS_VACIO_SIZE, trayectosSavedDTO.size());
     }
+    @Test
+    public void obtenerTrayectosActivosOk() {
+        given(trayectoRepository.findByEstado("Activo")).willReturn(TrayectoUtilityTest.TRAYECTOS);
 
+        List<TrayectoDTO> trayectosSavedDTO = trayectoServiceImpl.obtenerTrayectosActivos();
+
+        assertEquals(TrayectoUtilityTest.TRAYECTOS_SIZE, trayectosSavedDTO.size());
+        assertEquals(TrayectoUtilityTest.ID_UNO, trayectosSavedDTO.get(0).getTrayId());
+    }
+
+    @Test
+    public void obtenerTrayectosActivosNotOk() {
+        given(trayectoRepository.findByEstado("Activo")).willReturn(TrayectoUtilityTest.TRAYECTOS_VACIO);
+
+        List<TrayectoDTO> trayectosSavedDTO = trayectoServiceImpl.obtenerTrayectosActivos();
+
+        assertEquals(TrayectoUtilityTest.TRAYECTOS_VACIO_SIZE, trayectosSavedDTO.size());
+    }
     @Test
     public void buscarPorId_TestOk_() throws Exception {
         avionRepository.save(AvionUtilityTest.AVION_UNO);
@@ -86,5 +127,29 @@ public class TrayectoServicelmplTest {
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.buscarPorId(TrayectoUtilityTest.ID_UNO));
+    }
+    @Test
+    public void actualizarTrayectoOk() throws Exception {
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
+        given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_UNO)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_UNO)).willReturn(AeropuertoUtilityTest.AEROPUERTO_UNO);
+        given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
+        given(vueloRepository.existsById(VuelosUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VuelosUtilityTest.ID_UNO)).willReturn(VuelosUtilityTest.VUELO_UNO);
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
+        given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
+
+        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.modificarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO);
+
+        assertEquals(TrayectoUtilityTest.ID_UNO, trayectoSavedDTO.getTrayId());
+    }
+
+    @Test
+    public void actualizarTrayectoNotOk() {
+        given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.modificarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO));
     }
 }

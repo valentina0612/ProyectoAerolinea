@@ -18,7 +18,7 @@ public class TipoAsientoMapper {
     }
     public static TipoAsiento dtoToModel (TipoAsientoDTO tipoAsientoDTO){
         return TipoAsiento.builder()
-                //.tiasId(tipoAsientoDTO.getTiasId())
+                .tiasId(tipoAsientoDTO.getTiasId())
                 .descripcion(tipoAsientoDTO.getDescripcion())
                 .estado(tipoAsientoDTO.getEstado())
                 .build();

@@ -17,7 +17,7 @@ public class RolUsuarioMapper {
     }
     public static RolUsuario dtoToModel (RolUsuarioDTO rolUsuarioDTO){
         return RolUsuario.builder()
-                //.rousId(rolUsuarioDTO.getRousId())
+                .rousId(rolUsuarioDTO.getRousId())
                 .descripcion(rolUsuarioDTO.getDescripcion())
                 .estado(rolUsuarioDTO.getEstado())
                 .build();

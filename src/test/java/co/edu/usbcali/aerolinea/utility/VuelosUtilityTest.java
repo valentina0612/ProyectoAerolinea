@@ -55,7 +55,7 @@ public class VuelosUtilityTest {
             .precioAsientoVip(50000)
             .precioAsientoNormal(30000)
             .precioAsientoBasico(10000)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static Vuelo VUELO_DOS = Vuelo.builder()
@@ -68,7 +68,7 @@ public class VuelosUtilityTest {
             .precioAsientoVip(80000)
             .precioAsientoNormal(50000)
             .precioAsientoBasico(30000)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static VueloDTO VUELODTO_UNO = VueloDTO.builder()
@@ -81,7 +81,7 @@ public class VuelosUtilityTest {
             .precioAsientoVip(50000)
             .precioAsientoNormal(30000)
             .precioAsientoBasico(10000)
-            .estado("A")
+            .estado("Activo")
             .build();
     public static VueloDTO VUELODTO_DOS = VueloDTO.builder()
             .vueloId(2)
@@ -93,7 +93,7 @@ public class VuelosUtilityTest {
             .precioAsientoVip(80000)
             .precioAsientoNormal(50000)
             .precioAsientoBasico(30000)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static VueloDTO VUELODTO_HORASALIDA_NULL = VueloDTO.builder()
@@ -106,7 +106,7 @@ public class VuelosUtilityTest {
             .precioAsientoVip(50000)
             .precioAsientoNormal(30000)
             .precioAsientoBasico(10000)
-            .estado("A")
+            .estado("Activo")
             .build();
 
     public static List<Vuelo> VUELOS = Arrays.asList(VUELO_UNO, VUELO_DOS);

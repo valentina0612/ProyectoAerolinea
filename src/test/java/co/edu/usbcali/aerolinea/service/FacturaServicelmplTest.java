@@ -40,6 +40,25 @@ public class FacturaServicelmplTest {
     private ReservaRepository reservaRepository;
 
     @Test
+    public void guardarFacturaOk() throws Exception {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
+        given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
+
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO_UNO);
+
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getFactId());
+    }
+
+    @Test
+    public void guardarFacturaNotOk() {
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO_UNO));
+    }
+
+    @Test
     public void obtenerFacturasOk() {
         given(facturaRepository.findAll()).willReturn(FacturaUtilityTest.FACTURAS);
 
@@ -56,6 +75,25 @@ public class FacturaServicelmplTest {
         List<FacturaDTO> facturasSavedDTO = facturaServiceImpl.obtenerFacturas();
 
         assertEquals(FacturaUtilityTest.FACTURAS_VACIO_SIZE, facturasSavedDTO.size());
+    }
+
+    @Test
+    public void obtenerFacturasActivasOk() {
+        given(facturaRepository.findAllByEstado("Activo")).willReturn(FacturaUtilityTest.FACTURAS);
+
+        List<FacturaDTO> facturasSavedTO = facturaServiceImpl.obtenerFacturasActivas();
+
+        assertEquals(FacturaUtilityTest.FACTURAS_SIZE, facturasSavedTO.size());
+        assertEquals(FacturaUtilityTest.ID_UNO, facturasSavedTO.get(0).getFactId());
+    }
+
+    @Test
+    public void obtenerFacturasActivasNotOk() {
+        given(facturaRepository.findAllByEstado("Activo")).willReturn(FacturaUtilityTest.FACTURAS_VACIO);
+
+        List<FacturaDTO> facturasSavedTO = facturaServiceImpl.obtenerFacturasActivas();
+
+        assertEquals(FacturaUtilityTest.FACTURAS_VACIO_SIZE, facturasSavedTO.size());
     }
 
     @Test
@@ -76,6 +114,25 @@ public class FacturaServicelmplTest {
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.buscarPorId(FacturaUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void actualizarFacturaOk() throws Exception {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+        given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
+
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.modificarFactura(FacturaUtilityTest.FACTURADTO_UNO);
+
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getFactId());
+    }
+
+    @Test
+    public void actualizarFacturaNotOk() {
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.modificarFactura(FacturaUtilityTest.FACTURADTO_UNO));
     }
 
 }

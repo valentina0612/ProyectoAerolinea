@@ -24,7 +24,7 @@ public class ReservaMapper {
     }
     public static Reserva dtoToModel (ReservaDTO reservaDTO){
         return Reserva.builder()
-                //.reseId(reservaDTO.getReseId())
+                .reseId(reservaDTO.getReseId())
                 .precioTotal(reservaDTO.getPrecioTotal())
                 .estadoPago(reservaDTO.getEstadoPago())
                 .fecha(reservaDTO.getFecha())
