@@ -23,6 +23,7 @@ public class FacturaMapper {
         return Factura.builder()
                 .factId(facturaDTO.getFactId())
                 .fecha(facturaDTO.getFecha())
+                .estado(facturaDTO.getEstado())
                 .build();
     }
 

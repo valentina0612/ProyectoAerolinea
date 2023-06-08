@@ -44,14 +44,7 @@ public class ReservaController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/obtenerReservasVuelo/{id}")
-    public ResponseEntity<List<ReservaDTO>> obtenerReservasVuelo(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity(reservaService.obtenerReservasVuelo(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
-    }
+
     @PutMapping(path = "/modificarReserva",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

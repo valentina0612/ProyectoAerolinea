@@ -51,13 +51,6 @@ public class VuelosServiceImpl implements VuelosService{
         List<Vuelo> vuelos= vueloRepository.findAll();
         return VueloMapper.modelToDtoList(vuelos);
     }
-
-    @Override
-    public List<VueloDTO> filtrarVuelos(String origen, String destino) {
-        return  VueloMapper.modelToDtoList(vueloRepository.findByAeropuertoDestino_UbicacionAndAeropuertoOrigen_UbicacionAndEstado(destino, origen, "Activo"));
-
-    }
-
     @Override
     public VueloDTO buscarPorId(Integer id) throws Exception {
         if (id == null || !vueloRepository.existsById(id)) {

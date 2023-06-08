@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface AeropuertoRepository extends JpaRepository<Aeropuerto, Integer> {
     boolean existsAeropuertoByNombre(String nombre);
-    boolean existsAeropuertoByNombreAndAeroId(String nombre, Integer id);
+    boolean existsAeropuertoByNombreAndAeroIdIsNot(String nombre, Integer id);
     Aeropuerto findByNombre(String nombre);
 
     Aeropuerto findByUbicacion(String ubicacion);

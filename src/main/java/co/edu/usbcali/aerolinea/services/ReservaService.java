@@ -12,8 +12,6 @@ public interface ReservaService {
     ReservaDTO modificarReserva(ReservaDTO reservaDTO) throws Exception;
     ReservaDTO buscarPorId(Integer id) throws Exception;
 
-    List<ReservaDTO> obtenerReservasVuelo(Integer idVuelo) throws  Exception;
-
     List<ReservaDTO> obtenerReservasUsuario(Integer idUsuario) throws Exception;
 
     List<ReservaDTO> obtenerReservasActivas();

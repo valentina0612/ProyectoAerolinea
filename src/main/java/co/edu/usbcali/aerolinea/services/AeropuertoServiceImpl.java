@@ -53,13 +53,6 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         return crearOModificar(aeropuertoEliminado);
     }
 
-    @Override
-    public AeropuertoDTO buscarPorNombre(String nombre) throws Exception {
-        if (nombre == null || !aeropuertoRepository.existsAeropuertoByNombre(nombre)) {
-            throw new Exception("No se ha encontrado el aeropuerto con nombre " + nombre + ".");
-        }
-        return AeropuertoMapper.modelToDto(aeropuertoRepository.findByNombre(nombre));
-    }
 
     @Override
     public List<AeropuertoDTO> obtenerAeropuertosActivos() {
@@ -91,7 +84,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
                 throw new Exception("No se ha encontrado el aeropuerto con Id " +
                         aeropuertoDTO.getAeroId() + ".");
             }
-            if (aeropuertoRepository.existsAeropuertoByNombreAndAeroId(aeropuertoDTO.getNombre(), aeropuertoDTO.getAeroId())) {
+            if (aeropuertoRepository.existsAeropuertoByNombreAndAeroIdIsNot(aeropuertoDTO.getNombre(), aeropuertoDTO.getAeroId())) {
                 throw new Exception("El nombre " + aeropuertoDTO.getNombre() + " ya está registrado para otro aeropuerto.");
             }
         }

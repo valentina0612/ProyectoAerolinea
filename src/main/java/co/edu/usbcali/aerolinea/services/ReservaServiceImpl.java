@@ -57,15 +57,6 @@ public class ReservaServiceImpl implements ReservaService {
         return ReservaMapper.modelToDto(reservaRepository.getReferenceById(id));
     }
 
-    @Override
-    public List<ReservaDTO> obtenerReservasVuelo(Integer idVuelo) throws Exception {
-        Vuelo vuelo = vueloRepository.findById(idVuelo)
-                .orElseThrow(() -> new Exception("No se ha encontrado ese vuelo"));
-
-        List<Reserva> reservas = reservaRepository.findAllByEstadoAndVuelo("Activo",vuelo);
-        return ReservaMapper.modelToDtoList(reservas);
-    }
-
 
     @Override
     public List<ReservaDTO> obtenerReservasUsuario(Integer idUsuario) throws  Exception{
@@ -92,7 +83,7 @@ public class ReservaServiceImpl implements ReservaService {
 
         //if (reservaDTO.getReseId() == null) throw new Exception("El ID de la reserva es obligatorio.");
 
-        if(reservaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
+        //if(reservaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             /*

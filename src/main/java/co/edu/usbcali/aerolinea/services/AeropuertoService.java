@@ -15,7 +15,5 @@ public interface AeropuertoService {
 
     AeropuertoDTO eliminarAeropuerto(Integer id) throws Exception;
 
-    AeropuertoDTO buscarPorNombre(String nombre) throws Exception;
-
     List<AeropuertoDTO> obtenerAeropuertosActivos();
 }

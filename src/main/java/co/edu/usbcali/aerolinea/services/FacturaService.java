@@ -15,5 +15,4 @@ public interface FacturaService {
 
     FacturaDTO eliminarFactura(Integer id) throws  Exception;
 
-    FacturaDTO obtenerFacturaReserva(Integer idReserva) throws  Exception;
 }

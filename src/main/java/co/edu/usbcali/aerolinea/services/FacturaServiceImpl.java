@@ -70,19 +70,12 @@ public class FacturaServiceImpl implements FacturaService {
         return crearOModificar(facturaEliminada);
     }
 
-    @Override
-    public FacturaDTO obtenerFacturaReserva(Integer idReserva) throws Exception {
-        Reserva reserva = reservaRepository.findById(idReserva)
-                .orElseThrow(() -> new Exception("No se ha encontrado esa reserva"));
-        return FacturaMapper.modelToDto(facturaRepository.findByReserva(reserva));
-    }
-
     private void validar(FacturaDTO facturaDTO, boolean esCreacion) throws Exception {
         if (facturaDTO == null) throw new Exception("No han llegado los datos de la factura.");
 
         //if (facturaDTO.getFactId() == null) throw new Exception("El id de la factura es obligatorio.");
 
-        if(facturaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
+        //if(facturaDTO.getFecha().before(new Date())) throw new Exception("Esa fecha ya pasó.");
 
         if (esCreacion) {
             /*
@@ -102,19 +95,21 @@ public class FacturaServiceImpl implements FacturaService {
             if (facturaRepository.existsByReservaAndFactId(facturaDTO.getReseId(), facturaDTO.getFactId())) {
                 throw new Exception("La reserva" + facturaDTO.getReseId()+ " ya tiene su respectiva factura.");
             }
+            if (!reservaRepository.existsById(facturaDTO.getReseId())) {
+                throw new Exception("El ID de la reserva " + facturaDTO.getReseId()
+                        + " no se encuentra en base de datos");
+            }
 
         }
 
-        if (!reservaRepository.existsById(facturaDTO.getReseId())) {
-            throw new Exception("El ID de la reserva " + facturaDTO.getReseId()
-                    + " no se encuentra en base de datos");
-        }
         ValidationUtility.stringIsNullOrBlank(facturaDTO.getEstado(), "El estado no debe ser nulo");
-        ValidationUtility.integerIsNullOrLessZero(facturaDTO.getFactId(), "El id de la factura debe ser positivo");
+        //ValidationUtility.integerIsNullOrLessZero(facturaDTO.getFactId(), "El id de la factura debe ser positivo");
         //ValidationUtility.integerIsNullOrLessZero(facturaDTO.getReseId(), "El id la reserva debe ser positivo");
     }
     private FacturaDTO crearOModificar(FacturaDTO facturaDTO) {
         Factura factura = FacturaMapper.dtoToModel(facturaDTO);
+        Reserva reserva = reservaRepository.getReferenceById(facturaDTO.getReseId());
+        factura.setReserva(reserva);
         return FacturaMapper.modelToDto(facturaRepository.save(factura));
     }
 
