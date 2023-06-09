@@ -66,8 +66,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO login(String correo, String cedula) throws Exception {
         Usuario usuario = usuarioRepository.findByCorreo(correo);
+        boolean usuario1 = usuarioRepository.existsByCorreoAndCedulaIsNot(correo,cedula);
         if (usuario == null) {
             throw new Exception("El usuario con correo " + correo + " no se encuentra registrado.");
+        }
+        if(usuario1){
+            throw new Exception("La cédula para el correo" + correo + "es incorrecta");
         }
 
         return UsuarioMapper.modelToDto(usuario);
